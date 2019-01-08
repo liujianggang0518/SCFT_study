@@ -2,13 +2,16 @@
 \documentclass[12pt,a4paper]{article}
 \input{../en_preamble.tex}
 \input{../xecjk_preamble.tex}
-
+\numberwithin{equation}{section}
+\renewcommand {\thetable} {\thesection{}.\arabic{table}}
+\renewcommand {\thefigure} {\thesection{}.\arabic{figure}}
 \title{非均相聚合物的平衡理论}
 \author{蒋老师课题组}
 \date{\chntoday}
 \begin{document}
 \maketitle
-\section{2.理想的链模型}
+\section{}
+\section{理想的链模型}
 
 \input{2.1.tex}
 \input{2.2.tex}
