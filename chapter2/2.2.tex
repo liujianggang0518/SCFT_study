@@ -33,7 +33,7 @@ P_0(r_0,n^{N})=\frac{1}{V} (\frac{1}{4 \pi})^{N}
 \end{gather}
 它是规范化的，所以$\int dr_0\int dn^{N}P_0(r_0,n^{N})=1$，其中$\int dn^{N}$表示单位球面上的N个积分。\\
 应用上式，我们可以检验自由连接链的各种统计性质。特别是端到端向量$R=r_{N}-r_0$的矩，还可以写为$R=\sum _{i=1}^{N} b_{i}=b \sum _{i=1}^{N} n_{i}$.
-$n_{i}$的各向同性分布意味着$\langle n_{i}\rangle _{0}=0$，因此R的一阶矩消失\\
+$n_{i}$的各向同性分布意味着$\langle n_{i}\rangle _{0}=0$，因为在每点概率相同，$n_{i}$分布在各个方向上，相互抵消，因此R的一阶矩消失\\
 \begin{gather}
 \langle R \rangle_{0}=0
 \end{gather}
@@ -67,7 +67,10 @@ R_{g}^2=\frac{1}{(N+1)^2} \sum _{i=0}^{N} \sum _{j>i}^{N} \langle (r_{i}- r_{j})
 \end{gather}
 这公式特别容易计算。还可以通过将$r_{i}-r_{j}$表示为键向量之和来计算自由连接链的表达式，从而得到$\langle (r_{i}- r_{j})^2 \rangle_{0}=b^2 |i-j|$。然后对上式中的二重和进行渐近求和，使$N \rightarrow \infty $。\\
 \begin{gather}
-R_{g} \approx b(N/6)^{1/2}
+R_{g}^{2} = \frac{b^2}{(N+1)^2} \sum _{k=1} ^{N} (N+k-1)k=\frac{b^2 N(N+1)(N+2)}{6(N+1)^2}
+\end{gather}
+\begin{gather}
+R_{g}\approx b(N/6)^{1/2}
 \end{gather}
 因此，自由连接链的回转半径比均方端到端向量R小$1/\sqrt{6}$。这证明了在N足够大时线性聚合物的任何理想链模型都是成立的。\\
 \begin{figure}
@@ -97,7 +100,8 @@ p_{0}(r,j)=\frac{1}{4 \pi} \int dnp_0(t-bn,j-1)
 \end{gather}
 将傅里叶变换应用于$(15)$的两边，得到以下表达式：\\
 \begin{gather}
-\hat{p_0}(k,j)=\frac{1}{4 \pi} \int dne^{-ibk \cdot n} \hat{p_0}(k,j-1)=j_0(b|k|)\hat{p_0}(k,j-1)
+\hat{p_0}(k,j)=\frac{1}{4 \pi} \int dne^{-ibk \cdot n} \hat{p_0}(k,j-1) \\=\frac{1}{4 \pi} \int _{R^3}dne^{-ibk \cdot n} \hat{p_0}(k,j-1) \\=
+\frac{1}{4 \pi} \int _{0}^{2 \pi}d \varphi \int _{0}^{\pi} e^{ib|k|n cos \theta}sin \theta d \theta \hat{p_0}(k,j-1) \\=\frac{1}{2} \int _{-1}^{1}cos b|k|dx \hat{p_0}(k,j-1) \\=j_0(b|k|)\hat{p_0}(k,j-1)
 \end{gather}
 其中$j_0(x) \equiv (sinx)/x$是常见的球面贝塞尔函数。依次地将这个方程应用于$j=1,2,\ldots,N$得到\\
 \begin{gather}
