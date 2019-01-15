@@ -53,28 +53,28 @@ h(x)=\frac{3k_{B}T}{2b^2} x^2
 \end{quotation}
 \begin{figure}[h]
 \centering
-\includegraphics[width=7cm]{./figures/23.png}
+\includegraphics[width=12cm]{./figures/23.png}
 \caption{图2.3."随机过程”方法构造离散高斯链的末端的统计权重，其中j+1粒子来自j粒子的统计权重。}
 \end{figure}
 \newpage
 \begin{quotation}
-为了更充分的探索自由链接和离散高斯链模型的关系，利用随机过程的联系是非常有用的。关于自由连接链，我们考虑约化分布函数$P_{0}(r,j)$，表示在r位置观察（j+1）--粒子链末端粒子j的概率密度。假设一条链的概率密度比$p_{0}(r,j-1)$少一个粒子,如图2.3所示，通过Chapman-Kolmogorov公式建立：
+为了更充分的探索自由链接和离散高斯链模型的关系，利用随机过程的联系是非常有用的。关于自由连接链，我们考虑约化分布函数$P_{0}(r,j)$，表示在r位置观察（j+1）--粒子链末端粒子j的概率密度。假设一条链的概率密度比它少一个粒子$p_{0}(r,j-1)$,如图2.3所示，通过Chapman-Kolmogorov公式建立：
 \end{quotation}
 \begin{equation}
 P_{0}(r,j)=\int db_{j} \varPhi (b_{j};r-b{j})p_{0}(r-b_{j},j-1)
 \end{equation}
 \begin{quotation}
-在这个表达式中$\varPhi (b_{j};r-b_{j})$是连续粒子j和j-1键向量假设在$b_{j}$的条件概率密度,给出粒子j-1在$r-b_{j}$位置。这是规范化的，因此$\int db_{j} \varPhi (b_{j};r-b{j})=1$。不在任何外场的离散高斯链$\varPhi$是链上粒子指数j(即随机过程是“平稳的”)和起始位置$r-b_{j}$上独立，因此，条件转移概率密度只反映键位移的高斯分布：
+在这个表达式中$\varPhi (b_{j};r-b_{j})$是连续粒子j和j-1键向量假设在$b_{j}$的条件概率密度,给出粒子j-1在$r-b_{j}$位置。这是规范化的，因此$\int db_{j} \varPhi (b_{j};r-b{j})=1$。不在任何外场的离散高斯链，$\varPhi$是链上粒子指数j(即随机过程是“平稳的”)和起始位置$r-b_{j}$上独立，因此，条件转移概率密度只反映键位移的高斯分布：
 \end{quotation}
 \begin{equation}
 \begin{split}
 \begin{aligned}
-\varPhi(b_{j};r-b{j})=\varPhi(b_{j})&=\frac{exp[-\beta h(|b_{j}|)]}{\int db_{j}exp[-\beta h(|b_{j}|)]} \\ &=(\frac{3}{2 \pi b^2})^{\frac{3}{2}}exp[-3|b_{j}| / (2b^2)]
+\varPhi(b_{j};r-b{j})=\varPhi(b_{j})&=\frac{exp[-\beta h(|b_{j}|)]}{\int db_{j}exp[-\beta h(|b_{j}|)]} \\ &=(\frac{3}{2 \pi b^2})^{\frac{3}{2}}exp[-3|b_{j}|^2 / (2b^2)]
 \end{aligned}
 \end{split}
 \end{equation}
 \begin{quotation}
-公式（2.33）易于用Fourier变换求解,因为离散高斯链$\varPhi$转移概率形式意味着右边是一个三维的卷积积分公式(见附录A）。因此公式(8)的Fourier变换得到Fourier变换的乘积
+公式（2.33）易于用Fourier变换求解,因为离散高斯链$\varPhi$转移概率形式意味着右边是一个三维的卷积积分公式(见附录A）。因此公式(2.33)的Fourier变换得到Fourier变换的乘积
 \end{quotation}
 \begin{equation}
 \hat{p}_{0}(k,j)=\hat{\varPhi}(k)\hat{p}_{0}(k,j-1)
@@ -132,6 +132,6 @@ h(x)=\frac{2k_{B}T}{2b^2}\frac{x^2}{(1-x^2/b_{0}^2)}
 \end{quotation}
 \begin{figure}[ht]
 \centering
-\includegraphics[width=7cm]{./figures/24.png}
+\includegraphics[width=12cm]{./figures/24.png}
 \caption{图2.4.分别是离散高斯(虚线)，自由连接链(点虚线)和非线性弹簧模型(实线)的键转移概率$\varPhi_{G}$、$\varPhi_{Fj}$和$\varPhi_{NL}$的Fourier变换，用$b/b_{0}=1$来计算非线性弹簧模型}
 \end{figure}
