@@ -44,7 +44,7 @@
 \end{quotation}
 \begin{align}\label{6}
 \begin{split}
-\frac{\delta Q[\omega]}{\delta \omega(\mathbf{r})}=\frac{1}{V}\sum_{j=0}^{N}\int d\mathbf{r}^{N+1}&[e^{-\omega(\mathbf{r}_{N})}\phi(\mathbf{r}_{N}-\mathbf{r}_{N-1})e^{-\omega(\mathbf{r}_{N-1})}\phi(\mathbf{r}_{N-1}-\mathbf{r}_{N-2}) \\ &\times \ldots e^{-\omega(\mathbf{r}_{j})}(-1)\delta(\mathbf{r}-\mathbf{r}_j)\Phi(\mathbf{r}_j-\mathbf{r}_{j-1})e^{-\omega(\mathbf{r}_j-1)}\\ & \times \ldots e^{-\omega(\mathbf{r}_{2})}\Phi(\mathbf{r}_{2}-\mathbf{r}_{1})e^{-\omega(\mathbf{r}_{1})}\Phi(\mathbf{r}_{2}-\mathbf{r}_{0})e^{-\omega(\mathbf{r}_{0})}]
+\frac{\delta Q[\omega]}{\delta \omega(\mathbf{r})}=\frac{1}{V}\sum_{j=0}^{N}\int d\mathbf{r}^{N+1}&[e^{-\omega(\mathbf{r}_{N})}\Phi(\mathbf{r}_{N}-\mathbf{r}_{N-1})e^{-\omega(\mathbf{r}_{N-1})}\Phi(\mathbf{r}_{N-1}-\mathbf{r}_{N-2}) \\ &\times \ldots e^{-\omega(\mathbf{r}_{j})}(-1)\delta(\mathbf{r}-\mathbf{r}_j)\Phi(\mathbf{r}_j-\mathbf{r}_{j-1})e^{-\omega(\mathbf{r}_j-1)}\\ & \times \ldots e^{-\omega(\mathbf{r}_{2})}\Phi(\mathbf{r}_{2}-\mathbf{r}_{1})e^{-\omega(\mathbf{r}_{1})}\Phi(\mathbf{r}_{1}-\mathbf{r}_{0})e^{-\omega(\mathbf{r}_{0})}]
 \end{split}
 \end{align}
 \begin{quotation}
@@ -60,7 +60,7 @@
 \rho(\mathbf{r},[\omega])=\frac{e^{\omega}}{VQ[\omega]}\sum_{j=0}^{N}q(\mathbf{r},N-j;[\omega])q(\mathbf{r},j;[\omega])
 \end{equation}
 \begin{quotation}
-方程(\ref{8})是非均匀聚合物理论中的一个重要公式，因为它提供了计算具有任意电势$\omega(\mathbf{r})$的离散高斯链平均段密度的方法。给出$\omega(\mathbf{r})$的表达式，首先递归求解公式(3.8)[在初始条件(3.7)下]，得到j=0，1，2，…，N的$q(\mathbf{r},j;[\omega])$。其次，用公式(3.9)计算$Q[\omega]$。这些结果可用于计算公式(\ref{8})右侧的表达式。因此，对所有珠子j的链传播子$q(\mathbf{r},j;[\omega])$的知识足以确定规范化配分函数$q[\omega]$和平均段密度$\rho(\mathbf{r};[\omega])$。
+方程(\ref{8})是非均匀聚合物理论中的一个重要公式，因为它提供了计算具有任意电势$\omega(\mathbf{r})$的离散高斯链平均段密度的方法。给出$\omega(\mathbf{r})$的表达式，首先递归求解公式(3.8)[在初始条件(3.7)下]，得到j=0，1，2，…，N的$q(\mathbf{r},j;[\omega])$。其次，用公式(3.9)计算$Q[\omega]$。这些结果可用于计算公式(\ref{8})右侧的表达式。因此，对所有珠子j的链传播子$q(\mathbf{r},j;[\omega])$的知识足以确定规范化配分函数$Q[\omega]$和平均段密度$\rho(\mathbf{r};[\omega])$。
 \end{quotation}
 \begin{quotation}
 这些结果很容易推广到其他链模型中。按照公式(3.21)离散的连续高斯链，连续高斯链类似公式(\ref{8})的模拟量是：
@@ -109,10 +109,10 @@
 图\ref{figure1}描述了公式(\ref{14})的物理含量，与公式(\ref{10})的比较，我们发现平均总段密度$\rho(\mathbf{r};[\omega])$是所有轮廓位置$0\le s\le N$上的平均段s的密度$\rho(\mathbf{r},s;[\omega])$的简单积分：
 \end{quotation}
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=7cm]{./figures/32.png}
-\caption{说明位于连续高斯链位置s处的段的平均密度的组成公式(\ref{14})。轮廓长度s的链段的统计权重q(r，s；[w])在点r=r(S)处与具有轮廓长度N−s的基本链段的统计权重q(r，N−s；[w])连接。}
+\caption{说明位于连续高斯链位置s处的段的平均密度的组成公式(\ref{14})。轮廓长度s的链段的统计权重q(r，s；[w])在点r=r(s)处与具有轮廓长度N−s的基本链段的统计权重q(r，N−s；[w])连接。}
 \label{figure1}
 \end{figure}
 \begin{equation}\label{15}
@@ -167,7 +167,7 @@
 提供关于分段位置和位置分布的单独信息。我们还可以避免公式(\ref{18})中的链轮廓积分，从而导出在指定等高线位置s处分段位置和方向的平均密度公式为：
 \end{quotation}
 \begin{equation}\label{21}
-\rho(\mathbf{r},\mathbf{u};[\omega])=\frac{1}{4\pi VQ[\omega]}q(\mathbf{r},-\mathbf{u},L_c-s;[\omega])q(\mathbf{r},\mathbf{u},s;[\omega])
+\rho(\mathbf{r},\mathbf{u},s;[\omega])=\frac{1}{4\pi VQ[\omega]}q(\mathbf{r},-\mathbf{u},L_c-s;[\omega])q(\mathbf{r},\mathbf{u},s;[\omega])
 \end{equation}
 \begin{quotation}
 最后，该表达式可用于推导出链端段位置和方向的平均密度。
@@ -190,7 +190,7 @@
 q(\mathbf{r},\mathbf{u},s;[\omega])\equiv exp[-\int_{0}^{s}ds^{'}\omega(\mathbf{r}-s^{'}\mathbf{u},\mathbf{u})]
 \end{equation}
 \begin{quotation}
-假设w(r，u)=w(r，−u)，则公式(\ref{23})中给出的棒状聚合物密度算子可以与公式(\ref{18})蠕虫链的表示形式完全相同。
+假设w(r，u)=w(r，−u)，则公式(\ref{23})中给出的棒状聚合物密度算子可以与公式(\ref{18})蠕虫链的表示形式完全相似。
 \end{quotation}
 \begin{quotation}
 单链密度算子范畴下的最后一个话题是段密度的高阶矩。对象Q[w]和ln Q[w]可视为生成泛函(Van Kampen1981)，因为这些量的泛函导数分别产生了微观单链密度的矩和累积量(见附录B)。实际上，对于高斯链模型，我们已经看到第一时刻有交替的表示。
@@ -215,7 +215,7 @@ q(\mathbf{r},\mathbf{u},s;[\omega])\equiv exp[-\int_{0}^{s}ds^{'}\omega(\mathbf{
 \end{quotation}
 \begin{align}\label{28}
 \begin{split}
-<\hat{\rho}(\mathbf{r})\hat{\rho}(\mathbf{r}^{'})>_{[\omega]}&=\frac{1}{VQ[\omega]}\int_{0}^{N}ds \int_{0}^{s}ds^{'}q(r,N-s;[\omega])\\&\times g(\mathbf{r},\mathbf{r}^{'},s-s^{'};[\omega])q(\mathbf{r}^{'},s^{'};[\omega])\\&+\frac{1}{VQ[\omega]}\int_{0}^{N}ds^{'} \int_{0}^{s^{'}}ds^{'}q(\mathbf{r}^{'},N-s^{'};[\omega])\\&\times g(r^{'},\mathbf{r},s^{'}-s;[\omega])q(\mathbf{r},s;[\omega])
+<\hat{\rho}(\mathbf{r})\hat{\rho}(\mathbf{r}^{'})>_{[\omega]}&=\frac{1}{VQ[\omega]}\int_{0}^{N}ds \int_{0}^{s}ds^{'}q(\mathbf{r},N-s;[\omega])\\&\times g(\mathbf{r},\mathbf{r}^{'},s-s^{'};[\omega])q(\mathbf{r}^{'},s^{'};[\omega])\\&+\frac{1}{VQ[\omega]}\int_{0}^{N}ds^{'} \int_{0}^{s^{'}}ds^{'}q(\mathbf{r}^{'},N-s^{'};[\omega])\\&\times g(\mathbf{r}^{'},\mathbf{r},s^{'}-s;[\omega])q(\mathbf{r},s;[\omega])
 \end{split}
 \end{align}
 \begin{quotation}
@@ -266,10 +266,10 @@ g(\mathbf{r},\mathbf{r}^{'},0;[\omega])=\delta(\mathbf{r}-\mathbf{r}{'})
 其中函数$\varPsi (\mathbf{r}^{'}-\mathbf{r};[\epsilon])$是在公式(3.14)中定义的。这个表达式可以通过先解公式(3.15)-(3.17)得到传播子$q(\mathbf{r},j;[\omega,\epsilon])$和配分函数$Q[\omega,\epsilon]$然后指定公式(\ref{33})中的被积和求和，其余操作可以数值执行。
 \end{quotation}
 \begin{quotation}
-在连续高斯链模型的基础上，导出了应力算子的类似表达式(Fredrickson，2002)。对于非均匀应变场，这个表达式是相当复杂的，因此不在这里再现。在均质菌株的情况下，得到$^{19}$.
+在连续高斯链模型的基础上，导出了应力算子的类似表达式(Fredrickson，2002)。对于非均匀应变场，这个表达式是相当复杂的，因此不在这里再现。在均质菌株$\epsilon$的情况下，得到$^{19}$.
 \end{quotation}
 \begin{equation}\label{34}
-\sigma(\mathbf{r};[\omega,\epsilon])=\frac{3k_BT}{b^2VQ[\omega,\epsilon]}\int_{0}^{N} ds~q(r,s;[\omega,\epsilon])\nabla \nabla q(\mathbf{r},N-s;[\omega,\epsilon])
+\sigma(\mathbf{r};[\omega,\epsilon])=\frac{3k_BT}{b^2VQ[\omega,\epsilon]}\int_{0}^{N} ds~q(\mathbf{r},s;[\omega,\epsilon])\nabla \nabla q(\mathbf{r},N-s;[\omega,\epsilon])
 \end{equation}
 \begin{quotation}
 应力算符的这个表达式表明，在空间变化的化学势$\omega(\mathbf{r})$存在下，弹性应力是各向异性的和非均匀的。应力各向异性是由沿链等高线积分的并矢量$q\nabla \nabla q$来表示的。泰勒和莫尔斯在研究嵌段共聚物中间相的线弹性性质时，推导出了密切相关的公式(Tyler and morse,2003a;Tyler and Morse,2003b)。方程(\ref{34})对于研究细观结构聚合物流体中链拉伸的不均匀分布特别有用。
