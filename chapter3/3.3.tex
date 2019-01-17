@@ -13,11 +13,11 @@
 
 第$3.1.2$节关于线性均聚物的公式可以很容易地推广到目前的情况。微观段密度(microscopic segment density)可以写成
 \begin{equation}
-\hat{\rho}(\mathbf{r})=\sum_{j=1}^3 \int_{0}^{N_j}\, \mathrm{d}s\rho(\mathbf{r}-\mathbf{r}_{j}(s))
+\tilde{\rho}(\mathbf{r})=\sum_{j=1}^3 \int_{0}^{N_j}\, \mathrm{d}s\rho(\mathbf{r}-\mathbf{r}_{j}(s))
 \end{equation}
 与施加的化学势$w (\mathbf{r})$的相关的势能是整个聚合物形状$\mathbf{r}$的一个泛函，$\mathbf{r}(s)\equiv \left\{ \mathbf{r}_1(s),\mathbf{r}_2(s),\mathbf{r}_3(s) \right\}:$
 \begin{equation}
-\beta U_1[\mathbf{r},w]=\int \mathrm{d}\mathbf{r}^{'}w(\mathbf{r}^{'})\hat{\rho}(\mathbf{r}^{'})
+\beta U_1[\mathbf{r},w]=\int \mathrm{d}\mathbf{r}^{'}w(\mathbf{r}^{'})\tilde{\rho}(\mathbf{r}^{'})
 \end{equation}
 归一化的配分函数$Q[w]$也可以表示为路径积分的比率
 \begin{equation}
@@ -65,7 +65,7 @@ q(\mathbf{r},N_1;[w])q(\mathbf{r},N_2;[w]), & j=3  \label{89}
 \label{三臂星形图像}
 \end{figure}
 
-图(\ref{三臂星形图像})说明了当$j=3$时的臂的平均密度$\rho _3$的方程(\ref{87})的物理解释。臂必须通过点$\mathbf{r}=\mathbf{r}_3(s)$，其中$s$是从臂的自由端测量的路径参数。与这种臂构型相关联的是统计重量$q(\mathbf{r},s;[w])$的乘积，它表示臂的悬空(自由)末端，以及重量$q_{3}(\mathbf{r},N_{3}-s;[w])$，表示与星其余部分相连的臂段。互补传播子$q_3$是从分支点开始，在$N_3-s$的总的路径距离上对方程(\ref{88})积分得出的。这种积分的初始条件是在分支点与剩余的两个臂相关联的统计权重，它可以用两个$q$传播子的乘积表示，如方程(\ref{89})所述。
+图(\ref{三臂星形图像})说明了当$j=3$时的臂的平均密度$\rho _3$的方程(\ref{87})的物理解释。臂必须通过点$\mathbf{r}=\mathbf{r}_3(s)$，其中$s$是从臂的自由端测量的路径参数。与这种臂构型相关联的是统计重量$q(\mathbf{r},s;[w])$的乘积，它表示臂的悬空(自由)末端，以及权重$q_{3}(\mathbf{r},N_{3}-s;[w])$，表示与星其余部分相连的臂段。互补传播子$q_3$是从分支点开始，在$N_3-s$的总的路径距离上对方程(\ref{88})积分得出的。这种积分的初始条件是在分支点与剩余的两个臂相关联的统计权重，它可以用两个$q$传播子的乘积表示，如方程(\ref{89})所述。
 
 上述结果可以很容易地推广到具有任意臂数的星均聚物。最一般情况是具有不同长度且$p\geq3$臂的星，总段密度算子的求值要求扩散方程的$p+1$个解：一种是从长度为$N_{\max}$(最长臂长)的链获得$q$，另一解为$p$互补传播子$q_j(\mathbf{r},s;[w])$，$s\in [0,N_j]$。在具有等臂长的$p$星聚合物的特殊情况下，由于所有互补传播子相同，计算量大大减少。因此，在这种高对称性的特殊情况下，只需要扩散方程的两个解。
 
@@ -123,17 +123,17 @@ b_B, & fN \leq s \leq N\\
 \end{equation}
 同样，与外部势$w_A$和$w_B$相关的势能可以写为
 \begin{equation}
-\beta U_1[\mathbf{r},w_A,w_B]=\int \mathrm{d}\mathbf{r}^{'}[w_A(\mathbf{r}^{'})\hat{\rho}_{A}(\mathbf{r}^{'})+w_B(\mathbf{r}^{'})\hat{\rho}(\mathbf{r}^{'})]
+\beta U_1[\mathbf{r},w_A,w_B]=\int \mathrm{d}\mathbf{r}^{'}[w_A(\mathbf{r}^{'})\tilde{\rho}_{A}(\mathbf{r}^{'})+w_B(\mathbf{r}^{'})\tilde{\rho}_{B}(\mathbf{r}^{'})]
 \end{equation}
-其中$\hat{\rho} _A$和$\hat{\rho} _B$是由下面公式定义的微观段密度
+其中$\tilde{\rho} _A$和$\tilde{\rho} _B$是由下面公式定义的微观段密度
 \begin{equation}
-\hat{\rho} _A(\mathbf{r})=\int _0^{fN} \mathrm{d}s~\delta(\mathbf{r}-\mathbf{r}(s)),~~~\hat{\rho} _B(\mathbf{r})=\int _{fN}^{N} \mathrm{d}~s\delta(\mathbf{r}-\mathbf{r}(s))
+\tilde{\rho} _A(\mathbf{r})=\int _0^{fN} \mathrm{d}s~\delta(\mathbf{r}-\mathbf{r}(s)),~~~\tilde{\rho} _B(\mathbf{r})=\int _{fN}^{N} \mathrm{d}s~\delta(\mathbf{r}-\mathbf{r}(s))
 \end{equation}
 此二嵌段的归一化配分函数表达式是
 \begin{equation}
 Q[w_A,w_B]\equiv\frac{Z[w_A,w_B]}{Z_0}=\frac{\int \mathcal{D}\mathbf{r}~\exp(-\beta U_0[\mathbf{r}]-\beta U_1[\mathbf{r},w_A,w_B])}{\int \mathcal{D}\mathbf{r}~\exp(-\beta U_0[\mathbf{r}])}
 \end{equation}
-前几节所描述的方法也可于将分配函数、密度和压力算子与满足Fokker-Planck方程的链传播算子联系起来。在这种情况下，由共聚物的$s=0$(A块)端引发的传播子$q(\mathbf{r},s;[w_A,w_B])$满足扩散方程
+前几节所描述的方法也可于将分配函数、密度和压力算子与满足Fokker-Planck方程的链传播算子联系起来。在这种情况下，由共聚物的$s=0$(A节点)端引发的传播子$q(\mathbf{r},s;[w_A,w_B])$满足扩散方程
 \begin{equation}
 \frac{\partial}{\partial s}q(\mathbf{r},s;[w_A,w_B])=\frac{[b(s)]^2}{6}\triangledown ^2q(\mathbf{r},s;[w_A,w_B])-w(\mathbf{r},s)q(\mathbf{r},s;[w_A,w_B]) \label{3.99}
 \end{equation}
@@ -172,8 +172,8 @@ w_A(\mathbf{r}), & (1-f)N \leq s \leq N\\
 使用上面的传播子，可以用两种等效的方法计算配分函数：
 \begin{equation}
 \begin{aligned}
-Q[w_A,w_B] & = \frac{1}{V}\int \mathrm{d}\mathbf{r}q(\mathbf{r},N;[w_A,w_B]) \\
-&=\frac{1}{V}\int \mathrm{d}\mathbf{r}q_c(\mathbf{r},N;[w_A,w_B]) \\
+Q[w_A,w_B] & = \frac{1}{V}\int \mathrm{d}~\mathbf{r}q(\mathbf{r},N;[w_A,w_B]) \\
+&=\frac{1}{V}\int \mathrm{d}~\mathbf{r}q_c(\mathbf{r},N;[w_A,w_B]) \\
 \end{aligned}	
 \end{equation}
 换句话说，二嵌段共聚物的传播子可以从分子的$A$端或$B$端建立，从而得到整个链的等效统计重量。因此，只需求解方程(\ref{3.99})或方程(\ref{101})就能计算配分函数$Q[w_A,w_B]$。
@@ -189,7 +189,7 @@ Q[w_A,w_B] & = \frac{1}{V}\int \mathrm{d}\mathbf{r}q(\mathbf{r},N;[w_A,w_B]) \\
 \begin{equation}
 \begin{aligned}
 \rho _B(\mathbf{r};[w_A,w_B]) & =-\frac{1}{Q[w_A,w_B]}	\frac{\delta Q[w_A,w_B]}{\delta w_B(\mathbf{r})} \\
-& \frac{1}{VQ[w_A,w_B]} \int _{fN}^{N}\,\mathrm{d}s~q_c(\mathbf{r},N-s;[w_A,w_B])q(\mathbf{r},s;[w_A,w_B]) \\
+& =\frac{1}{VQ[w_A,w_B]} \int _{fN}^{N}\,\mathrm{d}s~q_c(\mathbf{r},N-s;[w_A,w_B])q(\mathbf{r},s;[w_A,w_B]) \\
 \end{aligned}	
 \end{equation}
 上述结果在嵌段共聚物理论中都是众所周知的(Helfand and Wasserman，1976；Hong and Noolandi，1981；Matsen和Schick，1994a)。
@@ -203,7 +203,7 @@ Q[w_A,w_B] & = \frac{1}{V}\int \mathrm{d}\mathbf{r}q(\mathbf{r},N;[w_A,w_B]) \\
 \label{3.8}
 \end{figure}		
 
-我们需要两个不同的链传播子来构造图(\ref{3.8})所示的接枝共聚物的配分函数$Q[w_A,w_B]$。它们对应于从共聚物臂的自由端开始生长一段$A$或$B$型均聚物链。传播子$q_A(\mathbf{r},s;[w_A])$和$q_A(\mathbf{r},s;[w_A])$满足
+我们需要两个不同的链传播子来构造图(\ref{3.8})所示的接枝共聚物的配分函数$Q[w_A,w_B]$。它们对应于从共聚物臂的自由端开始生长一段$A$或$B$型均聚物链。传播子$q_A(\mathbf{r},s;[w_A])$和$q_B(\mathbf{r},s;[w_A])$满足
 \begin{equation}
 \frac{\partial}{\partial s}q_K(\mathbf{r},s;[w_K])=\frac{b_K^2}{6}\triangledown ^2q_K(\mathbf{r},s;[w_K])-w_K(\mathbf{r})q_K(\mathbf{r},s;[w_K]) \label{107}
 \end{equation}
