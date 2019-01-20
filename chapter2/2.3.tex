@@ -1,5 +1,5 @@
 \subsection{珠弹簧（bead-spring)模型}
-另一类重要的理想链模型是所谓的珠弹簧模型，在这些模型中，沿粗粒链的连续粒子被“弹簧电势（spring potentials)”所束缚，这些弹簧电势有多种形式被选择。定义这些模型的势能$U_{0}$是最合适表达键向量的术语。因此，配分函数和相空间分布函数的$(N+1)$个粒子链（见图2.1）通常被写成公式（2.6)-(2.7)的形式。如果这样一个链的N键全部等价和没有外场的干扰，这些势能可以表示为：
+另一类重要的理想链模型是所谓的珠弹簧模型，在这些模型中，沿粗粒链的连续粒子被“弹簧电势（spring potentials)”所束缚，这些弹簧电势有多种形式被选择。定义这些模型的势能$U_{0}$是最合适表达键向量的术语。因此，配分函数和相空间分布函数的$(N+1)$个粒子链（见图\ref{2.1}）通常被写成公式（\ref{2.6})-(\ref{2.7})的形式。如果这样一个链的N键全部等价和没有外场的干扰，这些势能可以表示为：
 \begin{equation}\label{2.26}
 \begin{split}
 U_{0}(\mathbf{b}^{N})= \sum_{i=1}^{N}h(|\mathbf{b}_{i}|)
@@ -36,7 +36,7 @@ h(x)=\frac{3k_{B}T}{2b^2} x^2
 \begin{equation}\label{2.32}
 <\mathbf{R}\cdot\mathbf{R}>_{0}=N<\mathbf{b}_{i}\cdot\mathbf{b}_{i}>_{0}=Nb^2
 \end{equation}
-并精确的恢复了公式（2.12）的理想链标度，$R=bN^\frac{1}{2}$,除了将b作为自由连接模型固定键长与离散高斯模型的均方根外，我们发现这两个理想模型均方端到端向量的表达是一致的。这容易证明回璇半径$R_{g}$是等价的。因此公式（2.16）也可以适用离散高斯链。
+并精确的恢复了公式（(\ref{2.12})的理想链标度，$R=bN^\frac{1}{2}$,除了将b作为自由连接模型固定键长与离散高斯模型的均方根外，我们发现这两个理想模型均方端到端向量的表达是一致的。这容易证明回璇半径$R_{g}$是等价的。因此公式(\ref{2.16})也可以适用离散高斯链。
 \begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{./figures/23.png}
@@ -74,7 +74,7 @@ P_{0}(\mathbf{r},j)=\int d\mathbf{b}_{j} \varPhi (\mathbf{b}_{j};\mathbf{r}-\mat
 p_{0}(\mathbf{R},N)=[3/(2\pi Nb^2)]^\frac{3}{2}\exp[-3|\mathbf{R}|^2/(2Nb^2)]
 \end{equation}
 
-将离散高斯链的这些结果和自由连接链的结果进行比较是很有意思的，特别的，我们发现自由连接链模型公式（2.21）的精确分布函数$\hat{p}_{0}(k,N)$的Fourier变换与离散高斯链公式(\ref{2.37})不一致，但是对于长度超过b，如：$b|k|<<1$,
+将离散高斯链的这些结果和自由连接链的结果进行比较是很有意思的，特别的，我们发现自由连接链模型公式(\ref{2.21})的精确分布函数$\hat{p}_{0}(k,N)$的Fourier变换与离散高斯链公式(\ref{2.37})不一致，但是对于长度超过b，如：$b|k|<<1$,
 \begin{equation}\label{2.39}
 [j_{0}(b|\mathbf{k}|)]^N\approx [1-b^2|\mathbf{k}|^2/6+\dots]^N\approx \exp(-R_{g}^2|\mathbf{k}|^2)
 \end{equation}
@@ -86,7 +86,7 @@ p_{0}(\mathbf{R},N)=[3/(2\pi Nb^2)]^\frac{3}{2}\exp[-3|\mathbf{R}|^2/(2Nb^2)]
 \begin{equation}\label{2.40}
 \hat{\varPhi(\mathbf{k})}=\frac{\int_{0}^{\infty} dx x^2j_{0}(|\mathbf{k}|x)\exp[-\beta h(x)]}{\int_{0}^{\infty} dx x^2\exp[-\beta h(x)]} 
 \end{equation}
-对于公式(2.29)的线性(高斯)弹簧模型$\hat{\varPhi(k)}=exp(-b^2|k|^2/6)$。比较公式(2.21)和(\ref{2.36})表明自由连接链模型可以类似的表示：$\hat{\varPhi_{FJ}(k)}=j_{0}(b|k|)$。
+对于公式(\ref{2.29})的线性(高斯)弹簧模型$\hat{\varPhi(k)}=exp(-b^2|k|^2/6)$。比较公式(\ref{2.21})和(\ref{2.36})表明自由连接链模型可以类似的表示：$\hat{\varPhi_{FJ}(k)}=j_{0}(b|k|)$。
 
 作为非线性的珠弹簧模型的例子，考虑类似流变学的计算Warner spring的电势：
 \begin{equation}\label{2.41}
