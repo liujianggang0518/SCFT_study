@@ -27,7 +27,7 @@ q(\mathbf{r},0) = 1 \label{3.115}
 \end{equation}
 其中并不标记$q$关于$w = w_0+\epsilon_a \omega$的函数依赖性.方程(\ref{3.114})的右边中与$w_0$成比例的项可以用以下代换消掉:
 \begin{equation}
-q(\mathbf{r},s) = e^{-w_0 s} p(\mathbf{r},s)
+q(\mathbf{r},s) = e^{-w_0 s} p(\mathbf{r},s) \label{3.116}
 \end{equation}
 从而得到:
 \begin{equation}
@@ -189,4 +189,28 @@ g_D(r) \sim \frac{3}{\pi b^2 N r}
 \end{equation}
 $r \sim R_g$时,函数单调的指数级的衰减为零:
 $$g_D(r) \sim \frac{1}{r} e^{-\frac{\sqrt{3}r}{R_g}}$$
+
+将弱非均匀性展开应用到其他聚合物体系(包括支链聚合物,共聚物)是非常直接的.
+
+例如,在三臂星形均聚物的情况下,臂长相等,即$N_j = N$,
+则
+\begin{equation}
+Q[w] = \frac{1}{V} \int [q(\mathbf{r},N;[w])]^3\,\mathrm{d} \mathbf{r}
+\end{equation}
+又由(\ref{3.116})和(\ref{3.119})可得
+\begin{equation}
+Q[w] \sim e^{-3w_0 N} [1+\frac{3 {\epsilon_a}^2 N^2}{2V^2} \sum_{\mathbf{k}} \hat{g_S}(k^2 {R_g}^2)\hat{\omega}(\mathbf{k})\hat{\omega}(-\mathbf{k})+\dots]
+\end{equation}
+其中${R_g}^2 = \frac{Nb^2}{6}$为星形中一臂的旋转半径,$g_S(x)$为类Debye函数
+\begin{equation}
+\hat{g_S}(x) = \hat{g_D}(x) + 2[\hat{h_D}(x)]^2
+\end{equation}
+其中
+\begin{equation}
+\hat{h_D}(x) = \frac{1}{x} [1-e^{-x}]
+\end{equation}
+从而密度算子和对相关函数分别为
+\begin{equation}
+\rho(\mathbf{r};[w]) \sim \rho_0[1-\epsilon_a N \int g_S(|\mathbf{r}-\mathbf{r}') \omega(\mathbf{r}')\,\mathrm{d} \mathbf{r}'+O({\epsilon_a}^2)]
+\end{equation}
 
