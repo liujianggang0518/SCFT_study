@@ -8,23 +8,6 @@
 \@ifclassloaded{beamer}{}{\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}}
 \makeatother
 
-%% 控制项目列表
-\usepackage{enumerate}
-
-%% 多栏显示
-\usepackage{multicol}
-
-%% 算法环境
-\usepackage{algorithm}  
-\usepackage{algorithmic} 
-\usepackage{float} 
-
-%% 网址引用
-\usepackage{url}
-
-%% 控制矩阵行距
-\renewcommand\arraystretch{1.4}
-
 %% hyperref宏包，生成可定位点击的超链接，并且会生成pdf书签
 \makeatletter
 \@ifclassloaded{beamer}{
@@ -75,11 +58,6 @@
 
 %% AMS LaTeX宏包: http://zzg34b.w3.c361.com/package/maths.htm#amssymb
 \usepackage{amsmath,amssymb}
-%% 多个图形并排
-\usepackage{subfig}
-%%%% 基本插图方法
-%% 图形宏包
-\usepackage{graphicx}
 \newcommand{\red}[1]{\textcolor{red}{#1}}
 \newcommand{\blue}[1]{\structure{#1}}
 \newcommand{\brown}[1]{\textcolor{brown}{#1}}
@@ -116,6 +94,11 @@
 %\fancyhf{}
 %%%% fancyhdr设置结束
 
+%% 算法环境
+\usepackage{algorithm} 
+%\usepackage{algorithmic} 
+\usepackage{algpseudocode}
+\usepackage{float}
 
 \makeatletter % 对 beamer 要重新设置
 \@ifclassloaded{beamer}{
