@@ -21,18 +21,18 @@
 
 为了表示各向异性相互作用导致的向列序，将片段位置和取向的微观密度的定义$(3.35)$推广到含有$n$个蠕虫状聚合物的体系中：\\
 \begin{equation}
-\hat{\rho}(r,u) \equiv \sum_{j=1}^{n} \int _{0}^{L_{c}} ds \delta(r-r_{j}(s)) \delta (u-u_{j}(s))
+\hat{\rho}(\mathbf{r},u) \equiv \sum_{j=1}^{n} \int _{0}^{L_{c}} \delta(\mathbf{r}-\mathbf{r}_{j}(s)) \delta (u-u_{j}(s))ds
 \end{equation}
 
-如果我们引用相互作用势的近似，在$\hat{\rho}(r,u)$中，段间非键相互作用对势能的贡献可以描述为二次型：\\
+如果我们引用相互作用势的近似，在$\hat{\rho}(\mathbf{r},u)$中，段间非键相互作用对势能的贡献可以描述为二次型：\\
 \begin{equation}
-U_1=\frac{1}{2} \int dr \int dr' \int du \int du' \hat{\rho}(r,u) \upsilon_2(r,r',u,u') \hat{\rho}(r',u')
+U_1=\frac{1}{2} \int d\mathbf{r} \int d\mathbf{r'} \int du \int du' \hat{\rho}(\mathbf{r},u) \upsilon_2(\mathbf{r},\mathbf{r'},u,u') \hat{\rho}(\mathbf{r'},u')
 \end{equation}
 其中$\upsilon_2$是一个合适的对势函数，假定它在接触时被正则化。我们还了解到，在溶致体系中，$\upsilon_2$为平均力的对势，并取决于纯溶剂的性质。\\
 
 在$LCP$系统的介观描述中，一个典型的进一步逼近是假定在空间上的相互作用是局部的，这相当于$\upsilon_2$的$\delta$函数近似：\\
 \begin{equation}
-\upsilon_{2}(r,r',u,u') \approx \delta(r-r') \upsilon(u,u')
+\upsilon_{2}(\mathbf{r},\mathbf{r'},u,u') \approx \delta(\mathbf{r}-\mathbf{r'}) \upsilon(u,u')
 \end{equation}
 其中$\upsilon(u,u')$是与局部方向相关的相互作用。$\upsilon$的形式不是任意的，它是对称的，并且对于$u,u'$的符号反转都是不变的。$\upsilon$的常见表达式是昂萨格（Onsager）形式\\
 \begin{equation}
@@ -48,26 +48,26 @@ U_1=\frac{1}{2} \int dr \int dr' \int du \int du' \hat{\rho}(r,u) \upsilon_2(r,r
 
 $n$个相互作用的蠕虫链的正则配分函数可以表示为包含上述非键段相互作用的玻尔兹曼因子$\exp (-\beta U_1)$上的$(2.67)$形式的$n$个路径积分的乘积。通过引用模型$A$中的$(4.69)$和$(4.70)$的步骤，可以将这个表达式转换为场论。我们得到以下规范模型$G$场论：\\
 \begin{equation}
-Z_{C}(n,V,T)=Z_{0} \int d \rho \int D w \exp (-H[\rho,\omega])
+Z_{C}(n,V,T)=Z_{0} \int d \rho \int  \exp (-H[\rho,w])D w
 \end{equation}
 有效哈密顿量\\ 
 \begin{equation}
-H[\rho,w]= -i \int dr \int du \omega(r,u) \rho(r,u)-n \ln Q[i w]+\frac{\beta}{2} \int dr \int du \int du' \rho(r,u) \upsilon(u,u') \rho(r,u')
+H[\rho,w]= -i \int d\mathbf{r} \int du w(\mathbf{r},u) \rho(\mathbf{r},u)-n \ln Q[i w]+\frac{\beta}{2} \int d\mathbf{r} \int du \int  \rho(\mathbf{r},u) \upsilon(u,u') \rho(\mathbf{r},u')du'
 \end{equation}
 其中$Q[i w]$是由$(3.36)$定义的纯虚势$i w(r,u)$中单个蠕虫聚合物链的归一化配分函数。在该模型中，$Z_0$为$n$个非相互作用蠕虫状聚合物链的理想气体的配分函数。\\
 
-在$\upsilon(u,u')$为正定且具有逆函数的情况下，可以在波动的$\rho(r,u)$场上进行高斯积分，从而在单场$w(r，u)$上实现更简单的场理论。不幸的是，对于昂萨格或迈尔-索普形式，$\upsilon$都不是正定的，这可以很容易地通过球谐展开来验证。因此，模型$G$场理论的简化形式，类似于模型$A$的$(4.71)$和$(4.72)$，对向列相聚合物的适用性有限。\\
+在$\upsilon(u,u')$为正定且具有逆函数的情况下，可以在波动的$\rho(\mathbf{r},u)$场上进行高斯积分，从而在单场$w(\mathbf{r}，u)$上实现更简单的场理论。不幸的是，对于昂萨格或迈尔-索普形式，$\upsilon$都不是正定的，这可以很容易地通过球谐展开来验证。因此，模型$G$场理论的简化形式，类似于模型$A$的$(4.71)$和$(4.72)$，对向列相聚合物的适用性有限。\\
 
-在全正则模型$G$场理论中，分段密度$\rho(r,u)$显式出现，因此平均数、段数密度和方向矩可以直接获得。第二个重要的密度算子，只依赖于$w$场，它可以被定义为\\
+在全正则模型$G$场理论中，分段密度$\rho(\mathbf{r},u)$显式出现，因此平均数、段数密度和方向矩可以直接获得。第二个重要的密度算子，只依赖于$w$场，它可以被定义为\\
 \begin{equation}
-\tilde{\rho}(r,u;[i w]) \equiv -n \frac{\delta \ln Q[i w]}{\delta i w(r,u)}
+\tilde{\rho}(\mathbf{r},u;[i w]) \equiv -n \frac{\delta \ln Q[i w]}{\delta i w(\mathbf{r},u)}
 \end{equation}
 
-它是$(3.62)$的单链密度算子$\rho(r,u;[i w])$，乘以聚合物数$n$。由此可以从$(3.39)$和$(3.63)$的解中求出这个算子对$w$的特定实现。可以根据$(3.64)-(3.67)$定义其他的压缩段密度算子。\\
+它是$(3.62)$的单链密度算子$\rho(\mathbf{r},u;[i w])$，乘以聚合物数$n$。由此可以从$(3.39)$和$(3.63)$的解中求出这个算子对$w$的特定实现。可以根据$(3.64)-(3.67)$定义其他的压缩段密度算子。\\
 
-另一个$LCPs$中的算子是向列序参数张量$S_{\alpha \beta}(r;[\rho])$。这个算子虽然不是理论的基础，但可以由\\
+另一个$LCPs$中的算子是向列序参数张量$S_{\alpha \beta}(\mathbf{r};[\rho])$。这个算子虽然不是理论的基础，但可以由\\
 \begin{equation}
-S_{\alpha \beta}(r;[\rho]) \equiv \frac{V}{n L_{c}} \int du \rho(r,u)(u_{\alpha} u_{\beta}-\frac{1}{3} \delta_{\alpha \beta})
+S_{\alpha \beta}(\mathbf{r};[\rho]) \equiv \frac{V}{n L_{c}} \int \rho(\mathbf{r},u)(u_{\alpha} u_{\beta}-\frac{1}{3} \delta_{\alpha \beta})du
 \end{equation}
 
 它对$\rho$场波动的期望值为系统中向列序的范围和空间变化提供了一种有用的度量。最后，需要指出的是，在有效哈密顿量$(4.135)$中，用$-n \ln Q$代替$-z VQ$得到了模型$G$场理论的一个大正则版本。\\
