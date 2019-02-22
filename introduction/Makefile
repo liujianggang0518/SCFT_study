@@ -1,5 +1,5 @@
 
-main = main
+main = introduction
 all_file = ${main}.tex 
 
 pdf: ${main}.pdf

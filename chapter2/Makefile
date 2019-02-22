@@ -1,5 +1,5 @@
 
-main = main
+main = chapter2
 all_file = ${main}.tex 2.1.tex 2.2.tex 2.3.tex 2.4.tex 2.5.tex
 
 pdf: ${main}.pdf
