@@ -92,7 +92,7 @@ R^2\equiv \left \langle \br \cdot \br \right \rangle _0=\frac{\int \left| \br (N
 \begin{equation}\label{255}
 \beta U_0(\ba )=\frac{1}{2}\sum_{p=1}^{\infty}\alpha (p)\ba _p \cdot \ba _p
 \end{equation}
-其中$\alpha (p)=6\pi ^2p^2/(b^2N)$。注意，质心$p=0$模型是均匀分布。$p>0$模型都是统计独立的，是高斯分布，因此如下有(附录B)
+其中$\alpha (p)=6\pi ^2p^2/(b^2N)$。注意，质心$p=0$模型是均匀分布。$p>0$模型都是统计独立的，是高斯分布，因此如下有(附录$B$)
 \begin{equation}\label{256}
 \left \langle \ba _p \cdot \ba _q \right \rangle _0=\frac{3}{\alpha (p)}\delta _{pq}
 \end{equation}
@@ -108,7 +108,7 @@ R^2\equiv \left \langle \br \cdot \br \right \rangle _0=\frac{\int \left| \br (N
 \caption{用“随机过程”(stochastic process)方法从具有$s$段的连续高斯链的统计权重中构造出具有$s+\Delta s$段的连续高斯链末端位置的统计权重。} \label{随机过程}
 \end{figure}
 
-在探索连续高斯链模型的性质时，我们现在回到了随机过程方法。具体来说，考虑一个约化的分布函数$p_0 (\br ,s)$是很有用的，它描述了在$\br$处，一个连续的路径长度为$s$的高斯链。这个函数满足归一化条件的，即$\int \, \mathrm{d} \br ~p_0(\br ,s)=1$。通过对离散高斯链的方程$p_0(\br ,j)=\int \,\Phi(\bb _j;\br -\bb _j)p_0(\br -\bb _j,j-1) \mathrm{d} \bb _j$的类比，我们可以通过Chapman-Kolmogorov方程利用非常小的链的信息建立分布函数
+在探索连续高斯链模型的性质时，我们现在回到了随机过程方法。具体来说，考虑一个约化的分布函数$p_0 (\br ,s)$是很有用的，它描述了在$\br$处，一个连续的路径长度为$s$的高斯链。这个函数满足归一化条件的，即$\int \,p_0(\br ,s) \mathrm{d} \br =1$。通过对离散高斯链的方程$p_0(\br ,j)=\int \,\Phi(\bb _j;\br -\bb _j)p_0(\br -\bb _j,j-1) \mathrm{d} \bb _j$的类比，我们可以通过Chapman-Kolmogorov方程利用非常小的链的信息建立分布函数
 \begin{equation}\label{258}
 p_0(\br ,s+\Delta s)=\int \,\Phi(\Delta \br ;\br -\Delta \br )p_0(\br -\Delta \br ,s) \mathrm{d}(\Delta \br ) 
 \end{equation}
@@ -127,7 +127,7 @@ p_0(\br ,s)+\Delta s\frac{\partial}{\partial s}p_0(\br ,s)+O(\Delta s^2)=&p_0(\b
 \begin{equation}\label{261}
 \left \langle f(\Delta \br ) \right \rangle _\Phi = \int \,\Phi (\Delta \br )f(\Delta \br ) \mathrm{d}(\Delta \br )
 \end{equation}
-利用方程（\ref{259}）的显式高斯形式，可以将方程（\ref{260}）右侧的平均值计算为(附录B)
+利用方程（\ref{259}）的显式高斯形式，可以将方程（\ref{260}）右侧的平均值计算为(附录$B$)
 \begin{equation}\label{262}
 \left \langle \Delta \br  \right \rangle _\Phi = 0
 \end{equation}
