@@ -4,7 +4,6 @@
 \end{center}
 我们的第一项任务是讨论理想链模型的配分函数和分布函数是如何在外场存在的情况下改变的。我们从离散高斯链开始。
 \subsubsection{离散高斯链}
-$\bm{r}$
 我们主要感兴趣的外场是一个空间变化的化学势场$w(\br)$，它作用于离散高斯链的$N+1$个珠子上，我们再次采用图2.1和2.3节的记号。势能可以写成
 \begin{equation}\label{3.1}
 \begin{aligned}
@@ -45,7 +44,7 @@ q(\br,0;[w])=\exp[-w(\br)]
 \end{equation}
 和对$j=0,1,2,\cdots,N-1$
 \begin{equation}\label{3.8}
-q(\br,j+1;[w])=\exp[-w(\br)]\int\Phi(\br-\br')q(\br',j;[w]))\mathbf{d}\br'
+q(\br,j+1;[w])=\exp[-w(\br)]\int\Phi(\br-\br')q(\br',j;[w]))\mathrm{d}\br'
 \end{equation}
 因此，归一化的配分函数可以表示为
 \begin{equation}\label{3.9}
@@ -71,7 +70,7 @@ Q[w]=\frac{1}{V}\int~q(\br,N-j;[w])~\exp[w(\br)]q(\br,j;[w])\mathrm{d}\br
 \end{equation}
 其中希腊语下标用于表示张量的笛卡尔指数，该表达式将与穿过规定平面的聚合物键相关的每单位面积弹力相加。利用应力和应变是共轭热力学变量的事实，(Landau和Lifshitz，1986)，可以写出与施加的应变$\epsilon$相关的弹性能量。
 \begin{equation}\label{3.12}
-U_{el}(\br^{N+1})=\int\boldsymbol{\epsilon}:\hat{\boldsymbol{\sigma}}(\br)\mathbf{d}\br
+U_{el}(\br^{N+1})=\int\boldsymbol{\epsilon}:\hat{\boldsymbol{\sigma}}(\br)\mathrm{d}\br
 \end{equation}
 特别令人感兴趣的是一个受化学势场和应变场双重作用的离散高斯链的配分函数$Z[w,\epsilon]$。在这种情况下，最方便的归一化是$w=0$的链的配分函数，但不消失应变
 \begin{equation}\label{3.13}
