@@ -100,14 +100,23 @@ H[w ,J]=\frac{1}{2 \beta } \int d\br \int w (\br) u^{-1} (|\br-\br'|) w (\br') -
 
 有趣的是，替代粒子密度算子$ \tilde{ \rho }_{a}(\br;[i w])$在正则和大正则系综中都具有相同形式的(\ref{4.54})。因此，用“替代”方程(\ref{4.53})和(\ref{4.56})可以在大正则理论中计算平均局部密度和密度-密度相关函数。据了解，当这些表达式应用于大正则情形时，可以用适当的统计权重$\exp (-H_{G}[ w ])$计算右边的平均值。\\
 
-我们将在整本书中大量参考上述公式。对于只涉及$ w$场的简化场理论，粒子密度算子的各种表达式尤为重要。这些算子公式和相关的统计权重$P[ w ]$汇总在图(\ref{4.1})中。可观测$G[ w]$的集合平均值是根据$(4.33)$应用$P[ w]$定义的\\
+我们将在整本书中大量参考上述公式。对于只涉及$ w$场的简化场理论，粒子密度算子的各种表达式尤为重要。这些算子公式和相关的统计权重$P[ w ]$汇总在表(\ref{4.1})中。可观测$G[ w]$的集合平均值是根据$(4.33)$应用$P[ w]$定义的\\
 \begin{equation}
 \langle G[w] \rangle = \frac{\int G[w]P[w]\mathcal{D}w}{\int P[w]\mathcal{D}w}
 \end{equation}
-\begin{figure}[H]
+\begin{table}[H]
 	\centering   
-	\includegraphics[width=12cm]{./figures/1.png}
 	\caption{单原子流体的密度算子和统计权重}
 	\label{4.1}
-\end{figure}
+       \begin{tabular}{c c c}
+       \hline
+       ~&正则&巨正则 \\
+       \hline
+统计权重&$P[w]=\exp (-H[w])$&$P[w]=\exp (-H_{G}[w])$ \\
+\hline
+密度算子&$\tilde{\rho}=-n \frac{\delta \ln Q}{\delta iw}=\frac{\rho_{0}}{Q}e^{iw}$ & $\tilde{\rho}_{G}=-zV\frac{\delta Q}{\delta iw}=ze^{-iw}$\\
+\hline
+替代形式&$\tilde{\rho}_{a}=(i/\beta)\int u^{-1}w d\br'$ & $\tilde{\rho}_{a}=(i/\beta)\int u^{-1}w d\br'$\\
+\end {tabular}
+\end{table}
 
