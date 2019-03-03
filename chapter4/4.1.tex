@@ -16,12 +16,12 @@ Z_{C}[J]=\frac{1}{n! \lambda _{T}^{3n}} \int  \exp \bigg[-\beta U(\br^{n})- \int
 $Z_{C}[J]$的对数是一个生成泛函，即$J(\br)$的泛函导数提供了密度的连通(累积量)相关函数。特别是，\\
 \begin{equation}
 \langle \hat{ \rho } (\br) \rangle = - \frac{\delta \ln Z_{C}[J] }{\delta J(\br)} \bigg |_{J=0}
+\label{4.44}
 \end{equation}
 
 其中方程左边的平均值表示粒子在$\br^{n}$位置上的集合平均值。同样，密度相关函数也能得出\\
 \begin{equation}
 \langle \hat{ \rho } (\br) \hat{ \rho } (\br')\rangle - \langle  \hat{ \rho } (\br) \rangle \langle  \hat{ \rho } (\br') \rangle = \frac{\delta ^{2} \ln Z_{C}[J]}{\delta J(\br) \delta J(\br')} \bigg |_{J=0}
-\label{4.44}
 \end{equation}
 
 为了计算上述方程右边的导数，追溯$(4.1)$到$(4.19)$的计算步骤到$Z_{C}[J]$的场论表示，这是很有帮助的。显然$u(\br)$必须再次满足必要条件。得到以下场论：\\
@@ -32,7 +32,7 @@ Z_{C}[J]=Z_{0} \int \exp (-H[w,J]) ~\mathcal{D} w
 H[w ,J]=\frac{1}{2 \beta } \int d\br \int w (\br) u^{-1} (|\br-\br'|) w (\br') - n \ln Q[i w +J] ~d\br'
 \end{equation}
 
-其中$J$进入有效哈密顿量仅作为$Q$的一个参数移位，由此得出当$J=0$时，$Z_{C}[0]=Z_{C},H[ w，0]=H[ w ]$。因此，(\ref{4.44})的右侧可以计算\\
+其中$J$进入有效哈密顿量仅作为$Q$的一个参数移位，由此得出当$J=0$时，$Z_{C}[0]=Z_{C},H[ w,0]=H[ w ]$。因此，(\ref{4.44})的右侧可以计算\\
 \begin{equation}
 \langle \hat{ \rho } (\br) \rangle = - n \langle \frac{ \delta \ln Q[i w + J ]}{ \delta J(\br) } \bigg|_{J=0} \rangle = -n \langle \frac{\delta \ln Q[ i w]}{ \delta i w (\br)} \rangle
 \label{4.48}
@@ -56,7 +56,9 @@ H[w ,J]=\frac{1}{2 \beta } \int d\br \int w (\br) u^{-1} (|\br-\br'|) w (\br') -
 
 计算平均局部密度的另一种方法来自类似于推导$(4.39)$的过程。(\ref{4.48})可以写为\\
 \begin{equation}
-\langle \hat{ \rho } (\br) \rangle = \frac{i}{Z_{C}} \int e^{- (1/2 \beta ) \int d\br \int d\br' w u^{-1} w } \frac{ \delta }{\delta w (\br)} e^{n \ln Q[i w ]} ~\mathcal{D} w
+\begin{aligned}
+\langle \hat{ \rho } (\br) \rangle &=-n \frac{ \int e^{-(1/2\beta)\int d\br \int d\br'wu^{-1}w+n\ln Q[iw]} \frac{\delta \ln Q[iw]}{\delta iw(\br)}\mathcal{D}w} {Z_{C}} \\&= \frac{i}{Z_{C}} \int e^{- (1/2 \beta ) \int d\br \int d\br' w u^{-1} w } \frac{ \delta }{\delta w (\br)} e^{n \ln Q[i w ]} ~\mathcal{D} w
+\end{aligned}
 \end{equation}
 分部积分可得到\\
 \begin{equation}
@@ -65,7 +67,7 @@ H[w ,J]=\frac{1}{2 \beta } \int d\br \int w (\br) u^{-1} (|\br-\br'|) w (\br') -
 \end{aligned}
 \label{4.53}
 \end{equation}
-因此，粒子密度算子的“替代”表达式可以写为\\
+其中$A=-(1/2\beta)\int d\br \int d\br'wu^{-1}w$因此，粒子密度算子的“替代”表达式可以写为\\
 \begin{equation}
 \tilde{ \rho }_{a}(\br;[i w ]) \equiv \frac{i}{ \beta } \int  u^{-1}(|\br-\br'|) w (\br')~d\br'
 \label{4.54}
