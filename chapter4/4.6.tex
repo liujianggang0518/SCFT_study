@@ -39,7 +39,7 @@
 
 如果我们引用相互作用势的近似，在$\hat{\rho}(\br,\bu)$中，段间非键相互作用对势能的贡献可以描述为二次型：\\
 \begin{equation}
-U_1=\frac{1}{2} \int d\br \int d\br' \int d\bu \int  \hat{\rho}(\br,\bu) \upsilon_2(\br,\br',\bu,\bu') \hat{\rho}(\br',\bu')~d\bu'
+U_1=\frac{1}{2} \int \int \int  \int  \hat{\rho}(\br,\bu) \upsilon_2(\br,\br',\bu,\bu') \hat{\rho}(\br',\bu')~ d\br d\br' d\bu d\bu'
 \end{equation}
 其中$\upsilon_2$是一个合适的对势函数，假定它在接触时被正则化。我们还了解到，在溶致体系中，$\upsilon_2$为平均力的对势，并取决于纯溶剂的性质。\\
 
@@ -61,11 +61,11 @@ U_1=\frac{1}{2} \int d\br \int d\br' \int d\bu \int  \hat{\rho}(\br,\bu) \upsilo
 
 $n$个相互作用的蠕虫链的正则配分函数可以表示为包含上述非键段相互作用的玻尔兹曼因子$\exp (-\beta U_1)$上的$(2.67)$形式的$n$个路径积分的乘积。通过引用模型$A$中的$(4.69)$和$(4.70)$的步骤，可以将这个表达式转换为场论。我们得到以下规范模型$G$场论：\\
 \begin{equation}
-Z_{C}(n,V,T)=Z_{0} \int \mathcal{D} \rho \int  \exp (-H[\rho,w])~\mathcal{D} w
+Z_{C}(n,V,T)=Z_{0} \int  \int  \exp (-H[\rho,w])~\mathcal{D} \rho \mathcal{D} w
 \end{equation}
 有效哈密顿量\\ 
 \begin{equation}
-H[\rho,w]= -i \int d\br \int d\bu w(\br,\bu) \rho(\br,\bu)-n \ln Q[i w]+\frac{\beta}{2} \int d\br \int d\bu \int  \rho(\br,\bu) \upsilon(\bu,\bu') \rho(\br,\bu')~d\bu'
+H[\rho,w]= -i \int \int w(\br,\bu) \rho(\br,\bu)-n \ln Q[i w] ~d\br d\bu+\frac{\beta}{2} \int \int \int  \rho(\br,\bu) \upsilon(\bu,\bu') \rho(\br,\bu')~ d\br d\bu d\bu'
 \end{equation}
 其中$Q[i w]$是由$(3.36)$定义的纯虚势$i w(\br,\bu)$中单个蠕虫聚合物链的归一化配分函数。在该模型中，$Z_0$为$n$个非相互作用蠕虫状聚合物链的理想气体的配分函数。\\
 
