@@ -188,7 +188,7 @@ g(\br,\br^{'},0;[w])=\delta(\br-\br{'})
 其中，单链平均是根据公式(\ref{3.47})计算的。用离散高斯链模型计算这个表达式的右边会产生两个不同的表达式，
 \begin{equation}\label{3.77}
 \begin{aligned}
-\sigma(\br;[w,\epsilon])&=\frac{\int {\tilde{\sigma}}(\br)~\exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}{\int \exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}\\&=\frac{\int \tilde{\sigma}(\br)~\exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}{Q[w,\epsilon]~\int \exp[-\beta U_0(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}
+\sigma(\br;[w,\epsilon])&=\frac{\int {\hat{\sigma}}(\br)~\exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}{\int \exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}\\&=\frac{\int \hat{\sigma}(\br)~\exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}{Q[w,\epsilon]~\int \exp[-\beta U_0(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}
 \end{aligned}
 \end{equation}
 第二个是最方便计算的。在最后一个表达式中插入微观应力运算符公式(\ref{3.11})的显式形式将导致：
@@ -200,7 +200,16 @@ g(\br,\br^{'},0;[w])=\delta(\br-\br{'})
 其中函数$\varPsi (\br^{'}-\br;[\epsilon])$是在公式(\ref{3.14})中定义的。这个表达式可以通过先解公式(\ref{3.15})-(\ref{3.17})得到传播子$q(\br,j;[w,\epsilon])$和配分函数$Q[w,\epsilon]$然后指定公式(\ref{3.78})中的被积和求和，其余运算可以数值计算出来。
 
 在连续高斯链模型的基础上，导出了应力算子的类似表达式(Fredrickson，2002)。对于非均匀应变场，这个表达式是相当复杂的，因此不在这里再现。在均匀应变$\epsilon$的情况下，得到$^{19}$.
-\begin{equation}\label{3.79}
-\sigma(\br;[w,\epsilon])=\frac{k_BTb^2}{3VQ[w,\epsilon]}\int_{0}^{N} q(\br,s;[w,\epsilon])~\nabla \nabla q(\br,N-s;[w,\epsilon])~ds
+\begin{equation}
+\begin{aligned}
+\label{3.79}
+\sigma(\br;[w,\epsilon])&=\frac{1}{Q[w,\epsilon]} \frac{\int \hat{\sigma}_{\alpha \gamma} \exp [-\beta U_0 - \beta U_1 - \beta U_{el}]~d\br^{N+1}}{\int \exp [- \beta U_0 - \beta U_{el}]~d \br^{N+1}} \\
+&= \frac{1}{Q[w,\epsilon]} \int \hat{\sigma}_{\alpha \gamma} \Psi(\br'-\br) \exp (-\beta U_1)~d \br^{N+1} \\
+&= \frac{3k_{B}T}{b^{2}VQ} \int_{0}^{N} \delta(\br - \br(s)) \frac{d\br_{\alpha}(s)}{ds} \frac{d\br_{ \gamma}(s)}{ds}[ \Psi( \br_N- \br_{N-1})e^{-\Delta s w(r_{N})} \cdots \Psi(\br_1-\br_0)e^{-\Delta s w(r_0)} ]~ds \\
+&=\frac{3k_{B}T}{b^{2}VQ (\Delta s)^2} \int_{0}^{N} q(\br + \Delta \br,N-s-\Delta s)q(\br,s) \Psi(\Delta \br,\br) \Delta \br_{\alpha} \Delta \br_{\gamma}~ds \\
+&=\frac{3k_{B}T}{b^{2}VQ (\Delta s)^2} \int_{0}^{N} \frac{1}{2} \nabla \nabla q(\br,N-s) \frac{2b^4 (\Delta s)^2}{9}~ds \\
+&=\frac{k_BTb^2}{3VQ[w,\epsilon]}\int_{0}^{N} q(\br,s;[w,\epsilon])~\nabla \nabla q(\br,N-s;[w,\epsilon])~ds
+\end{aligned}
 \end{equation}
+其中将积分路径在$\br+\Delta \br$分解，链段从$s$离散到$s+\Delta s$，$q(\br + \Delta \br,N-s-\Delta s)$泰勒展开到一阶$\Delta s$,二阶$\Delta \br$。\\
 应力算子的这个表达式表明，在空间变化的化学势$w(\br)$存在下，弹性应力是各向异性的和非均匀的。应力各向异性是由沿链等高线积分的并矢量$q\nabla \nabla q$来表示的。泰勒和莫尔斯在研究嵌段共聚物中间相的线弹性性质时，推导出了密切相关的公式(Tyler and morse,2003a;Tyler and Morse,2003b)。方程(\ref{3.79})对于研究细观结构聚合物流体中链拉伸的不均匀分布特别有用。

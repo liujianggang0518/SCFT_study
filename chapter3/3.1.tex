@@ -34,8 +34,10 @@ Q(w)\equiv\frac{Z[w]}{Z_0}=\frac{\int\exp[-\beta U(\br^{N+1})]\mathrm{d}\br^{N+1
 使方程(\ref{3.4})重写为
 \begin{equation}\label{3.6}
 \begin{aligned}
-Q[w]=\frac{1}{V}\int&[e^{-w(\br_N)}\Phi(\br_N-\br_{N-1})e^{-w(\br_{N-1})}\Phi(\br_{N-1}-\br_{N-2})\\
-&\cdots e^{-w(\br_2)}\Phi(\br_2-\br_1)e^{-w(\br_1)}\Phi(\br_1-\br_0)e^{-w(\br_0)}]\mathrm{d}\br^{N+1}
+Q[w]&=\frac{\int \exp[-\beta U_0 - \beta U_1]~d\br^{N+1}}{V(\int \exp[-\beta h(|\bb|)]~d\bb)^{N}}\\
+&=\frac{1}{V} \frac{\int \exp [\Sigma_{i=1}^{N}-\beta h(|\br_{i} - \br_{i-1}|)- \Sigma_{i=0}^{N} w(\br_{i})]~d\br_{N+1}}{\int \exp[-\beta h(|\bb|)]~d\bb)^{N}}\\
+&=\frac{1}{V}\int[e^{-w(\br_N)}\Phi(\br_N-\br_{N-1})e^{-w(\br_{N-1})}\Phi(\br_{N-1}-\br_{N-2})\\
+&~~\cdots e^{-w(\br_2)}\Phi(\br_2-\br_1)e^{-w(\br_1)}\Phi(\br_1-\br_0)e^{-w(\br_0)}]~\mathrm{d}\br^{N+1}
 \end{aligned}
 \end{equation}
 这个表达式可以按以下方式递归重写。我们对整数$j$定义了一个泛函$q(\br,j;[w])$通过
@@ -109,9 +111,10 @@ Q[w]\equiv\frac{Z[w]}{Z_0}=\frac{\int\exp(-\beta U_0[\br]-\beta U_1[\br,w])\calD
 在此定义下，$Z_0$的奇点从分子和分母中完全消失，在连续链极限情况下$Q[w]$有限。利用$N_s+1$珠和$N_s$弹簧，根据方程(\ref{2.50})对两个路径积分进行离散化，并对离散高斯链得到方程(\ref{3.6})的步骤进行了回溯。因此，方程(\ref{3.20})减少到
 \begin{equation}\label{3.21}
 \begin{aligned}
-Q[w]=\frac{1}{V}&\int[e^{-\Delta sw(\br_{N_s})}\Phi(\br_{N_s}-\br_{N_s-1})e^{-\Delta sw(\br_{N_s-1})}\\
+Q[w]&=\frac{1}{V} \frac{ \int \exp \Sigma_{i=1}^{N_{s}} \beta h(|\bb|) - \Sigma_{i=0}^{N_{s}} \Delta s w(\br) ~d\br }{\int \exp (-\beta h(|\bb|)~d\bb)^{N_{s}}}\\
+&=\frac{1}{V}\int[e^{-\Delta sw(\br_{N_s})}\Phi(\br_{N_s}-\br_{N_s-1})e^{-\Delta sw(\br_{N_s-1})}\\
 &\times\quad\Phi(\br_{N_s-1}-\br_{N_s-2})\cdots e^{-\Delta sw(\br_2)}\\
-&\times\quad\Phi(\br_2-\br_1)e^{-\Delta sw(\br_1)}\Phi(\br_1-\br_0)e^{-\Delta sw(\br_0)}]\mathrm{d}\br^{N_s+1}
+&\times\quad\Phi(\br_2-\br_1)e^{-\Delta sw(\br_1)}\Phi(\br_1-\br_0)e^{-\Delta sw(\br_0)}]~\mathrm{d}\br^{N_s+1}
 \end{aligned}
 \end{equation}
 其中$\Phi(\br-\br')=\Phi(\Delta\br)$由方程(\ref{2.64})给出和$\Delta s\equiv N/N_s$。和以前一样，$Q[w]$的表达式可以写成
@@ -129,6 +132,12 @@ q(\br,s+\Delta s;[w])=\exp[-\Delta s~w(\br)]\int\Phi(\br-\br')q(\br',s;[w])\math
 在$N_s$中以$\Delta s$为增量沿着从$s=0$到$s=N$链的方向。
 
 方程(\ref{3.24})是一个Chapman-Kolmogorov方程，与无场情况下的方程(\ref{2.63})密切相关，它可以在$\Delta s\rightarrow 0$的连续极限情况下转化为Fokker-Planck方程。利用泰勒展式在$\Delta s$处将方程(\ref{3.24})的两边展开为一阶的，在$\Delta\br=\br-\br'$处将被积函数展开为二阶的，人们发现(Edwards,1965;de Gennes,1969;Freed,1972)
+\begin{equation}
+\begin{aligned}
+q(\br,s,[w])+\frac{ \partial}{ \partial s}q(\br,s,[w]) \Delta s&=q(\br,s,[w])-w(\br)q(\br,s,w) \Delta s - \int \Phi( \Delta \br) \nabla q(\br,s,[w]) \Delta s ~d\br' \\&+ \frac{1}{2} \int \Phi( \Delta \br) \nabla \nabla q(\br,s,[w]) \Delta s \Delta s ~d\br'\\&=q(\br,s,[w])-w(\br)q(\br,s,w) \Delta s + \frac{1}{2} \langle \Delta s \Delta s \rangle _{\Phi} \nabla^2 q(\br,s,[w])   ~d\br'
+\end{aligned}
+\end{equation}
+即
 \begin{equation}\label{3.25}
 \frac{\partial}{\partial s}q(\br,s;[w])=\frac{b^2}{6}\nabla^2q(\br,s;[w])-w(\br)q(\br,s;[w])
 \end{equation}
