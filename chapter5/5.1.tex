@@ -173,8 +173,16 @@ H[w]=\frac{1}{2u_0}\int[w(\br)]^2\mathrm{d}r-n\ln Q[iw]
 \begin{equation}
 A(n,V,T)=A_0+\frac{k_BT}{2}u_0\rho_0^2V
 \end{equation}
-这里$A_0=-k_BT\ln\calZ_0$是非相互作用聚合物的理想气体的自由能。在平均场近似中，自由能的过剩部分仅由聚合物链段之间的平均相互作用能量产生，没有考虑它们的空间相关性。
-
+这里$A_0=-k_BT\ln\calZ_0$是非相互作用聚合物的理想气体的自由能。在平均场近似中，自由能的过剩部分仅由聚合物链段之间的平均相互作用能量产生，没有考虑它们的空间相关性。\\
+证明:由$w^*=-iu_0\rho_0$和$Q[iw^*]=\exp(-iw^*N)$得:
+\begin{equation*}
+\begin{aligned}
+H[w^*]&=\frac{1}{2u_0}\int[-iu_0\rho_0]^2\mathrm{d}r-n\ln e^{-iw^*N}\\
+&=-\frac{1}{2}u_0\rho_0^2V+nu_0\rho_0N\qquad(\rho_0=\frac{nN}{V})\\
+&=-\frac{1}{2}u_0\rho_0^2V+Vu_0\rho_0^2\\
+&=\frac{1}{2}u_0\rho_0^2V
+\end{aligned}
+\end{equation*}
 对巨正则模型A重复上面的过程是很有用的。鞍点方程相当于
 \begin{equation}
 \frac{\delta H_G[w]}{\delta w(\br)}\bigg|_{w=w^*}=\frac{1}{u_0}w^*(\br)+i\tilde{\rho}_G(\br;[iw^*])=0
@@ -196,5 +204,12 @@ iw^*\exp(iw^*N)=u_0zN
 &\approx-\frac{1}{V}H_G[w^*]=\frac{\rho_0}{N}+\frac{1}{2}u_0\rho_0^2
 \end{aligned}
 \end{equation}
-其中在上面公式的第二行中应用了平均场近似。因此，我们看到渗透压的平均场表达式是与聚合物平均密度成正比的理想气体项的总和$\rho_0/N$和与每单位体积的Helmholtz自由能中的相应项的相互作用项组成。这是众所周知的结果(de Gennes,1979)。对于第四章中介绍的其他模型的平均场平凡解，可以推导出类似的表达式。
-
+其中在上面公式的第二行中应用了平均场近似。因此，我们看到渗透压的平均场表达式是与聚合物平均密度成正比的理想气体项的总和$\rho_0/N$和与每单位体积的Helmholtz自由能中的相应项的相互作用项组成。这是众所周知的结果(de Gennes,1979)。对于第四章中介绍的其他模型的平均场平凡解，可以推导出类似的表达式。\\
+证明:由$w^*=-iu_0\rho_0$和$Q[iw^*]=\exp(-iw^*N)$得:
+\begin{equation*}
+\begin{aligned}
+H_G[w^*]&=\frac{1}{2u_0}\int[w^*(\br)]^2\mathrm{d}\br-zVQ[iw^*]\\
+&=\frac{1}{2u_0}(-iu_0\rho_0)^2V-zV\exp(-iw^*N)
+&=-\frac{1}{2}u_0\rho_0^2V-\frac{\rho_0V}{N}
+\end{aligned}
+\end{equation*}
