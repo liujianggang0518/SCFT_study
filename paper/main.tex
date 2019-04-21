@@ -13,16 +13,117 @@
 摘要~~隐式显式(IMEX)格式已被广泛使用，尤其是与谱方法结合，用于扩散对流型空间离散偏微分方程(PDEs)的时间积分。通常，隐式格式用于扩散项，显式格式用于对流项。反应扩散问题也可以用这种方式近似。在这些工作中，我们系统地分析了这些格式的性能，提出了改进的新格式，并且特别关注它们在快速多重网格算法和谱方法的$\textcolor{red}{\text{混叠}}$减少的背景下的相对性能。(在统计、信号处理和相关领域中，混叠是指取样信号被还原成连续信号时产生彼此交叠而失真的现象。当混叠发生时，原始信号无法从取样信号还原)。
 
 对于原型线性对流扩散方程，进行了一阶、二阶、三阶和四阶多步IMEX格式的稳定性分析。确定了允许大的时间步长用于各种问题并且产生高频误差模式的适当衰减的稳定格式。数值实验表明，当使用有限差分空间离散化的多重网格计算时，高频模式的弱衰减会导致最细的网格上的额外迭代，并且当使用谱配置法进行空间离散时，会导致混叠。当出现这种情况时，不建议使用弱阻尼格式，例如Crank-Nicolson与二阶Adams-Bashforth的流行组合，并提出更好的替代方案。
+\subsubsection{1.模型}
+考虑一个时间相关的PDE，其中空间导数已经通过中心有限差分或谱方法离散化，这就产生了一个常微分方程系统，它通常具有以下这种形式
+\begin{equation}
+u'=f(u)+\nu g(u)
+\end{equation}
+其中$\nu$是非负参数。这里我们对$\nu g(u)$进行隐式处理，$f(u)$进行显式处理，这就产生了IMEX格式。
 
-几个例子证明了我们的发现。
+迄今为止最流行的IMEX格式是用于显式（“对流”）项的二阶Adams-Bashforth和用于隐式（“扩散”）项的Crank-Nicolson的组合。应用于(1)将得出:
+\begin{equation}
+\frac{u^{n+1}-u^n}{k}=\frac{3}{2}f(u^n)-\frac{1}{2}f(u^{n-1})+\frac{\nu}{2}[g(u^{n+1})+g(u^n)]
+\end{equation}
+其中$k$是离散时间步长，$u^n$是$u(kn)$的数值近似。
+\subsubsection{2.一阶隐式显式格式}
+对于(1)一个参数的一阶IMEX格式可以写成
+\begin{equation}
+u^{n+1}-u^n=kf(u^n)+\nu k[(1-\gamma)g(u^n)+\gamma g(u^{n+1})]
+\end{equation}
+我们限制$0\le\gamma\le 1$为了防止大的截断误差。
 
+我们选择$\gamma=0$得到向前Euler格式
+\begin{equation}
+u^{n+1}-u^n=kf(u^n)+\nu kg(u^n)
+\end{equation}
 
+当$f=0$时，选择$\gamma=\frac{1}{2}$得到二阶Crank-Nicolson格式。
 
+另一种可能是对$g$采用向后Euler格式，对$f$采用向前Euler格式。选择$\gamma=1$得到
+\begin{equation}
+u^{n+1}-u^n=kf(u^n)+\nu kg(u^{n+1})
+\end{equation}
+诸如(5)的IMEX格式，将后向微分公式(BDF)应用于离散化$g$，并且将$f$外推到时间步长$(n+1)$将被称为半隐BDF(SBDF)格式。
+\subsubsection{3.二阶隐式显式格式}
+\begin{equation}
+\begin{aligned}
+\frac{1}{k}&\left[\left(\gamma+\frac{1}{2}\right)u^{n+1}-2\gamma u^n+\left(\gamma-\frac{1}{2}\right)u^{n-1}\right]=(\gamma+1)f(u^n)-\gamma f(u^{n-1})\\
+&+\nu\left[\left(\gamma+\frac{c}{2}\right)g(u^{n+1})+(1-\gamma-c)g(u^n)+\frac{c}{2}g(u^{n-1})\right]
+\end{aligned}
+\end{equation}
+选择$(\gamma,c)=(\frac{1}{2},0)$将得到流行的格式(2)
+\begin{equation}
+\frac{1}{k}[u^{n+1}-u^n]=\frac{3}{2}f(u^n)-\frac{1}{2}f(u^{n-1})+\frac{\nu}{2}[g(u^{n+1})+g(u^n)]
+\end{equation}
+因为它对隐式项应用了Crank-Nicolson格式，对显式项应用了Adams-Bashforth格式，这个格式被称为CNAB。当$c=\frac{1}{8}$时，我们证明了$\gamma=\frac{1}{2}$最好的渐进衰减性质，我们将得到以下格式
+\begin{equation}
+\frac{1}{k}[u^{n+1}-u^n]=\frac{3}{2}f(u^n)-\frac{1}{2}f(u^{n-1})+\nu\left[\frac{9}{16}g(u^{n+1})+\frac{3}{8}g(u^n)+\frac{1}{16}g(u^{n-1})\right]
+\end{equation}
+因为它跟CNAB格式很相似，所以这个格式被称为修正的CNAB(MCNAB)，和CNAB相比，MCNAB需要额外计算和存储$g(u^{n-1})$。
 
+在(6)中我们选择$(\gamma,c)=(0,1)$，我们获得了另一种应用于谱方法的格式
+\begin{equation}
+\frac{1}{2k}[u^{n+1}-u^{n-1}]=f(u^n)+\frac{\nu}{2}[g(u^{n+1})+g(u^{n-1})]
+\end{equation}
+这个格式显式项采用了蛙跳格式，隐式项采用了类似于Crank-Nicolson格式，我们称这个格式为CNLF(Crank-Nicolson，leap frog)。
 
+最后我们选择$(\gamma,c)=(1,0)$，我们得到
+\begin{equation}
+\frac{1}{2k}[3u^{n+1}-4u^n+u^{n-1}]=2f(u^n)-f(u^{n-1})+\nu g(u^{n+1})
+\end{equation}
+因为该方案以时间步长$(n+1)$为中心，所以它被称为SBDF。
 
+我们可以从$\alpha-\beta$平面中的稳定性区域获得进一步的信息，这些图显示在Fig2-5中，Fig2显示了CNLF的区域。如果$k<\frac{h}{a}$则该格式对于所有$\nu\le 0$都是稳定的。这种时间步长的限制是我们不希望的，因为它可以应用到更大的$\nu$和更小的$h$。此外，当$\alpha\rightarrow-\infty$时，高频模式的衰减很弱，趋向于1。 CNLF与其他$\gamma=0$二阶方法相比，表明CNLF在这些方法中产生最大的稳定区域。
 
+Fig3显示了CNAB的区域，对于较大的$\nu$和较小的$h$，该方法具有合理的时间步长限制。 然而，它在$\beta-$轴附近不稳定。当$\alpha\rightarrow-\infty$时，它也受到高频模式衰减的影响，趋向于1。使用MCNAB，取$(\gamma,c)=(\frac{1}{2},\frac{1}{8})$，这种衰减趋向于$\frac{1}{3}$这是一个显著的改进。见Fig4。
 
+Fig5显示了SBDF的区域，当$\nu$大且$h$小时，该方法具有最好的时间步长限制。当$\alpha\rightarrow-\infty$时，高频模式的衰减很强，趋向于0。然而，该方法对于小的$|\alpha|$具有最严格的时间步长限制。
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{./figures/Figure_1.png}
+\end{figure}
+定义网格雷诺数
+\begin{equation*}
+R\equiv\frac{ah}{\nu}
+\end{equation*}
+在Figs6-8中，我们绘制了各种$\gamma$和$c$的理论时间步长限制。 从这些图中可以看出，当$R<2$时，增加$\gamma$允许更大的稳定时间步长。当$R>2$时，情况$c=1-\gamma$还具有减少$\gamma$允许更大时间步长的特性。Figs6-8表明，对于$R<2$，使用SBDF可以应用最大时间步长，对于$R>2$，使用CNLF可以应用最大时间步长。当离散扩散项时，该结果相应选择SBDF，当离散对流项时，该结果相应选择CNAB。从这个角度来看，当$R\approx 2$时，CNAB更有竞争力。
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{./figures/Figure_2.png}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{./figures/Figure_3.png}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{./figures/Figure_4.png}
+\end{figure}
+\subsubsection{4.三阶隐式显式格式}
+\begin{equation}
+\begin{aligned}
+\frac{1}{k}&\left[\left(\frac{1}{2}\gamma^2+\gamma+\frac{1}{3}+\theta\right)u^{n+1}+\left(\frac{3}{2}\gamma^2-2\gamma+\frac{1}{2}-\theta\right)u^n\right.\\
+&\left.+\left(\frac{3}{2}\gamma^2+\gamma-1\right)u^{n-1}+\left(-\frac{1}{2}\gamma^2+\frac{1}{6}\right)u^{n-2}\right]\\
+&=\left(\frac{\gamma^2+3\gamma}{2}+1+\frac{23}{12}\theta\right)f(u^n)-\left(\gamma^2+2\gamma+\frac{4}{3}\theta\right)f(u^{n-1})\\
+&+\left(\frac{\gamma^2+\gamma}{2}+\frac{5}{12}\theta\right)f(u^{n-2})\\
+&+\nu\left[\left(\frac{\gamma^2+\gamma}{2}+c\right)g(u^{n+1})+\left(1-\gamma^2-3c+\frac{23}{12}\theta\right)g(u^n)\right.\\
+&\left.+\left(\frac{\gamma^2-\gamma}{2}+3c-\frac{4}{3}\theta\right)g(u^{n-1})+\left(\frac{5}{12}\theta-c\right)g(u^{n-2})\right]
+\end{aligned}
+\end{equation}
+这些格式以时间步长$(n+\gamma)$到三阶。当$\theta=0$时对应于更低阶的格式，限制$0\le\gamma\le 1$为了防止大的截断误差。参数$c$通常乘以$\nu$，为了调整此参数以修正格式中$\nu$大的属性。
+选择$(\gamma,\theta,c)=(1,0,0)$，我们将得到
+\begin{equation}
+\frac{1}{k}\left(\frac{11}{6}u^{n+1}-3u^n+\frac{3}{2}u^{n-1}-\frac{1}{3}u^{n-2}\right)=3f(u^n)-3f(u^{n-1})+f(u^{n-2})+\nu g(u^{n+1})
+\end{equation}
+这个格式隐式的部分采用了三阶的BDF，因此这个被称为三阶SBDF。
+\subsubsection{5.四阶隐式显式格式}
+对于$u'=f(u)+\nu g(u)$，这个格式由
+\begin{equation}
+\begin{aligned}
+\frac{1}{k}&\left(\frac{25}{12}u^{n+1}-4u^n+3u^{n-1}-\frac{4}{3}u^{n-2}+\frac{1}{4}u^{n-3}\right)\\
+&=4f(u^n)-6f(u^{n-1})+4f(u^{n-2})-f(u^{n-3})+\nu g(u^{n+1})
+\end{aligned}
+\end{equation}
 
 
 
@@ -30,3 +131,16 @@
 \cite{tam19912d}
 \bibliography{../ref}
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
