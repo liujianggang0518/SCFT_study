@@ -1,7 +1,7 @@
 % !Mode:: "TeX:UTF-8"
 \documentclass[12pt,a4paper]{article}
-\input{../en_preamble.tex}
-\input{../xecjk_preamble.tex}
+\input{../../en_preamble.tex}
+\input{../../xecjk_preamble.tex}
 
 
 \title{时变偏微分方程的隐式显式方法}
@@ -14,7 +14,7 @@
 摘要~~隐式显式(IMEX)格式已被广泛使用，尤其是与谱方法结合，用于扩散对流型空间离散偏微分方程(PDEs)的时间积分。通常，隐式格式用于扩散项，显式格式用于对流项。反应扩散问题也可以用这种方式近似。在这些工作中，我们系统地分析了这些格式的性能，提出了改进的新格式，并且特别关注它们在快速多重网格算法和谱方法的$\textcolor{red}{\text{混叠}}$减少的背景下的相对性能。(在统计、信号处理和相关领域中，混叠是指取样信号被还原成连续信号时产生彼此交叠而失真的现象。当混叠发生时，原始信号无法从取样信号还原)。
 
 对于原型线性对流扩散方程，进行了一阶、二阶、三阶和四阶多步IMEX格式的稳定性分析。确定了允许大的时间步长用于各种问题并且产生高频误差模式的适当衰减的稳定格式。数值实验表明，当使用有限差分空间离散化的多重网格计算时，高频模式的弱衰减会导致最细的网格上的额外迭代，并且当使用谱配置法进行空间离散时，会导致混叠。当出现这种情况时，不建议使用弱阻尼格式，例如Crank-Nicolson与二阶Adams-Bashforth的流行组合，并提出更好的替代方案。
-\subsubsection{1.模型}
+\section{模型}
 考虑一个时间相关的PDE，其中空间导数已经通过中心有限差分或谱方法离散化，这就产生了一个常微分方程系统，它通常具有以下这种形式
 \begin{equation}
 u'=f(u)+\nu g(u)
@@ -26,7 +26,7 @@ u'=f(u)+\nu g(u)
 \frac{u^{n+1}-u^n}{k}=\frac{3}{2}f(u^n)-\frac{1}{2}f(u^{n-1})+\frac{\nu}{2}[g(u^{n+1})+g(u^n)]
 \end{equation}
 其中$k$是离散时间步长，$u^n$是$u(kn)$的数值近似。
-\subsubsection{2.一阶隐式显式格式}
+\section{一阶隐式显式格式}
 对于(1)一个参数的一阶IMEX格式可以写成
 \begin{equation}
 u^{n+1}-u^n=kf(u^n)+\nu k[(1-\gamma)g(u^n)+\gamma g(u^{n+1})]
@@ -45,7 +45,7 @@ u^{n+1}-u^n=kf(u^n)+\nu kg(u^n)
 u^{n+1}-u^n=kf(u^n)+\nu kg(u^{n+1})
 \end{equation}
 诸如(5)的IMEX格式，将后向微分公式(BDF)应用于离散化$g$，并且将$f$外推到时间步长$(n+1)$将被称为半隐BDF(SBDF)格式。
-\subsubsection{3.二阶隐式显式格式}
+\section{二阶隐式显式格式}
 \begin{equation}
 \begin{aligned}
 \frac{1}{k}&\left[\left(\gamma+\frac{1}{2}\right)u^{n+1}-2\gamma u^n+\left(\gamma-\frac{1}{2}\right)u^{n-1}\right]=(\gamma+1)f(u^n)-\gamma f(u^{n-1})\\
@@ -100,7 +100,7 @@ R\equiv\frac{ah}{\nu}
 \centering
 \includegraphics[scale=0.4]{./figures/Figure_4.png}
 \end{figure}
-\subsubsection{4.三阶隐式显式格式}
+\section{三阶隐式显式格式}
 \begin{equation}
 \begin{aligned}
 \frac{1}{k}&\left[\left(\frac{1}{2}\gamma^2+\gamma+\frac{1}{3}+\theta\right)u^{n+1}+\left(\frac{3}{2}\gamma^2-2\gamma+\frac{1}{2}-\theta\right)u^n\right.\\
@@ -117,7 +117,7 @@ R\equiv\frac{ah}{\nu}
 \frac{1}{k}\left(\frac{11}{6}u^{n+1}-3u^n+\frac{3}{2}u^{n-1}-\frac{1}{3}u^{n-2}\right)=3f(u^n)-3f(u^{n-1})+f(u^{n-2})+\nu g(u^{n+1})
 \end{equation}
 这个格式隐式的部分采用了三阶的BDF，因此这个被称为三阶SBDF。
-\subsubsection{5.四阶隐式显式格式}
+\section{四阶隐式显式格式}
 对于$u'=f(u)+\nu g(u)$，这个格式由
 \begin{equation}
 \begin{aligned}
@@ -129,7 +129,7 @@ R\equiv\frac{ah}{\nu}
 
 
 \cite{tam19912d}
-\bibliography{../ref}
+\bibliography{../../ref}
 \end{document}
 
 
