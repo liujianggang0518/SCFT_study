@@ -1,12 +1,9 @@
+% !Mode:: "TeX:UTF-8"
 \documentclass[12pt,a4paper]{article}
-\input{en_preamble.tex}
-\input{xecjk_preamble.tex}
-\numberwithin{equation}{section}
-\renewcommand {\thetable} {\thesection{}.\arabic{table}}
-\renewcommand {\thefigure} {\thesection{}.\arabic{figure}}
+\input{../../en_preamble.tex}
+\input{../../xecjk_preamble.tex}
 
 \begin{document}
-
 \title{时变偏微分方程的隐式显式Runge-Kutta方法}
 \author{Uri M. Ascher , Steven J. Ruuth, Raymond J. Spiteri}
 \date{1997}
@@ -23,25 +20,25 @@
 u_{t}=uu_{x}+\nu\Delta u,~~~\nu >0.
 \end{equation}
 空间导数的离散(例如，通过有限差分、有限元、有限体积或谱方法)在时间上产生非常大的ODE系统
-\begin{equation}\label{12}
+\begin{equation}\label{44}
 \dot{u}=f(u)+g(u),
 \end{equation}
-其中$f$对应于对流（双曲线）项$uu_{x}$,$g$对应于扩散（抛物线）项$\nu\Delta u$。IMEX格式包括$g$的隐式离散和$f$的显式离散。这是自然的，因为$f\equiv 0$时(\ref{12})通常是刚的的和线性的，而在$g\equiv 0$的情况下，系统不是刚的，和通常是非线性的。此外，如果对后一种情况坚持使用隐式离散，通过矩阵逆的性质构造迭代求解器是个巨大挑战。
+其中$f$对应于对流（双曲线）项$uu_{x}$,$g$对应于扩散（抛物线）项$\nu\Delta u$。IMEX格式包括$g$的隐式离散和$f$的显式离散。这是自然的，因为$f\equiv 0$时(\ref{44})通常是刚的的和线性的，而在$g\equiv 0$的情况下，系统不是刚的，和通常是非线性的。此外，如果对后一种情况坚持使用隐式离散，通过矩阵逆的性质构造迭代求解器是个巨大挑战。
 
-在[2]中，我们对(\ref{12})的线性多步格式进行了分析和实验。对于扩散占优问题，$g$有最优阻尼特性采用向后差分(BDF)种格式。相应的IMEX格式是半显式BDF(SBDF)[5,9,15]。然而，当扩散不占优时，方法的选择就不那么明显了。理想情况下，人们希望双曲项是耗散格式，以便得到IMEX格式具有良好的稳定性和平滑性，与$g(u)$无关。然而，众所周知，寻找3阶(或更准确地说，向后步骤)以上的格式非常必要参见[2]。多步IMEX格式的主要困难是由于稳定性限制需要相对较小的时间步长(例如，[14])。使用高阶多步格式时，这种限制会变得更差，如[2]中所示。另一方面，当考虑三阶和四阶格式时，显式Runge-Kutta格式的稳定性区域实际上有所增加。因此，我们研究IMEX Runge-Kutta格式的发展和性能。
+在[2]中，我们对(\ref{44})的线性多步格式进行了分析和实验。对于扩散占优问题，$g$有最优阻尼特性采用向后差分(BDF)种格式。相应的IMEX格式是半显式BDF(SBDF)[5,9,15]。然而，当扩散不占优时，方法的选择就不那么明显了。理想情况下，人们希望双曲项是耗散格式，以便得到IMEX格式具有良好的稳定性和平滑性，与$g(u)$无关。然而，众所周知，寻找3阶(或更准确地说，向后步骤)以上的格式非常必要参见[2]。多步IMEX格式的主要困难是由于稳定性限制需要相对较小的时间步长(例如，[14])。使用高阶多步格式时，这种限制会变得更差，如[2]中所示。另一方面，当考虑三阶和四阶格式时，显式Runge-Kutta格式的稳定性区域实际上有所增加。因此，我们研究IMEX Runge-Kutta格式的发展和性能。
 
-当(\ref{12})来自多个空间变量的PDE时，在每个时间步长离散隐式部分相对应的代数方程的简单性和效率是至关重要的。在[2]中，我们表明，在适当的情况下和某些IMEX格式中，每个时间步长不需要多于一个多重网格W循环。在这里，我们研究是每个Runge-Kutta级的性质。 因此，我们专注$g(u)$的对角隐式Runge-Kutta（DIRK）格式，特别注意它们的衰减特性。我们构建了许多此类IMEX格式，并研究它们的属性。对于非常刚的ODEs DIRK格式的阶降到1[8]，在$g(u)$占主导地位且非常刚性时我们不期望Runge-Kutta格式与SBDF进行极限比较。然而，我们的Runge-Kutta格式对于其它参数范围有优越的性能。
+当(\ref{44})来自多个空间变量的PDE时，在每个时间步长离散隐式部分相对应的代数方程的简单性和效率是至关重要的。在[2]中，我们表明，在适当的情况下和某些IMEX格式中，每个时间步长不需要多于一个多重网格W循环。在这里，我们研究是每个Runge-Kutta级的性质。 因此，我们专注$g(u)$的对角隐式Runge-Kutta（DIRK）格式，特别注意它们的衰减特性。我们构建了许多此类IMEX格式，并研究它们的属性。对于非常刚的ODEs DIRK格式的阶降到1[8]，在$g(u)$占主导地位且非常刚性时我们不期望Runge-Kutta格式与SBDF进行极限比较。然而，我们的Runge-Kutta格式对于其它参数范围有优越的性能。
 
 众所周知，使用Runge-Kutta格式整合时变的偏微分方法并不是没有缺点。问题一是，当给定时变流入边界条件时，精度会下降[4]。[1]中提出了一种补救措施。还要注意的是，在最后一步的精确性高于内部阶段，必须计算这些内部阶段不能降低的精确性(例如通过迭代方法，如第5节中所述)。
 
-(\ref{12})可以转换为分区体系
+(\ref{44})可以转换为分区体系
 \begin{gather*}
 \dot{v}=\widehat{f}(v,w),
 \label{131} \\
 \dot{w}=\widehat{g}(v,w),
 \label{132}
 \end{gather*}
-其中$u=v+w,\widehat{f}=f(v+w)$和$\widehat{g}=g(v+w)$下面设计的IMEX Runge-Kutta格式是分段的Runge-Kutta格式。 他们的阶在[7,第II.15节]中讨论。它们也可以被视为一种特殊的分裂方法。我们注意到对于(\ref{12})，$v$和$w$不需要单独知道(实际上，我们可能没有它们的初始条件)。我们所需要的是它们的光滑性和局部存在性。
+其中$u=v+w,\widehat{f}=f(v+w)$和$\widehat{g}=g(v+w)$下面设计的IMEX Runge-Kutta格式是分段的Runge-Kutta格式。 他们的阶在[7,第II.15节]中讨论。它们也可以被视为一种特殊的分裂方法。我们注意到对于(\ref{44})，$v$和$w$不需要单独知道(实际上，我们可能没有它们的初始条件)。我们所需要的是它们的光滑性和局部存在性。
 
 在第二节中，我们开发了多达四级的IMEX Runge-Kutta格式，其精度可达三阶。这些格式划分为两类--在下一个时间处(即在时间步长的末尾)解决最后一个内部阶段，以及在步骤结束处使用附加正交。第一类特别适用于高度刚性的问题，但第二类似乎为广泛参数提供了一些比较有前途的变体，特别是被定义为(3,4,3)(隐式公式为内部3级，显式为4级和综合精度为3阶)的格式。
 
@@ -738,4 +735,306 @@ v(x,y,0)=sin[2\pi (x+y)]+0.005cos[2\pi (64x+63y)],
 
 从表中可以看出，强阻尼L-稳定格式对于大粘度问题每阶段所需的细网格迭代次数最少。弱阻尼格式需要更多的努力来求解隐式方程的精确，因为挥之不去的高频模式需要在最精细的网格上进行。这对于隐式-显式中点格式(1,2,2)尤其明显，因为当$\nu >0.03$时，每阶段需要三次以上的迭代。Griepentrog的格式还需要额外的精细网格迭代，大概是为了抑制在初始阶段出现的高频成分。
 
+
+设初值问题
+\begin{equation*}
+\begin{cases}
+u^{'}=f(t,u),\\
+u(t_{0})=u_{0}
+\end{cases}
+\end{equation*}
+其中$u_{0}$是给定的初值,是一阶常微分方程的初值问题.
+
+将区间$[0,T]$作N等分.小区间的长度$h=\frac{T}{N}$称为步长.点列$t_{n}=hn(n=0,1,\cdots,N)$称为节点.
+
+已知初值$u(t_{0})=u_{0}$即有
+\begin{equation}
+u^{'}(t_{0})=f(t_{0},u(t_{0}))=f(t_{0},u_{0})
+\end{equation}
+$u(t_{1})$在$u(t_{0})$处泰勒展开:
+\begin{align}
+u(t_{1})&=u(t_{0}+h)\\&=u(t_{0})+hu^{'}(t_{0})+\frac{h^2}{2}u^{''}(\xi)\\&=u_{0}+hf(t_{0},u_{0})+R_{0}~~~\xi\in (t_{0},t_{1})
+\end{align}
+$R_{0}$称为欧拉的局部截断误差.略去二阶小量$R_{0}$得:
+\begin{equation}
+u_{1}=u_{0}+hf(t_{0},u_{0})
+\end{equation}
+$u_{1}$是$u(t_{1})$的近似值,一般递推公式为:
+\begin{equation}
+u_{n+1}=u_{n}+hf(t_{n},u_{n})
+\label{1}
+\end{equation}
+这是向前欧拉法.
+
+\par 
+\textbf{误差分析:}
+一般的递推式为:
+\begin{equation}
+u(t_{n+1})=u(t_{n})+hf(t_{n},u(t_{n}))+R_{n}
+\label{2}
+\end{equation}
+其中$R_{n}=\frac{h^2}{2}u^{''}(\xi)$.
+
+令
+\begin{equation}
+L[u_{n};h]=u_{n+1}-u_{n}-hf(t_{n},u_{n})
+\end{equation}
+取$u_{n}=u(t_{n})$则
+\begin{equation}
+R_{n}=L[u(t_{n});h]=u(t_{n+1})-u(t_{n})-hu^{'}(t_{n})
+\end{equation}
+则称$R_{n}$为局部截断误差.
+
+我们称$e_{n}=u(t_{n})-u_{n}$为整体误差,将(\ref{2})和(\ref{1})相减,知$e_{n}$满足误差方程:
+\begin{equation}
+e_{n+1}=e_{n}+h[f(t_{n},u(t_{n}))-f(t_{n},u_{n})]+R_{n}
+\label{3}
+\end{equation}
+因$f(t,u)$关于$u$满足Lipschitz条件(\ref{3})有:
+\begin{align}
+|e_{n+1}|&\le|e_{n}|+Lh|e_{n}|+R\\
+&=(1+Lh)|e_{n}+R
+\end{align}
+其中$R=\max|R_{n}|$以此类推,得:
+\begin{align}
+|e_{n}|&\le (1+Lh)|e_{n-1}|+R\le (1+Lh)^2|e_{n-2}|+(1+Lh)R+R\\
+&\le \cdots\le (1+Lh)^n|e_{0}|+R\sum_{j=0}^{n-1}(1+Lh)^j\\
+&=(1+Lh)^n|e_{0}|+\frac{R}{Lh}[(1+Lh)^n-1]\\
+&\le e^{nLh}|e_{0}|+\frac{R}{Lh}(e^{nLh}-1)
+\end{align}
+由于$t_{n}=t_{0}+nh\le T,n=(t_{n}-t_{0})/h$,于是
+\begin{equation}
+|e_{n}|\le e^{L(T-t_{0})}|e_{0}|+\frac{R}{Lh}(e^{L(T-t_{0})}-1),~~~n=1,\cdots,N
+\end{equation}
+右端依赖初始误差$e_{0}$和局部截断误差的界$R$.对欧拉法,可取$R=Ch^2$(C是与n无关的常数).
+
+若取$e_{0}=0$(取$u_{0}=u(t_{0})$),则
+\begin{equation}
+|e_{n}|\le CL^{-1}e^{L(T-t_{0})}h
+\end{equation}
+所以$e_{n}=O(h)$,比局部截断误差低一阶.
+
+类比的方法,将$u(t_{n})$在$u({t_{n+1}})$处泰勒展开可得:
+\begin{align}
+u(t_{n})&=u(t_{n+1})-hu^{'}(t_{n+1})+\frac{h^2}{2}u^{''}(t_{n+1})-\frac{h^3}{6}u^{'''}(\xi)\\&=u(t_{n+1})-hu^{'}(t_{n+1})+R_{n}
+\end{align}
+略去二阶小量,用$u_{n}$逼近$u(t_{n})$得到向后欧拉:
+\begin{equation}
+u_{n+1}=u_{n}+hf(t_{n+1},u_{n+1})
+\end{equation}
+
+
+\par
+
+\textbf{冯诺依曼条件}
+
+$G(\rho h,\tau )$表示增长因子,则差分格式的稳定的必要性是存在与$\tau$无关的常数M使
+\begin{equation}
+|G(\rho h,\tau )|\le 1+M\tau ~~~~~\rho=1,2,\cdots,J-1
+\end{equation}
+
+差分格式稳定$\Leftrightarrow G(ph,\tau)$一致有界$\Leftrightarrow$von Neumann条件成立.
+
+例如:一维热传导方程
+\begin{equation}
+\frac{\partial u}{\partial t}=\alpha\frac{\partial^2 u}{\partial^2 x}
+\end{equation}
+在时间上进行向前差分,空间中心差分得:
+\begin{equation}
+u_{j}^{n+1}=u_{j}^{n}+\gamma(u_{j+1}^n-2u_{j}^n+u_{j-1}^n)
+\end{equation}
+其中网比$\gamma=\frac{\alpha\tau}{h^2}$
+进行傅里叶变换:$u_{j}^n=\hat{u}^{n}e^{ikx}$得
+\begin{equation}
+\hat{u}^{n+1}e^{ikx}=(\gamma e^{ik(x+h)}+(1-2\gamma)e^{ikx}+\gamma e^{ik(x-h)})\hat{u}^{n}
+\end{equation}
+消去$e^{ikx}$得:
+\begin{equation}
+\hat{u}^{n+1}=G(\rho h,\tau)\hat{u}^n
+\end{equation}
+则增长因子:
+\begin{align}
+G(\rho h,\tau)&=(1-2\gamma)+\gamma (e^{ikh}+e^{-ikh})\\
+&=1-2\gamma (1-coskh)\\
+&=1-4rsin^{2}\frac{kh}{2}
+\end{align}
+为了使$G(\rho h,\tau)$满足 von Neumann 条件:
+\begin{align}
+-1-M\tau\le G(\rho h,\tau)\le 1+M\tau
+\end{align}
+即
+\begin{align}
+-1-M\tau\le 1-4\gamma sin^2\frac{kh}{2}\le 1+M\tau
+\end{align}
+解得$0\le \gamma\le \frac{1}{2}$.当且仅当网比$\gamma\le \frac{1}{2}$成立.
+
+\par 
+
+
+设初值问题
+\begin{equation*}
+\begin{cases}
+f^{'}(u)=F(t,f(u)),\\
+f(u(t_{0}))=f(u_{0})
+\end{cases}
+\end{equation*}
+求解
+\begin{equation}
+\dot{u}=f(u)+g(u),
+\label{12}
+\end{equation}
+f显式处理,g隐式处理
+
+f为向前欧拉,则有:
+\begin{equation}
+f(u_{n})=f(u_{n-1})+hF(t_{n-1},f(u_{n-1}))
+\end{equation}
+
+g为向后欧拉,则有:
+\begin{equation}
+g(u_{n})=g(u_{n-1})+hF(t_{n},g(u_{n}))
+\end{equation}
+
+则
+\begin{align}
+\dot{u}_{n}&=f(u_{n})+g(u_{n})\\&=f(u_{n-1})+g(u_{n-1})+h(F(t_{n-1},f(u_{n-1}))+F(t_{n},g(u_{n}))\\&=\dot{u}_{n-1}+h(F(t_{n-1},f(u_{n-1}))+F(t_{n},g(u_{n}))
+\end{align}
+左右两边关于t积分,得$u_{n}=u_{n-1}+Ch(f(u_{n-1})+g(u_{n}))$
+
+二级隐式龙格库塔可以写成:
+\begin{equation}
+\begin{cases}
+g(u_{n})=g(u_{n-1})+h(b_{1}k_{1}+b_{2}k_{2})\\
+k_{1}=F(t_{n-1},g(u_{n-1})+ha_{11}k_{1})\\
+k_{2}=F(t_{n-1},g(u_{n-1})+ha_{21}k_{1}+ha_{22}k_{2})
+\end{cases}
+\end{equation}
+三级显式龙格库塔可以写成:
+\begin{equation}
+\begin{cases}
+f(u_{n})=f(u_{n-1})+h(\hat{b}_{1}\hat{k}_{1}+\hat{b}_{2}\hat{k}_{2}+\hat{b}_{3}\hat{k}_{3})\\
+\hat{k}_{1}=F(t_{n-1},f(u_{n-1}))\\
+\hat{k}_{2}=F(t_{n-1},f(u_{n-1})+h\hat{a}_{21}\hat{k}_{1})\\
+\hat{k}_{3}=F(t_{n-1},f(u_{n-1})+h\hat{a}_{31}\hat{k}_{1}+h\hat{a}_{32}\hat{k}_{2})
+\end{cases}
+\end{equation}
+则
+\begin{align}
+\dot{u}_{n}&=f(u_{n})+g(u_{n})\\
+&=f(u_{n-1})+g(u_{n-1})+h(b_{1}k_{1}+b_{2}k_{2}+\hat{b}_{1}\hat{k}_{1}+\hat{b}_{2}\hat{k}_{2}+\hat{b}_{3}\hat{k}_{3})\\&
+=\dot{u}_{n-1}+h(b_{1}k_{1}+b_{2}k_{2}+\hat{b}_{1}\hat{k}_{1}+\hat{b}_{2}\hat{k}_{2}+\hat{b}_{3}\hat{k}_{3})
+\end{align}
+对t积分,则有${u}_{n}=u_{n-1}+Ch(b_{1}k_{1}+b_{2}k_{2}+\hat{b}_{1}\hat{k}_{1}+\hat{b}_{2}\hat{k}_{2}+\hat{b}_{3}\hat{k}_{3})$
+
+如果显式龙格库塔是三级三阶的,则需要满足的条件是
+\begin{equation}
+\begin{cases}
+b_{1}+b_{2}+b_{3}=1\\
+c_{2}b_{2}+c_{3}b_{3}=\frac{1}{2}\\
+c_{2}^2b_{2}+c_{3}^2b_{3}=\frac{1}{3}\\
+c_{2}a_{32}b_{3}=\frac{1}{6}
+\end{cases}
+\end{equation}
+这是含两参数的三级三阶方法.现取$b_{3}=(2-\sqrt{2})/2,b_{1}=0.$则可算出
+\begin{equation}
+\begin{cases}
+c_{2}=(2-\sqrt{2})/2\\
+c_{3}=1\\
+a_{32}=(3+2\sqrt{2})/3\\
+a_{31}=-2\sqrt{2}/3\\
+b_{2}=\sqrt{2}/2
+\end{cases}
+\end{equation}
+
+如果隐式龙格库塔是二级二阶的,则需要满足的条件是:
+\begin{equation}
+\begin{cases}
+b_{1}+b_{2}=1\\
+b_{1}c_{1}+b_{2}c_{2}=\frac{1}{2}
+\end{cases}
+\end{equation}
+现取$b_{2}=c_{1}=(2-\sqrt{2})/2$则可算出
+\begin{equation}
+\begin{cases}
+b_{1}=\sqrt{2}/2\\
+c_{2}=1
+\end{cases}
+\end{equation}
+由于这是单隐对角隐式龙格库塔,则有$a_{11}=a_{22}=(2-\sqrt{2})/2,a_{21}=\sqrt{2}/2$.
+
+求初值问题形如：
+\begin{equation}
+\sum_{j=0}^{k}\alpha_{j}y_{m+j}=h\sum_{j=0}^{k}\beta_{j}f_{m+j}
+\label{10}
+\end{equation}
+其中$h>0$是积分步长，$k\ge 1$是方程的步数。
+
+定义:若对某点$\bar{h}\in \bar{C}$($\bar{C}$表示扩张的复平面)$\bar{h}=\lambda h$.特征多项式$\prod(\xi ,\bar{h})$的每个根的模都严格地小于1,则称方法$(\ref{10})$关于点$\bar{h}$是绝对稳定的,在$\bar{C}$上,使方法(\ref{10})绝对稳定的一切点$\bar{h}$的集合,称为该方法的绝对稳定区域,或简称稳定域.
+
+以$\xi_{1}(\bar{h}),\xi_{2}(\bar{h}),\cdots,\xi_{k}(\bar{h})$表示多项式$\prod(\xi,\bar{h})$的k个根,则方法的绝对稳定区域可表示为:
+\begin{equation}
+S=\{ \bar{h}\in\bar{C}:|\xi_{j}(\bar{h})|<1,~j=1,2,\cdots,k \}
+\end{equation}
+
+定义:数值积分公式称为A稳定的,如果这个积分公式的稳定区域包含复开左半平面.
+
+(Dahquist提出)方法(\ref{10})称为是A-稳定的，如果满足：$S$为绝对稳定区域,
+\begin{equation*}
+S\supset C_{\_}=\{\bar{h}\in C|Re\bar{h}<0\}.
+\end{equation*}
+
+线性多步法说是A稳定的,如果将它用于模型问题:
+\begin{equation}
+u^{'}(t)=\lambda u(t)
+\label{19}
+\end{equation}
+绝对稳定区域就是左负平面$\bar{C}$,其中$\lambda$是复数.
+(\ref{10})相应的特征多项式为:
+\begin{equation}
+\prod(\xi,\bar{h})=\sum_{j=0}^{k}\alpha_{j}\lambda^{j}-\bar{h}\sum_{j=0}^{k}\beta_{j}\lambda^{j}=\rho(\lambda)-\bar{h}\sigma(\lambda)
+\end{equation}
+设$\lambda_{i}(i=1,2,\cdots,k)$是特征方程的根,则下列表述等价:
+
+(1)线性多步法A稳定;
+
+(2)$Re\bar{h}<0\Rightarrow|\lambda_{i}|<1,i=1,2,\cdots,k;$
+
+(3)$|\lambda|\ge 1\Rightarrow Re\bar{h}(\lambda)\ge 0$
+
+举例:向后欧拉:$u_{n+1}=u_{n}+hf_{n+1}$
+由于$\rho(\lambda)=\lambda-1,\sigma(\lambda)=\lambda$则
+\begin{align}
+Re\bar{h}(\lambda)&=Re\frac{\lambda-1}{\lambda}\\&=\frac{|\lambda|^2-|\lambda|cos\theta}{|\lambda|^2}\\&=\frac{|\lambda|(|\lambda|-cos\theta)}{|\lambda|^2}
+\end{align}
+显然当$|\lambda|\ge 1$时,$Re\bar{h}\ge 0$,故向后欧拉A稳定.
+
+方法(\ref{10})称为是L-稳定的，如果它是A-稳定的，且在$\infty$点极端稳定。
+
+一个方法是L-稳定的，如果满足A-稳定和
+\begin{equation*}
+\lim\limits_{z\to\infty}R(z)=0
+\end{equation*}
+
+龙格库塔法求解标量线性模型方程(\ref{19})得到差分方程:
+\begin{equation}
+y_{n+1}=R(z)y_{n}
+\end{equation}
+s级单隐Runge-Kutta法有形如
+\begin{equation}
+R(z)=\frac{P(z)}{(1-\lambda z)^s}
+\end{equation}
+的稳定函数.$P(z)=\sum_{i=0}^{s}(\sum_{j=0}^{i}\frac{(-1)^j}{(i-j)!}\binom{s}{j}\lambda^j)z^i$.
+得:
+\begin{equation}
+R(\infty)=\lim\limits_{z\to 0}R(z)=\frac{1-4\lambda+2\lambda^2}{2\lambda^2}
+\end{equation}
+
+由$R(\infty)=0$,得$\lambda=(2\pm\sqrt{2})/2$.
+
+
+\cite{tam19912d}
+%\bibliography{../../ref}
 \end{document}
+
+
+

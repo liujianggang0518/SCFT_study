@@ -1,10 +1,10 @@
 
-main = main
+main = 龙格库塔
 all_file = ${main}.tex 
 
-pdf: ${main}.pdf
+pdf: ${龙格库塔}.pdf
 
-${main}.pdf: ${all_file}
+${龙格库塔}.pdf: ${all_file}
 	xelatex ${main}.tex
 	bibtex  ${main}.aux
 	xelatex ${main}.tex
@@ -12,7 +12,7 @@ ${main}.pdf: ${all_file}
 	evince  ${main}.pdf&
 
 view:
-	evince ${main}.pdf&
+	evince ${龙格库塔}.pdf&
 
 .PHONY:clean  
 clean:
