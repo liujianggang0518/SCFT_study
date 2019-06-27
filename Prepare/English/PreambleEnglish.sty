@@ -1,0 +1,175 @@
+
+%%%% Prepare the Latex environment;
+%%%% For English Environment;
+
+%\documentclass[12pt,oneside,a4paper]{article}
+\documentclass[12pt,oneside,a4paper]{book}
+
+
+%%%% Load Common Package;
+\usepackage{xltxtra, fontspec, xunicode}				%% Fonts;
+\usepackage[slantfont, boldfont]{xeCJK}					%% Allow Italics and Boldface;
+\usepackage{mathptmx}									%% Times New Roman in Mathematical Formulas;
+\usepackage{latexsym, amsmath, amssymb, amsthm}			%% Mathematical Equations;
+\usepackage{tabu, graphicx, multicol, multirow}			%% Add Table and Pictures;
+\usepackage{subfigure, epsfig}							%% Add figures;
+\usepackage{bm, color}									%% The bold Characters and Add Color; 
+\usepackage{enumerate}									%% Sort;
+\usepackage{listings}									%% Add Code Environment;
+\usepackage{algorithm, algorithmic}						%% the Environment of Algorithm;
+
+\usepackage{fancyhdr}									%% Define the hander and footer by yourself;
+\usepackage{indentfirst}								%% Indentation at the beginning of a line;
+\usepackage{extarrows, chemarrow}						%% Allow text above or under the arrow and the equal sign;
+
+\usepackage[colorlinks, linkcolor=black, anchorcolor=black, citecolor=black]{hyperref}	%%% Hyperlinks;
+\usepackage[top=24mm, bottom=24mm, left=35mm, right=28mm]{geometry}		%%% More Flexible Interface;
+
+%%%% Plot directly in tikz environment;
+\usepackage{tikz}
+\usetikzlibrary{arrows, shapes, chains}
+
+%%%% Choose English Fonts;
+\setmainfont{Times New Roman}
+
+
+%%%% Set the Algorithm Environment;
+\floatname{algorithm}{\textbf{Algorithm.}}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}		%% Use Input in the format of Algorithm;
+\renewcommand{\algorithmicensure}{\textbf{Output:}}		%% Use Output in the format of Algorithm;
+
+
+%%%% Set the Code Environment;
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstset{
+    breaklines=true,    
+    captionpos=b,
+    numbersep=5pt,
+    showspaces=false,
+    showtabs=false,
+    tabsize=4,
+    columns=fixed,       
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+	escapeinside=‘’,								%% Display Chinese in ‘’;
+    numbers=left,                                   %% Display the line number on the left;
+    keepspaces=false,                               %% Additional blank line if it's 'true';
+    frame=shadowbox,                                %% the Frame;
+    backgroundcolor=\color{backcolour},             %% Set the color of the background;
+    commentstyle=\color{codegreen},                 %% Set the format of the Code Comments;
+    keywordstyle=\color{magenta},                   %% Set the color of the key words;
+    numberstyle=\tiny\color{codegray},              %% Set the format of the line number;
+    stringstyle=\color{codepurple},                 %% Set the format of the string;
+    showstringspaces=false,                         %% Don't display the blank between strings;
+    language=C++                                    %% Set Language;
+}
+
+
+%%%% Define Environment for Proof;
+\newenvironment{blackbox}[1][~~~~]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\ep\end{trivlist}}
+\renewenvironment{proof}[1][Proof.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\ep\end{trivlist}}
+%%% For Proof Environment;
+\newcommand{\ep}{\hfill\rule{0.15cm}{0.35cm}\vskip 0.3cm}
+
+
+%%%% Define Environments for different cases;
+%\newcommand{\ep}{\hfill\rule{0.15cm}{0.35cm}\vskip 0.3cm}
+%\newtheorem{theorem}{\textbf{Theorem}}[chapter]
+%\newtheorem{assumption}{\textbf{Assumption}}[chapter]
+%\newtheorem{definition}{\textbf{Definition}}[chapter]
+%\newtheorem{corollary}{\textbf{Corollary}}[chapter]
+%\newtheorem{lemma}{\textbf{Lemma}}[chapter]
+%\newtheorem{axiom}{\textbf{Axiom}}[chapter]
+%\newtheorem{example}{\textbf{Example}}[chapter]
+%\newtheorem{proposition}{\textbf{Proposition}}[chapter]
+%\newtheorem{property}{\textbf{Property}}[chapter]
+%\newtheorem{remark}{\textbf{Remark}}[chapter]
+%\newtheorem{exercise}{\textbf{Exercise}}[chapter]
+%\newtheorem{question}{\textbf{Question}}[chapter]
+%\newtheorem{conjecture}{\textbf{Conjecture}}[chapter]
+
+
+%%%% Define Environments by yourself;
+\usepackage{empheq}			%%% More Beautiful Equation Environments;
+\usepackage[framemethod=tikz]{mdframed}
+
+\definecolor{ocre}{RGB}{243,102,25}
+\definecolor{mygray}{RGB}{243,243,244}
+\newcommand*\mymathbox[1]{%
+	\fcolorbox{ocre}{mygray}{\hspace{1em}#1\hspace{1em}}}
+
+%%%% Change Backgroundcolor and Linecolor by yourself;
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{theorem}{\textbf{Theorem}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{assumption}{\textbf{Assumption}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{definition}{\textbf{Definition}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{corollary}{\textbf{Corollary}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{lemma}{\textbf{Lemma}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{axiom}{\textbf{Axiom}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{example}{\textbf{Example}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{proposition}{\textbf{Proposition}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{property}{\textbf{Property}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{remark}{\textbf{Remark}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{exercise}{\textbf{Exercise}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{question}{\textbf{Question}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{conjecture}{\textbf{Conjecture}}[chapter]
+\newmdtheoremenv[backgroundcolor=mygray, linecolor=ocre, leftmargin=20pt, innerleftmargin=0pt, innerrightmargin=0pt,
+	]{strategy}{\textbf{Strategy}}[chapter]
+
+
+%%%% The Chinese name of abstract in the article;
+%\renewcommand{\abstractname}{Abstract}
+
+
+%%%% Overall Arrangement;
+\headsep=4mm\headheight=6mm\topmargin=-10pt
+\oddsidemargin=0pt\evensidemargin=0pt
+\textheight=225truemm\textwidth=160truemm
+
+
+%%%% Section Number;
+\numberwithin{equation}{chapter}
+
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+%%% Roman;
+\newcommand{\rmnum}[1]{\romannumeral #1}							%% Lowercase Roman numerals; 
+\newcommand{\Rmnum}[1]{\uppercase\expandafter{\romannumeral #1}}	%% Uppercase Roman numerals;
+
+%%% Adjust table height;
+\usepackage{array}
+\renewcommand\arraystretch{1.5}		%%% 1.5 times of the default;
+
+%------------------------------------------------------------%
+\setlength{\baselineskip}{20pt plus2pt minus1pt} % Adjust the natural spacing;
+
+
+%%%% Set the watermark and the wallpaper;
+\usepackage[placement=top, angle=0, color=black!40, scale=3, hshift=75, vshift=-10]{background}
+\backgroundsetup{contents={SW}, color=lightgray}
+\usepackage{wallpaper}
+\ULCornerWallPaper{0.2}{./Links/Dragon.png}
+%%% The color of background;
+\definecolor{MySkyBlue}{RGB}{187,255,255}
+\pagecolor{MySkyBlue}
+
+

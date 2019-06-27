@@ -1,0 +1,124 @@
+
+%%%% The example of common writting;
+
+\chapter{示例}
+\label{cha.Example}
+
+文章引用\,\cite{,}.
+
+\section{方程}
+\label{sec.Equations}
+
+\begin{itemize}
+	\item[$\bullet$] 示例 1
+	\begin{equation}
+		\begin{aligned}
+			a = b,
+			\\
+			b = c.
+		\end{aligned}
+		\label{eq.1}
+	\end{equation}
+	\item[$\bullet$] 示例 2
+	\begin{equation}
+		\left\{
+		\begin{aligned}
+			a = b,
+			\\
+			b = c.
+		\end{aligned}
+		\right.
+		\label{eq.2}
+	\end{equation}
+\end{itemize}
+
+
+\section{表格}
+\label{sec.Table}
+
+%% A, a, I, i, 1
+%% \Alph, \alph, \Roman, \roman, \arabic
+\begin{enumerate}[(I)]
+	\item 示例 1
+	\begin{table}[htbp]
+		\centering
+		\caption{表格示例}
+		\label{tab.1}
+		%% set the width of each column;
+		\begin{tabular}{p{3.5cm}|p{2cm}|p{5cm}<{\centering}}
+			\hline
+			a &b &c\\
+			\hline
+		\end{tabular}
+	\end{table}
+\end{enumerate}
+
+
+\section{图像}
+\label{sec.Figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.2\linewidth}
+%        \centerline{\includegraphics[scale=0.4]{figure/figure1.png}}
+        \footnotesize{\centerline{(a)}}
+    \end{minipage}
+    \hspace{0.2\linewidth}
+    \begin{minipage}[t]{0.2\linewidth}
+%        \centerline{\includegraphics[scale=0.4]{figure/figure2.png}}
+        \footnotesize{\centerline{(b)}}
+    \end{minipage}
+    \caption{图像示例}
+	\label{fig.1}
+\end{figure}
+
+
+\section{代码}
+\label{sec.Code}
+
+\begin{lstlisting}[language=Matlab]
+fprintf('Hello World!!\n\n');
+\end{lstlisting}
+
+
+\section{超链接}
+\label{sec.Hyperlinks}
+
+\begin{itemize}
+	\item 显示链接
+	\url{http://www.bing.com}
+	\item 隐式连接
+	\href{http://www.bing.com}{Bing}	%%% Implicit;
+	\item 本地链接
+	\href{run:./Links/empheq.pdf}{Empheq}		%%% Local Hyperlinks;
+\end{itemize}
+
+
+\section{布局进阶}
+\label{sec.Layout}
+
+\begin{theorem}[Name of the theorem]
+In $E=\mathbb{R}^n$ all norms are equivalent.
+\begin{align}
+	a &= b\\
+	E &= mc^2 + \int_a^a x\, \mathrm{d}x
+\end{align}
+\end{theorem}
+
+\begin{proof}
+	\begin{empheq}[left=L\Rightarrow\Rrightarrow\empheqlbrace, box=\mymathbox, right=\empheqrbrack\Lleftarrow\Leftarrow R]{alignat=1}
+		a&=b \nonumber \\
+		E&=mc^2 + \int_a^a x\, \mathrm{d}x
+	\end{empheq}
+\end{proof}
+
+\begin{remark}
+the Parameters of the Environment 'empheq':	({\color{blue} $\backslash$ nonumber to obtain single serial number})
+\begin{itemize}
+	\item \{equation\}, \{align\}, \{gather\}, \{flalign\}, \{alignat=<cols>\}, \{multline\}
+	\item \{equation*\}, \{align*\}, \{gather*\}, \{flalign*\}, \{alignat*=<cols>\}, \{multline*\}
+	\item box=<box command>, inner=<box command>, left=<math material>, right=<math material>, outerbox=<box command>,
+		marginbox=<box command>
+\end{itemize}
+\end{remark}
+

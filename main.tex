@@ -1,0 +1,122 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%                                                  %%%%%%%%%%
+%%%%%%%%%%        Start Date: April.20 2019                 %%%%%%%%%%
+%%%%%%%%%%        Author: Wei Si                            %%%%%%%%%%
+%%%%%%%%%%        Email: 201610111098@smail.xtu.edu.cn      %%%%%%%%%%
+%%%%%%%%%%                                                  %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Load package and Prepare Latex environment;
+%\input{Prepare/English/PreambleEnglish.sty}
+\input{Prepare/Chinese/PreambleChinese.sty}
+
+\renewcommand {\thetable} {\thesection{}.\arabic{table}}
+\renewcommand {\thefigure} {\thesection{}.\arabic{figure}}
+%%\newcommand{\bbR}{\mathbb{R}}
+%%\newcommand{\bbZ}{\mathbb{Z}}
+%%\newcommand{\bbQ}{\mathbb{Q}}
+%%\newcommand{\bh}{\mathbf{h}}
+%%\newcommand{\bx}{\bm{x}}
+%%\newcommand{\br}{\bm{r}}
+%%\newcommand{\by}{\mathbf{y}}
+%%\newcommand{\bt}{\mathbf{t}}
+%%\newcommand{\bs}{\mathbf{s}}
+%%\newcommand{\bu}{\mathbf{u}}
+%%\newcommand{\bk}{\mathbf{k}}
+%%\newcommand{\bM}{\mathbf{M}}
+%%\newcommand{\bP}{\mathbf{P}}
+%%\newcommand{\bQ}{\mathbf{Q}}
+%%\newcommand{\calS}{\mathcal{S}}
+%%\newcommand{\hF}{\hat{F}}
+%%\newcommand{\bq}{\mathbf{q}}
+%%\newcommand{\hw}{\hat{w}}
+%%\newcommand{\hphi}{\hat{\phi}}
+%%\newcommand{\hxi}{\hat{\xi}}
+%%\newcommand{\hJ}{\hat{J}}
+%||||||| merged common ancestors
+%\newcommand{\bbR}{\mathbb{R}}
+%\newcommand{\bbZ}{\mathbb{Z}}
+%\newcommand{\bbQ}{\mathbb{Q}}
+%\newcommand{\bh}{\mathbf{h}}
+%\newcommand{\bx}{\bm{x}}
+\newcommand{\br}{\bm{r}}
+\newcommand{\bu}{\bm{u}}
+%\newcommand{\by}{\mathbf{y}}
+%\newcommand{\bt}{\mathbf{t}}
+%\newcommand{\bs}{\mathbf{s}}
+%\newcommand{\bu}{\mathbf{u}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bk}{\bm{k}}
+%\newcommand{\bM}{\mathbf{M}}
+%\newcommand{\bP}{\mathbf{P}}
+%\newcommand{\bQ}{\mathbf{Q}}
+%\newcommand{\calS}{\mathcal{S}}
+%\newcommand{\hF}{\hat{F}}
+%\newcommand{\bq}{\mathbf{q}}
+%\newcommand{\hw}{\hat{w}}
+%\newcommand{\hphi}{\hat{\phi}}
+%\newcommand{\hxi}{\hat{\xi}}
+%\newcommand{\hJ}{\hat{J}}
+%=======
+\newcommand{\bbR}{\mathbf{R}}
+%\newcommand{\bbZ}{\mathbb{Z}}
+%\newcommand{\bbQ}{\mathbb{Q}}
+%\newcommand{\bh}{\mathbf{h}}
+%\newcommand{\bn}{\mathbf{n}}
+\newcommand{\bb}{\bm{b}}
+%\newcommand{\bx}{\bm{x}}
+%\newcommand{\br}{\bm{r}}
+%\newcommand{\by}{\mathbf{y}}
+%\newcommand{\bt}{\mathbf{t}}
+%\newcommand{\bs}{\mathbf{s}}
+%\newcommand{\bu}{\mathbf{u}}
+%\newcommand{\bk}{\mathbf{k}}
+%\newcommand{\bM}{\mathbf{M}}
+%\newcommand{\bP}{\mathbf{P}}
+%\newcommand{\bQ}{\mathbf{Q}}
+\newcommand{\calD}{\mathcal{D}}
+%\newcommand{\hF}{\hat{F}}
+%\newcommand{\bq}{\mathbf{q}}
+%\newcommand{\hw}{\hat{w}}
+%\newcommand{\hphi}{\hat{\phi}}
+%\newcommand{\hxi}{\hat{\xi}}
+%\newcommand{\hJ}{\hat{J}}
+\begin{document}
+%%%% Selection of Chinese Character;
+%%%% \songti \heiti \kaishu \fangsong
+%%%% \chuhao \xiaochuhao \yihao \xiaoyihao \erhao \xiaoerhao \sanhao
+%%%% \sihao \xiaosihao \wuhao \xiaowuhao \liuhao \qihao
+	\kaishu	\sihao
+
+	%%% empty, plain, headings, myheadings;
+	\thispagestyle{empty}
+	\pagenumbering{Roman}
+	\baselineskip 18pt
+	\topskip 3cm
+	%%%%  Title;
+	\begin{center}
+		\makebox[135mm][c]{\LARGE\textbf{ Templet }}\\
+		\vskip 0.4cm
+	\end{center}
+%	\input{Prepare/English/TitleEnglish}	%%% English information; 
+	\input{Prepare/Chinese/TitleChinese}	%%% Chinese information; 
+
+	%%% arabic, roman, Roman, alph, Alph;
+	\newpage
+	\pagenumbering{Roman}
+
+	%\input{Prepare/Abstract}				%%% Abstract;
+	\tableofcontents
+
+	\newpage
+	\input{Prepare/DefineFancy}
+	\pagenumbering{arabic}
+
+	\input{Contents/Contents}				%%% Main Contents;
+	%\input{Prepare/Example}				%%% Example of Common Latex environment;
+	%\input{Prepare/Acknowledgement}		%%% Acknowledgement;
+	%\input{Contents/Appendix}				%%% Appendix;
+	%\input{Prepare/References}				%%% References;
+
+\end{document}
+

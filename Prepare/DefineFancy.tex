@@ -1,0 +1,37 @@
+
+%%%% Define you own styles of hander and footer;
+%% empty: Empty hander and footer;
+%% plain: Empty hander, page number in the mid of footer;
+%% headings: Empty footer, the title and page number in hander;
+%% myheadings: Empty footer, some information defined by yourself and the page number in hander;
+
+
+%% fancy: Define the hander and footer by yourself; (supported by fancyhdr)
+%% E: Even;		O: Odd;
+%% L: Left;		C: Center;		R: Right;		(for both hander and footer)
+%% H: Hander;		F: Footer;
+\pagestyle{fancy}
+\fancyhead{}	% clear all fields
+\fancyhead[LO,RE]{\bfseries \leftmark}
+\fancyhead[RO,LE]{\includegraphics[scale=0.5]{./Links/Log.png}}
+\fancyfoot[CE,CO]{\bfseries \thepage}
+
+
+%%% the setting of the line in the hander;
+%\renewcommand{\headrulewidth}{0.4pt}
+%%% the setting of the double lines in the hander;
+\makeatletter
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+\hrule \@height 1.0pt \@width \headwidth\vskip1pt	% the size of above line is 1pt;
+\hrule \@height 0.5pt \@width \headwidth			% the size of below line is 0.5pt; 
+\vskip-2\headrulewidth\vskip-1pt}					% the distance between two lines is 1pt; 
+%%% the vertical spacing between the double lines and the text below;
+\vspace{6mm}}
+\makeatother
+%%----------------------------------------------------------------------
+
+
+%%% the setting of the line in the footer;
+\renewcommand{\footrulewidth}{0.4pt}
+
+

@@ -1,0 +1,974 @@
+    前两章主要讨论了在孤立情况和外部势场作用下聚合物单链的统计性质.
+    在这里我们将讨论在溶液中和熔融状态下多条相互作用聚合物链更真实的情况,
+    而一直被忽略的分子内的长程作用力也将包含在公式中(formalism).
+    \section{从粒子到场}
+    正如第一章所讨论的那样,
+    基于场方法模拟非均匀聚合物的一个基本的原理就是将基于粒子的模型转换为统计场理论.
+    本章一个重要的目标就是说明如何对庞大的聚合物和复杂流体体系进行粒子到场的变换.
+    这一般的方法就是使用一个与Hubbard-Stratonovich变换有关的有效技术(formal
+    technique),
+    这种技术可用粒子与一个或多个辅助场之间的相互作用来代替具有解耦作用的粒子(或聚合物段)间的相互作用.
+    我们可以看到这些场与上一章我们讨论的外场发挥了相同的作用,
+    尽管它们是流体内部产生的. 本章描述的方法是在凝聚态(Chakin and Lubensky,
+    1995), 经典液态(Caillol, 2003), 以及聚合物物理共同体(Edwards, 1996;
+    Helfend, 1975; Hong and Noolandi, 1981 )中比较熟知的.
+    然而只是最近才有场理论是软凝聚态物质体系是计算机模拟的基础的结论.
+    \par
+    无论是从流体的原子的还是介观的原始模型粒子到场的变换都是可做的.
+    我们可以从单原子流体最简单的情况开始比如氩. 
+%\par
+ %   前两章主要讨论了在孤立情况和外部势场作用下聚合物单链的统计性质\.在此我们将讨论在溶液中和熔融状态下多条相互作用聚合物更现实的情况\.这需要处理属于不同聚合物链段之间的相互作用\,而一直被忽略的分子内的长程作用力也将包含在形式体系上(formalism)\.
+  %  \subsecton
+    \subsection{正则系综下的单原子流体}
+    在正则系综中, 一个体系被认为是对物质交换是封闭的, 但对能量交换是开放的,
+    它通过与一个在固定温度$T$下的热源交换热量.　一个具有$n$个不同原子限制在体积为$V$上的经典的单原子流体的正则配分函数可以表示成(Chandler,
+    1987)
+\label{subsec.equations}
+    \begin{equation}
+        \begin{aligned}
+            Z_C(n, V, T)=\frac{1}{n!\lambda_T^{3n}}\int d\bm{r}^n
+            \exp[-\beta U(\bm{r}^n)].
+        \end{aligned}
+        \label{eq.1}
+    \end{equation}
+其中$\lambda_T=\frac{h}{\sqrt{2\pi mk_BT}}$是热波长, $m$是原子质量,
+$h$是Planck常数. 势能$U(\bm{r}^n)$依赖于$n$个原子的位置关系,
+通过确定它的数学形式可以定义一个流体的特殊的原子模型.
+通常情况下式(1.2)是対势能的准确描述. 为了便于说明, 我们将采用这种观点,
+并写成\\
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           U(\bm{r}^n)=\frac{1}{2}\sum_{j=1}^n \sum_{k=1(\neq j)}^n
+           u(|\bm{r}_j-\bm{r}_k|).
+       \end{aligned}
+       \label{eq.2}
+    \end{equation}
+其中$u(r)$是我们熟悉的対势函数(Hansen and McDnald,
+1986).表达式中的因子$\frac{1}{2}$纠正了在求和时每个粒子的対势函数重复算了两次的误差.
+就氩而言,
+式(1.3)给出的Lennard-Jones势为适合$u(r)$量子化学的计算提供了一个合理的两参数法.
+更一般的, 这也可以用来处理一大类原子流体, 甚至某些分子流体(比如甲烷),
+它们可以通过保持$u(r)$形式的任意性, 用球对称対势函数来描述.
+\par
+影响粒子到场变换的对$u(r)$一个必要的限制就是接触势(on
+contact)必须是有限的, 即$|u(0)|<\infty$. 这似乎排除了比如许多重要的势函数,
+包括Lennard-Jones势和硬核势(the hard sphere potential),
+而实际上, 在不影响流体结构和热动力学的情况下,
+将这样的势正则化使$|u(0)|$有限是很简单的.
+比如说Lennard-Jones势可以通过一个简单的位移$\delta$正则化, 根据
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           u(r)=4\epsilon\{ [\frac{(r+\delta)}{\sigma}]^{-12}-
+           [\frac{(r+\delta)}{\sigma}]^{-6} \}.
+      \end{aligned}
+       \label{eq.3}
+    \end{equation}
+选$\delta=0.01\sigma$会得到$u(0)=4\times10^{24}$,
+这个数如此之大以至于重叠的粒子结构不会给$Z_C$提供可视的贡献, 因此没有热力学作用.
+同样地, 在不影响流体的热力学性质的情况下, 也可以将一个硬球势正则化, 
+通过用一个有限但非常大的势阶跃来代替在硬核直径$r=\sigma$处无限势阶跃.
+下面，我们假设$u(r)$都可以通过这样的方式正则化.
+\par
+接下来的任务就是用微观密度算子(microscopic density
+operator)来改写(\ref{eq.2}). 通过类比式(3.3),
+我们将微观粒子密度定义为集中在每个原子坐标的狄拉克$\delta$函数的总和
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \hat{\rho}(\bm{r})=\sum_{j=1}^{n} \delta(\bm{r}-\bm{r}_j).
+     \end{aligned}
+       \label{eq.4}
+    \end{equation}
+由此可见
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+         U(\bm{r}^n)=\frac{1}{2} \int d\bm{r} \int
+           d\bm{r^{'}}\hat{\rho}(\bm{r})u(|\bm{r}-\bm{r^{'}}|)\hat{\rho}(\bm{r^{'}})-\frac{1}{2}nu(0).
+     \end{aligned}
+       \label{eq.5}
+    \end{equation}
+其中最后一项扣除了包含在第一项中n个原子的自身相互作用.
+因此(\ref{eq.1})可以被写成
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Z_C=\frac{z_0^n}{n!} \int d\bm{r}^n \exp \big( -\frac{\beta}{2}\int d\bm{r}\int
+           d\bm{r^{'}}\hat{\rho}(\bm{r})u(|\bm{r}-\bm{r^{'}}|)\hat{\rho}(\bm{r^{'}})
+           \big).
+     \end{aligned}
+       \label{eq.6}
+    \end{equation}
+其中$z_0=\exp(\beta u(0)/2)/{\lambda_T^3}$.
+从这个结果可以看到在初始点势能的值$u(0)$,
+它只影响流体的化学势而没有任何热力学后果.
+\par
+场到粒子的变换的下一步就是利用$\delta$泛函的定义,　即
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \int D\rho\ \delta[\rho-\hat{\rho}]F[\rho]=F[\hat{\rho}].
+         \end{aligned}
+       \label{eq.7}
+    \end{equation}
+$F[\rho]$为任意泛函.
+$\delta$函数可以看做是,
+在定义域的所有我们所关心的点处，除非$\rho(\bm{r})$和$\hat{\rho(\bm{r})}$相等,
+否则其值为0的一个无限维的狄拉克$\delta$函数.
+一个非常有用的$delta$函数的复指数表达式通过用$M_g$离散空间可以演变成
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \delta[\rho-\hat{\rho}] &\approx\prod_{\bm{r}} \delta(\rho(\bm{r})-\hat{\rho}(\bm{r}))
+           \\&=\frac{1}{(2\pi)^{M_g}}\prod_{\bm{r}}\left\{
+               \int_{-\infty}^{\infty}
+               d\omega(\bm{r})e^{i\omega(\bm{r})[\rho(\bm{r})-\hat{\rho}(\bm{r})]}
+               \right\}
+           \\&=\int D\omega\ e^{i\int\ d\bm{r}\ 
+           \omega(\bm{r})[\rho(\bm{r})-\hat{\rho(\bm{r})}]}.
+         \end{aligned}
+       \label{eq.8}
+    \end{equation}
+上述表达式的第二行是根据等式(A.15)的应用得出来的,
+其中(A.15)表示在网格点$\bm{r}$处一维的$\delta$函数$\delta(\rho(\bm{r})-\hat{\rho}(\bm{r}))$.
+前置因子$\frac{1}{(2\pi)^{M_g}}$包含了所有网格点的归一化因子.
+(\ref{eq.8})最后一个表达式是连续的描述,
+而且可以看作是关于辅助场$\omega(\bm{r})$泛函积分$\int D\omega$正式的定义.
+非常重要的是要注意到$\omega(\bm{r})$是一个标量场,
+而且(\ref{eq.8})中的泛函积分在每个$\bm{r}$处沿着整个实轴进行.
+\par
+将正则配分函数转换成统计场理论的下一步是将$F[\rho]=1$时的(\ref{eq.7})插入(\ref{eq.6})的被积函数中,
+这将会推出
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Z_C=\frac{z_0^n}{n!} \int D\rho \int d\bm{r}^n \delta[\rho-\hat{\rho}] \exp \big( -\frac{\beta}{2}\int d\bm{r}\int
+           d\bm{r^{'}}\rho(\bm{r})u(|\bm{r}-\bm{r^{'}}|)\rho(\bm{r^{'}})
+           \big).
+     \end{aligned}
+       \label{eq.9}
+    \end{equation}
+其中我们用到了任意一个泛函$G[\rho]$的$\delta$函数的以下性质:
+$\delta[\rho-\hat{\rho}]G[\hat{\rho}]=\delta[\rho-\hat{\rho}]G[\rho]$.
+接下来将(\ref{eq.8})作为$\delta$函数插入, 结果表达式将会变成
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Z_C=\frac{z_0^n}{n!} \int D\rho \int D\omega \int d\bm{r}^n
+           e^{i\int d\bm{r}\omega(\rho-\hat{\rho}) -\frac{\beta}{2}\int d\bm{r}\int
+           d\bm{r^{'}}\rho u\rho}.
+     \end{aligned}
+       \label{eq.10}
+    \end{equation}
+\par
+非常重要地是要注意, 经过这些变换,
+$\exp(-i\int d\bm{r} \omega
+\hat{\rho})$是被积函数中唯一依赖于原子坐标$\bm{r}^n=(\bm{r}_1,\ldots,\bm{r}_n)$的因子.
+积分在n个粒子位置上的因式分解是
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \int d\bm{r}^n e^{-i\int d\bm{r} \omega \hat{\rho}}&=\int d\bm{r}^n
+           e^{-i\sum_{j=1}^n \omega(\bm{r}_j)}
+           \\&=\prod_{j=1}^n \left\{ \int_V d\bm{r}_j e^{-i\omega(\bm{r}_j)}
+           \right\}=(VQ[i\omega])^n.
+    \end{aligned}
+       \label{eq.11}
+    \end{equation}
+其中
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Q[i\omega]\equiv \frac{1}{V}\int_V d\bm{r} e^{-i\omega(\bm{r})}
+    \end{aligned}
+       \label{eq.12}
+    \end{equation}
+泛函$Q[i\omega]$可以解释为单粒子配分函数,
+即一个不与其它原子相互作用,
+而仅仅只与一个纯虚场$\omega{\b{r}}$相互作用的原子对配分函数的贡献.
+正如第三章所讨论的, 单原子配分函数也有相同的解说和归一化$Q[0]=1$, 
+因此我们采用相同的符号Q. 显而易见, $Q[i\omega]$是一个原子的局部泛函,
+然而对于一个聚合物分子来说, 它是一个高度非局部泛函. 因此,
+相比于聚合物,计算原子的$Q[i\omega]$要简单得多.
+\par
+将(\ref{eq.10})和(\ref{eq.11})联合起来, 粒子到场的变换就完成了.
+配分函数可以表达成下面的统计场理论:
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+          Z_C=(n, V, T)=Z_0\int D\rho \int D\omega \exp(-H[\rho, \omega]).
+    \end{aligned}
+       \label{eq.13}
+    \end{equation}
+其中泛函
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           H[\rho, \omega]=-i\int d\bm{r}\ 
+           \omega(\bm{r})\rho(\bm{r})+\frac{\beta}{2}\int d\bm{r} \int
+           d\bm{r^{'}} \rho(\bm{r})u(|\bm{r}-\bm{r^{'}}|)\rho(\bm{r^{'}})-n\ln
+           Q[i\omega].
+    \end{aligned}
+       \label{eq.14}
+    \end{equation}
+被称为"有效哈密顿量"或者"作用"(Pairsi, 1988; Zee,2003).
+(\ref{eq.13})中前置因子: $Z_0\equiv(z_0V)^{n}/{n!}$与理想气体的配分函数成正比.
+\par
+(\ref{eq.13})是本节的中心结论,
+即可用任意対势函数描述成对相互作用的单原子流体的配分函数可以表示成统计场论.
+配分函数已被证明它是与一个类似波尔曼因子: $\exp(-H[\rho,
+\omega])$关于两个波动场(fluctuating field)$\rho(\bm{r})$和$\omega(\bm{r})$的泛函成正比的.
+第一个场$\rho$可以被解释为波动粒子数密度,
+因为它限制了在(\ref{eq.9})中引入的$\hat{\rho}$.
+第二个场$\omega(\bm{r})$可以被看做是波动非均匀化学场,
+因为它作为有效哈密顿量H的第一项中的场$\rho$的共轭变量出现.
+$\omega(\bm{r})$与流体的平衡化学式$\mu$之间的对应关系在4.1.3节将更为精确.
+\par
+\ref{eq.14}表明具有自由能泛函特点的有效哈密顿量有三个主要的贡献. 第一项:$-i\int
+d\bm{r}$可以被解释为密度场$\rho$与纯虚场相互作用的能量. 第二项与$\int d\bm{r}
+\int d\bm{r^{'}} \rho u \rho$成比例,　表示与粒子间相互作用的能量.
+最后是,　项$-n\ln
+Q[i\omega]$表示在$i\omega(\bm{r})$势下具有n个不相互作用的流体的平移熵(相对于理想气体熵).
+虽然$H[\rho, \omega]$有焓和熵的贡献也有自由能特性,
+但是它不同于流体的Helmhohlz自由能A,　因为后者包括了与波动场$\rho$和$\omega$有关的熵贡献.
+事实上Helmholz自由能的计算包含了熟悉的热力学关联公式的使用
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           A(n, V, T)=-k_BT \ln Z_C(, V, T).
+       \end{aligned}
+       \label{eq.15}
+    \end{equation}
+其中$Z_C$是通过(\ref{eq.13})对场$\rho$和$\omega$进行泛函积分得到的.
+\par
+非常明显地可以看到,
+化学势场$\omega$是在支持单个原子与纯虚场$i\omega$相互作用的情况下, 原子间解耦相互作用结果.
+这个场是内部作用的结果, 但从计算单粒子配分函数的角度看, 它可以看作是外部施加的.
+因此可以将$\omega$看作是上一章中的外部场.
+\par
+在实理论中出现纯虚数, 咋一看也许会感到惊讶,
+因为配分函数$Z_C$是实的，正如场$\rho$和势函数$\mu$一样.
+有效哈密顿量$H$很明显是复的而且可以分解成实部和虚部$H_R+iH_I$.
+一个非常重要的结论就是:
+在(\ref{eq.14})被积函数中类似于玻尔兹曼因子的$\exp(-H)$包含了一个复相因子$\exp(-iH_I)$,
+它根据$\rho$和$\omega$的结构而回出现符号振荡.
+因此定义配分函数的的泛函积分包含了一个振荡的被积函数. 这个特点将会在第六章看到,
+在模拟像这样的场理论时会产生困难(称为"符号问题"), 这会要求特殊的数值技术.
+\par
+有人可能会问是否真的需要进行一个复的泛函积分才能得到一个实的配分函数,
+事实上,我们可以利用$Z_C$是实的这一事实,
+我们可以在原始等式上加上(\ref{eq.13})的复共轭, 可得到
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Z_C(n, V, T)=Z_0 \int D\rho \int D\omega \exp(-H_R[\rho, \omega])
+           \cos(H_I[\rho, \omega]).
+        \end{aligned}
+       \label{eq.16}
+    \end{equation}
+因此被积函数显然是实的. 然而由于相因子$\cos(H_I)$不是正定的,
+所以被积函数仍然是振荡的.
+因此如果我们希望将粒子语言转换成场语言, 符号问题是不可避免的,
+其中粒子语言中统计质量$\exp(-\beta U)$是正定的,
+但在场理论中对应的量$\exp(-H)$却不是. 尽管如此,
+但场理论描述的优势一般来说还是大于由非正定性带来的困难的,
+至少对于相对浓缩的聚合物熔体和溶液是这样的.
+下面将证明用(\ref{eq.13})给出的复场理论比(\ref{eq.16})给出的场理论要更方便,
+当然, 它们是等价的.
+\par
+(\ref{eq.13})-(\ref{eq.14})定义了一个包含两个场的场论,
+该场论适用于带有任意(但正则化的)対势函数$u(r)$的单原子流体. 对某些特殊的势函数,
+即从
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \int d\bm{r^{'}} u(|\bm{r}-\bm{r^{'}}|)
+           u^{-1}(|\bm{r^{'}}-\bm{r^{''}}|).
+       \end{aligned}
+       \label{eq.17}
+    \end{equation}
+意义上来说是可逆的, 且$u(|\bm{r}-\bm{r^{'}}|)$是正定的. 特别地,
+如果这些都满足了, 那么$\ref{eq.13}$是式(C.28)形式的高斯积分且可以进行解析计算.
+如果$u$的傅里叶变换
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \hat{u}(\bm{k})=\int d\bm{r}\ u(r)\exp(-i\bm{k\cdot
+           r})=4\pi\int_0^{\infty} dr\ r^2 j_0(kr)u(r).         
+       \end{aligned}
+       \label{eq.18}
+    \end{equation}
+存在且是对所有的$k=|\bm{k}|$都是正的话,
+则u满足正定和可逆的双重条件. 对于这样的势, (\ref{eq.13})可以简化成
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+       Z_C(n, V, T)=Z_0\int D\omega \exp(-H(\omega)).
+       \end{aligned}
+       \label{eq.19}
+    \end{equation}
+其中一个场独立的归一化因子已被吸收到关于$\omega$的泛函积分的定义中去了.
+新的有效的哈密顿量只依赖于单个场$\omega$
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           H[\omega]=\frac{1}{2\beta}\int d\bm{r} \int d\bm{r^{'}}\
+           \omega(\bm{r}) u^{-1}(|\bm{r}-\bm{r^{'}}|)\omega(\bm{r^{'}}) -n\ln
+           Q[i\omega]
+       \end{aligned}
+       \label{eq.20}
+    \end{equation}
+粒子与粒子间的相互作用包含在了这个哈密顿量的第一项中, 而且哈密顿量还包含了对势函数的逆.
+\par
+应用(\ref{eq.19})-(\ref{eq.20})简化描述的対势的重要粒子包括单参数排斥性$\delta$函数势
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           u(r)=u_0\delta(\bm{r})
+       \end{aligned}
+       \label{eq.21}
+    \end{equation}
+其中$u_0 >0 $, 而且排斥Yukawa(或Debye-H$\ddot{u}$ckel)势
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           u(r)=\frac{u_0}{4\pi r}\exp(-kr).
+       \end{aligned}
+       \label{eq.22}
+    \end{equation}
+其中$u_0>0, k\geq 0$. 当$k=0$时,后者会产生排斥库伦势.
+这些势在$r=0$处是没有正则化的,但是这个是很容易做到的. 例如, 排斥阶跃势
+\label{subsec.equations}
+   \begin{equation}
+       u(r)=\left\{
+       \begin{aligned}
+           3u_0/(4\pi\delta^3),& &\ 0\leq r\leq\delta
+               \\
+           0,& &\ r>\delta
+       \end{aligned}
+       \right.
+       \label{eq.23}      
+    \end{equation}
+在$u_0, \delta>0$时, 当$\delta\longrightarrow 0_{+}$,
+它与$\delta$函数势(\ref{eq.21})有相同的傅里叶变换,但是在初始点是有限的.
+对于非常小的但不为零的$\delta$,
+\ref{eq.23}表示的势也满足非负性和正则性的法则[波数$k\lesssim O(1/\delta)$].
+\par
+不幸的是,大多数具有硬核的实际对势不满足(\ref{eq.19})-(\ref{eq.20})适用的条件,
+比如(\ref{eq.3})的正则Lennard-Jones势. 在这样的情况下,
+必须使用等式(\ref{eq.13})-(\ref{eq.14})的全场理论. 从全理论的推导可以看出,
+为解耦相互作用提出的方法并不局限于对可分解的势函数,
+事实上，当模型中$U(\bm{r})$存在三体相互作用时场到粒子的变换也是可以进行的.
+尽管像这样的相互作用不能简化成只包含单个$\omega$场的场理论.
+
+\subsection{巨正则系综中的单原子流体}
+解耦技术可推广用于推导其它重要系综的统计场理论.例如,
+用对物质交换和能量交换都是开放的巨正则系综来研究流体体系的统计热力学是非常方便(Chandler,
+1987; McQuarrie, 1976; Hansen and McDonald, 1986).
+相关的巨正则系综的配分函数可以写成
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Z_G(\mu, V ,T)=\sum_{0}^{\infty} \exp(\beta\mu n)Z_C(n, V,T).
+       \end{aligned}
+       \label{eq.24}      
+    \end{equation}
+其中$\mu$是化学势且是对所有的原子数求和.
+将(\ref{eq.10})-(\ref{eq.11})插入表达式的右端,　则立即得
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Z_G=\int D\rho \int D\omega\ e^{i\int d\bm{r}\ 
+           \omega\rho-(\beta/2)\int d\bm{r} \int d\bm{r{'}} \rho u
+           \rho}\sum_{n=0}^{\infty}\frac{(zVQ[i\omega])^n}{n!}.
+       \end{aligned}
+       \label{eq.25}      
+    \end{equation}
+其中$z\equiv z_0\exp(\beta u)$是一个活跃量(the activity).
+对关于粒子数的求和的估计推出了巨正则系综的理想场论:
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Z_G(\mu, V ,T)=\int D\rho \int D\omega \exp(-H_G[\rho, \omega]).
+       \end{aligned}
+       \label{eq.26}      
+    \end{equation}
+其中
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           H_G[\rho, \omega]=-i\int
+           d\bm{r}\omega(\bm{r})\rho{\bm{r}}+\frac{\beta}{2}\int d\bm{r}
+           \int d\bm{r^{'}}\ \rho(\bm{r}) u(|\bm{r}-\bm{r^{'}}|)
+           \rho(\bm{r^{'}})-zVQ[i\omega].
+       \end{aligned}
+       \label{eq.27}      
+    \end{equation}
+在这个系综中的热力学联系是通过状态方程
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           pV=k_B T\ln Z_G(\mu, V, T).
+       \end{aligned}
+       \label{eq.28}      
+    \end{equation}
+得到的, 其中$p$是压力, 且根据
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \langle n \rangle=\left(\frac{\partial \ln Z_G(\mu, V, T)}{\partial \ln z}
+           \right)_{V, T}.
+       \end{aligned}
+       \label{eq.29}      
+    \end{equation}
+可通过调节化学势$\mu$和活跃量$z$来控制平均粒子数.
+\par
+比较正则系综和巨正则系综的有效哈密顿量(\ref{eq.14})和$\ref{eq.27}$,
+我们可以看到它们唯一的区别在于最后一项平移熵的形式不同,
+因此我们可以直接在场理论的框架中切换系综. 最后,
+如果$u(r)$正如前一节描述的那样是正定且可逆的,
+那么巨正则系综同样地也可以简化成只包含场$\omega$的统计场理论:
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           Z_G(\mu, V ,T)=\int D\omega \exp(-H_G[\omega]).
+       \end{aligned}
+       \label{eq.30}      
+    \end{equation}
+其中有效哈密顿量为
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           H_G[\omega]=\frac{1}{2\beta}\int d\bm{r}
+           \int\bm{r^{'}}\omega(\bm{r})u^{-1}(|\bm{r}-\bm{r^{'}}|)\omega(\bm{r^{'}})-zVQ[i\omega].
+       \end{aligned}
+       \label{eq.31}      
+    \end{equation}
+再一次(\ref{eq.20})与(\ref{eq.31})唯一的区别在于平移熵项.
+
+\subsection{单原子流体的平均和运算符}
+已经证明了如何将基于原子的粒子模型转换成场理论,
+现在比较适合来讨论我们所关心的系综平均量是如何计算的.
+对某些任意可视量$G[\rho, \omega]$,
+其可以表示成波动场量$\rho$和$\omega$的泛函的形式, $G$的系综平均可以定义成
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \langle G[\rho, \omega] \rangle=\frac{\int D\rho \int D\omega G[\rho,
+           \omega] \exp(-H[\rho, \omega])}{\int D\rho \int D\omega
+           \exp(-H[\rho, \omega])}.
+       \end{aligned}
+       \label{eq.32}      
+    \end{equation}
+在正则系综中这个表达式非常适用与使用全场理论来计算平均值.
+相应的巨正则系综的平均可用$H_G[\rho, \omega]$替换$H[\rho, \omega]$来定义.
+当対势是可逆的且(\ref{eq.19})-(\ref{eq.20})或者(\ref{eq.30})-(\ref{eq.31})的简单理论适用的情况下,
+可视量$G[\omega]$的平均可定义为
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \langle G[\omega] \rangle=\frac{\int D\omega G[\omega] \exp(-H[\omega])}{\int D\omega
+           \exp(-H[\omega])}.
+       \end{aligned}
+       \label{eq.33}      
+    \end{equation}
+其中在巨正则系综中用$H_G[\omega]$来代替$H[\omega]$也是很好理解的.
+\par
+在正则系综中一个非常重要的热力学量就是通过$\mu=(\partial A/\partial n)_{T,
+V}$定义的化学式, 它来自(\ref{eq.13})-(\ref{eq.15})
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \mu=\mu_0-k_BT \langle \ln Q[i\omega] \rangle.
+       \end{aligned}
+       \label{eq.34}      
+    \end{equation}
+其中$\mu_0=k_B T(\partial \ln Z_0/\partial n)_{T, V}$是理想气体的化学式.
+这个表达式表明, 化学势的额外贡献是由关于波动场的运算符$-k_BT\ln
+Q[i\omega]$的平均值给出的. 对$\omega$通常的认识就是,
+这个运算符既有实部也有复部, 但是它的虚部平均值为零, 只留下化学势的纯实部.
+\par
+在巨正则系综中, 一个紧密相关的热力学量是平均粒子密度,定义为$\rho_0\equiv
+\langle n \rangle\/V$, $V$是(\ref{eq.29})给出的. 通过式中所示倒数可以看到,
+根据$\langle n \rangle=zV\langle Q[i\omega] \rangle$, 因此
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \rho_0 \equiv \frac{\langle n \rangle}{V}=z\langle \ln Q[i\omega] \rangle.
+       \end{aligned}
+       \label{eq.35}      
+    \end{equation}
+因此$zQ[i\omega]$可以看作是一个运算符,
+其平均在巨正则系综中关于$\omega$场波动求平均会推出平均粒子密度.
+\par
+另一个重要的系综平均的类是与粒子密度相关函数有关的.
+在包含$\rho$和$\omega$场的全理论中,
+密度相关函数可以直接用关于$\rho$合适的因子的平均来计算. 例如,
+在正则系综中密度－密度相关函数$\langle
+\rho(\bm{r})\rho(\bm{r^{'}})\rangle$的计算可以通过
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \langle \rho(\bm{r})\rho(\bm{r^{'}})\rangle=\frac{\int D\rho \int
+           D\omega \rho(\bm{r})\rho(\bm{r^{'}})\exp(-H[\rho, \omega])}{\int D\rho \int D\omega
+           \exp(-H[\rho, \omega])}.
+       \end{aligned}
+       \label{eq.36}      
+    \end{equation}
+这个量与简单流体中的$X$射线和中子散射实验中的散射辐射强度有关(Hansen and
+McDonald, 1986). 相似地, 在巨正则系综中原子平均局部密度可以通过
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \langle \rho(\bm{r})\rangle=\frac{\int D\rho \int
+           D\omega \rho(\bm{r})\exp(-H[\rho, \omega])}{\int D\rho \int D\omega
+           \exp(-H[\rho, \omega])}.
+       \end{aligned}
+       \label{eq.37}      
+    \end{equation}
+给出.
+\par
+在巨正则系综中$\rho(\bm{r})$的另一种推导是具有指导意义的.
+注意到(\ref{eq.37})可以重新表示成
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+          \langle \rho(\bm{r}) \rangle=\frac{1}{Z_G} \int D\rho \int D\omega\
+           e^{zVQ[i\omega]-(\beta/2)\int d\bm{r}\int d\bm{r^{'}}\rho u\rho}
+           \frac{\delta}{i\delta\omega(\bm{r})} e^{i\int d\bm{r}\ \omega\rho}.
+       \end{aligned}
+       \label{eq.38}      
+    \end{equation}
+假设当$\omega(\bm{r})\longrightarrow\pm\infty$时, $\int D\rho
+\exp{-H_G}$衰退为0对值域中所有的点$\bm{r}$都成立, 通过分部积分将会推出
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \langle \rho(\bm{r}) \rangle&=-\frac{1}{iZ_G} \int D\rho \int D\omega\
+           e^{\int d\bm{r} \omega\rho(\beta/2)\int d\bm{r}\int d\bm{r^{'}}\rho u\rho}
+           \frac{\delta}{\delta\omega(\bm{r})} e^{zVQ[i\omega]}
+           \\
+           &=\langle izV\frac{\delta Q[i\omega]}{\delta\omega(\bm{r})}
+           \rangle=\langle z\exp[-i\omega(\bm{r})] \rangle.
+       \end{aligned}
+       \label{eq.39}      
+    \end{equation}
+其中在推导的最后一个表达式中,
+我们使用了(\ref{eq.12})给出的单粒子配分函数的显示形式. 最后一个表达式表明,
+在巨正则系综中运算符$\rho{\bm{r}}$的平均是和$z\exp[-i\omega(\bm{r})]$是等价的.
+进一步, 对(\ref{eq.39})两边求体积平均会推出(\ref{eq.35}), 与预期的
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \rho_0=\frac{1}{V}\int d\bm{r}\langle \rho(r) \rangle.
+       \end{aligned}
+       \label{eq.40}      
+    \end{equation}
+是保持一致的.
+\par
+另外一个我们感兴趣的热力学量是压力$p$.
+在巨正则系综中, 当$Z_G$可以被计算时, 压力可通过(\ref{eq.28})直接计算出来.
+在正则系综的场理论框架中, 压力是一个更不可估摸的量.
+一种对不同的对势$u(r)$都适用的方法是通过$Z_C$的粒子表达式推导出来的(Chandler,
+1987; McQuarrie, 1986)
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \beta p/\rho_0=1-\frac{\beta}{6n} \sum_{j=1}^{n} \sum_{k=1(\neq j)}^{n} \langle v(|\bm{r_j}-\bm{r_k} |)\rangle.
+       \end{aligned}
+       \label{eq.41}      
+    \end{equation}
+在这个表达式中, $\rho=n/V$是正则系综中的平均密度, $v(r)=rdu(r)/dr$是维里函数.
+(\ref{eq.41})可以重写成带有关于微观粒子密度平均的项,
+反过来也可以用场理论描述中的$\rho$场的平均来代替:
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \beta p\rho_0=1-\frac{\beta}{6n} \int d\bm{r} \int d\bm{r^{'}}
+           v(|\bm{r}-\bm{r^{'}} |) [\langle \rho(\bm{r})\rho(\bm{r^{'}})
+           \rangle -\delta(\bm{r}-\bm{r^{'}})\langle\rho(\bm{r})\rangle ].
+       \end{aligned}
+       \label{eq.42}      
+    \end{equation}
+
+%文章引用\,\cite{,}.
+%\subsection{方程}
+%\label{subsec.equations}
+%\begin{itemize}
+%	\item[$\bullet$] 示例 1
+%	\begin{equation}
+%		\begin{aligned}
+%			a = b,
+%			\\
+%			b = c.
+%		\end{aligned}
+%		\label{eq.1}
+%	\end{equation}
+%	\item[$\bullet$] 示例 2
+%	\begin{equation}
+%		\left\{
+%		\begin{aligned}
+%			a = b,
+%			\\
+%			b = c.
+%		\end{aligned}
+%		\right.
+%		\label{eq.2}
+%	\end{equation}
+%\end{itemize}
+%
+%
+%\subsection{表格}
+%\label{subsec.table}
+%%% A, a, I, i, 1
+%%% \Alph, \alph, \Roman, \roman, \arabic
+%\begin{enumerate}[(I)]
+%	\item 示例 1
+%	\begin{table}[htbp]
+%		\centering
+%		\caption{表格示例}
+%		\label{tab.1}
+%		%% set the width of each column;
+%		\begin{tabular}{p{3.5cm}|p{2cm}|p{5cm}<{\centering}}
+%			\hline
+%			a &b &c\\
+%			\hline
+%		\end{tabular}
+%	\end{table}
+%\end{enumerate}
+%
+%
+%\subsection{图像}
+%\label{subsec.figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \begin{minipage}[t]{0.2\linewidth}
+%%        \centerline{\includegraphics[scale=0.4]{figure/figure1.png}}
+%        \footnotesize{\centerline{(a)}}
+%    \end{minipage}
+%    \hspace{0.2\linewidth}
+%    \begin{minipage}[t]{0.2\linewidth}
+%%        \centerline{\includegraphics[scale=0.4]{figure/figure2.png}}
+%        \footnotesize{\centerline{(b)}}
+%    \end{minipage}
+%    \caption{图像示例}
+%	\label{fig.1}
+%\end{figure}
+%
+
+
+%\section*{致谢} 
+
+%%% 附录;
+%    \newpage
+%\begin{appendix}
+    \section{附录}
+    公式的推导.
+    \par
+    \textbf{公式(\ref{eq.8})}
+    \\
+    由书上附录(A.15)($P_{389}$)$\delta$函数的定义
+\label{subsec.equations}
+    \begin{equation}
+        \begin{aligned}
+            \delta(x)=\frac{1}{2\pi}\int^{+\infty}_{-\infty}dk\ \exp(ikx)
+        \end{aligned}
+        \label{A.1}
+    \end{equation}
+    \par
+    \textbf{公式(\ref{eq.9})} 
+    \\
+    由(\ref{eq.7}):
+\label{subsec.equations}
+   \begin{equation}
+       \begin{aligned}
+           \int D\rho\ \delta[\rho-\hat{\rho}]F[\rho]=F[\hat{\rho}].
+         \end{aligned}
+       \label{A.2}
+    \end{equation}
+    由(\ref{eq.6}):
+  \begin{equation}
+        \begin{aligned}
+              Z_C=\frac{z_0^n}{n!} \int d\bm{r}^n \exp \big( -\frac{\beta}{2}\int d\bm{r}\int
+           d\bm{r^{'}}\hat{\rho}(\bm{r})u(|\bm{r}-\bm{r^{'}}|)\hat{\rho}(\bm{r^{'}})
+           \big).
+        \end{aligned}
+        \label{A.3}
+\end{equation}
+    令$F(\hat{\rho})=\exp \big( -\frac{\beta}{2}\int d\bm{r}\int
+           d\bm{r^{'}}\hat{\rho}(\bm{r})u(|\bm{r}-\bm{r^{'}}|)\hat{\rho}(\bm{r^{'}})
+           \big)$, 将此公式代入则(\ref{A.2}),
+           再将(\ref{A.2})左式代入(\ref{A.3})得到
+ \begin{equation}
+        \begin{aligned}
+            Z_C=\frac{z_0^n}{n!} \int d\bm{r}^n \int
+            D\rho\ \delta[\rho-\hat{\rho}]\ \exp \big( -\frac{\beta}{2}\int d\bm{r}\int
+           d\bm{r^{'}}\rho(\bm{r})u(|\bm{r}-\bm{r^{'}}|)\rho(\bm{r^{'}})
+           \big).
+        \end{aligned}
+        \label{A.4}
+\end{equation}
+    即为公式(\ref{eq.9}).
+\par
+    \textbf{公式(\ref{eq.10})}
+    \\
+    由公式(\ref{eq.8})
+ \begin{equation}
+       \begin{aligned}
+           \delta[\rho-\hat{\rho}]=\int D\omega\ e^{i\int\ d\bm{r}\ 
+           \omega(\bm{r})[\rho(\bm{r})-\hat{\rho(\bm{r})}]}.
+         \end{aligned}
+       \label{A.5}
+    \end{equation}
+    将(\ref{A.5})代替(\ref{A.4})中的$\delta$函数则得到公式(\ref{eq.10}).
+\begin{equation}
+       \begin{aligned}
+           Z_C=\frac{z_0^n}{n!} \int D\rho \int D\omega \int d\bm{r}^n
+           e^{i\int d\bm{r}\omega(\rho-\hat{\rho}) -\frac{\beta}{2}\int d\bm{r}\int
+           d\bm{r^{'}}\rho u\rho}.
+     \end{aligned}
+       \label{A.6}
+    \end{equation}
+
+\par
+\textbf{公式(\ref{eq.14})}
+\\
+由公式(\ref{eq.11})可知:
+\begin{equation}
+    \begin{aligned}
+        \int d\bm{r}^{n}\ e^{-i\int d\bm{r}\ \omega\hat{\rho}}=(VQ[i\omega])^{n}.
+    \end{aligned}
+    \label{A.7}
+\end{equation}
+将其化成指数形式则得到$e^{n\ln Q[i\omega]}$,
+再将其代入(\ref{A.6})则得到(\ref{eq.14})
+ \begin{equation}
+       \begin{aligned}
+           H[\rho, \omega]=-i\int d\bm{r}\ 
+           \omega(\bm{r})\rho(\bm{r})+\frac{\beta}{2}\int d\bm{r} \int
+           d\bm{r^{'}} \rho(\bm{r})u(|\bm{r}-\bm{r^{'}}|)\rho(\bm{r^{'}})-n\ln Q[i\omega].
+    \end{aligned}
+       \label{A.8}
+    \end{equation}
+\par
+\textbf{公式(\ref{eq.16})}
+\\
+由公式(\ref{eq.13})知
+   \begin{equation}
+       \begin{aligned}
+           Z_C(n, V, T)&=Z_0\int D\rho \int D\omega \exp(-H[\rho, \omega])
+                       \\
+                       &=Z_0\int D\rho \int D\omega \exp{-H_{R}[\rho,
+           \omega]}(\cos(H_{I}[\rho, \omega])+i\sin(H_{I}[\rho, \omega])).
+    \end{aligned}
+       \label{A.9}
+    \end{equation}
+因为$H[\rho, \omega]$为虚函数, 则成立$H[\rho, \omega]=H_{R}[\rho,
+\omega]+iH_{I}[\rho, \omega]$, 则由(\ref{A.9})知$Z_{C}$的共轭$\bar{Z}_{C}$为
+   \begin{equation}
+       \begin{aligned}
+           \bar{Z}_C(n, V, T)=Z_0\int D\rho \int D\omega \exp{-H_{R}[\rho,
+           \omega]}(\cos(H_{I}[\rho, \omega]))-i\sin(H_{I}[\rho, \omega])).
+    \end{aligned}
+       \label{A.10}
+    \end{equation}
+将(\ref{A.10})与(\ref{A.9})相加得到
+   \begin{equation}
+       \begin{aligned}
+           Z_C(n, V, T)+\bar{Z}_{C}(n, V, T)=2*(Z_0\int D\rho \int D\omega
+           \exp(-H_{R}[\rho, \omega])\cos(H_{I}[\rho, \omega])).
+    \end{aligned}
+       \label{A.11}
+    \end{equation}
+由于$Z_{C}$是实函数, 则有$Z_{C}=\bar{Z}_{C}$, 所以
+   \begin{equation}
+       \begin{aligned}
+           Z_C(n, V, T)=Z_0\int D\rho \int D\omega
+           \exp(-H_{R}[\rho, \omega])\cos(H_{I}[\rho, \omega]).
+    \end{aligned}
+       \label{A.12}
+    \end{equation}
+即为公式(\ref{eq.16}).
+\par
+\textbf{公式(\ref{eq.18})}
+\\
+利用高斯积分
+  \begin{equation}
+       \begin{aligned}
+           \hat{u}(\bm{k})&=\int d\bm{r}\ u(r)\exp(-i\bm{k\cdot
+           r})
+           \\
+           &=\int^{+\infty}_{0} dr\ \int^{2\pi}_{0} d\phi\ \int^{\pi}_{0}
+           d\theta\ u(r)\ r^{2}\ \sin(\theta)\exp(-ikr\cos(\theta))
+           \\
+           &=2\pi\int^{+\infty}_{0} dr\ \int^{1}_{-1}
+           d(\cos(\theta))\ u(r)\ r^{2}\ \exp(-ikr\cos(\theta))
+           \\
+           &=4\pi\int_0^{\infty} dr\ r^2 j_0(kr)u(r).\ \ \ \
+           (j_0{kr}=\sin(kr)/(kr))       
+       \end{aligned}
+       \label{A.13}
+    \end{equation}
+即公式(\ref{eq.18})得证.
+\par
+\textbf{公式(\ref{eq.20})}
+\\
+由书上附录$C$中的公式C.28($P_{399}$)
+   \begin{equation}
+       \begin{aligned}
+           \frac{ \int Df\ \exp[-(1/2)\int dx\ \int dx^{'}\ f(x)A(x,
+           x^{'})f(x^{'})+i\int dx\ J(x)f(x)]}{\int Df\ \exp[-(1/2)\int dx\ \int dx^{'}\ f(x)A(x,
+           x^{'})f(x^{'})]}
+           \\
+           =\exp{\left(-\frac{1}{2}\int dx\ \int dx^{'}\ J(x)A^{-1}(x,
+           x^{'})J(x^{'})\right)}.
+    \end{aligned}
+       \label{A.14}
+    \end{equation}
+将(\ref{A.8})中的$\omega(r)$看作是$J(x)$, $\rho$看作是$f(x)$, $\beta u$看作是$A$,
+令(\ref{A.14})左式中分子的值为$T$, 结合看(\ref{eq.13}), 则(\ref{eq.14})变成
+ \begin{equation}
+       \begin{aligned}
+           H[\rho, \omega]=\frac{1}{2\beta}\int d\bm{r} \int
+           d\bm{r^{'}} \omega(\bm{r})u^{-1}(|\bm{r}-\bm{r^{'}}|)\omega(\bm{r^{'}})-n\ln Q[i\omega].
+    \end{aligned}
+       \label{A.15}
+    \end{equation}
+由附录$B.13$($P_{391}$)知$T=\frac{(2\pi)^{N/2}}{(det\  
+u)^{1/2}}$, 知$T$是一个常数, 可以包含在积分变量中, 则得到公式(\ref{eq.20}).
+由代数中的迹的性质可知$T$也成立$T=\exp[-(1/2)Tr\ln(\beta u/2\pi)]$.
+\par
+\textbf{公式(\ref{eq.25})}
+\\
+根据公式(\ref{eq.24})
+ \begin{equation}
+       \begin{aligned}
+           Z_{G}(\mu, V, T)&=\sum^{\infty}_{n=0}\ \exp(\beta\mu n)Z_{C}(n,
+           V,T)%(根据(\ref{eq.13})$Z_{C}$的定义) 
+    \\
+           &=\sum^{\infty}_{n=0}\ \exp(\beta\mu n)\left( (z_{0}V)^{n}/(n!)\int D\rho \int
+           D\omega \exp(i\int d\bm{r}\ \omega\rho-\frac{\beta}{2}\int
+           d\bm{r}\int d\bm{r^{'}}\ \rho u \rho)+n\ln Q[i\omega] \right)
+           \\
+ &=\int D\rho \int
+           D\omega e^{(i\int d\bm{r}\ \omega\rho-\frac{\beta}{2}\int
+           d\bm{r}\int d\bm{r^{'}}\ \rho u \rho)} \left(\sum^{\infty}_{n=0} \exp(\beta\mu n)
+           (z_{0}V)^{n}/(n!)(Q[i\omega])^{n} \right)
+\\
+ &=\int D\rho \int
+           D\omega e^{(i\int d\bm{r}\ \omega\rho-\frac{\beta}{2}\int
+           d\bm{r}\int d\bm{r^{'}}\ \rho u \rho)} \sum^{\infty}_{n=0}
+           \frac{(\exp(\beta\mu)z_{0}V Q[i\omega])^{n}}{n!}.
+    \end{aligned}
+       \label{A.16}
+    \end{equation}
+即得到公式(\ref{eq.25}).
+\par
+\textbf{公式(\ref{eq.27})}
+\\
+即将(\ref{A.16})被积函数中的求和项写成指数的形式, 根据函数的$Taylor$展开,
+有$\sum^{\infty}_{n=0}\frac{(\exp(\beta\mu)z_{0}V
+Q[i\omega])^{n}}{n!}=e^{zVQ[i\omega]}$,
+将其代入(\ref{A.16})则得到公式(\ref{eq.27}).
+ \begin{equation}
+       \begin{aligned}
+           Z_{G}(\mu, V, T)&=\int D\rho \int
+           D\omega \exp(-H_{G}[\rho, \omega])
+           \\
+           &=\int D\rho \int
+           D\omega \exp(i\int d\bm{r}\ \omega\rho-\frac{\beta}{2}\int
+           d\bm{r}\int d\bm{r^{'}}\ \rho u+zVQ[i\omega]).
+    \end{aligned}
+       \label{A.17}
+    \end{equation}
+\par
+\textbf{公式(\ref{eq.31})的证明与(\ref{eq.20})的推导方法一样,参照(\ref{A.14})-(\ref{A.15})}.
+\par
+\textbf{公式(\ref{eq.34})}
+\\
+由(\ref{eq.15}), (\ref{eq.13})-(\ref{eq.14}), (\ref{eq.32})
+ \begin{equation}
+       \begin{aligned}
+           \mu&=(\partial A/\partial n)_{T, V}
+              \\
+              &=\frac{\partial}{\partial n}(-k_{B}T \ln Z_{C}(n, V, T))
+              \\
+              &=\frac{\partial}{\partial n}(-k_{B}\ln Z_{0}-k_{B}T\ln \int
+              D\rho\int D\omega\exp(-H[\rho, \omega]))
+              \\
+              &=-k_{B}T(\partial\ln Z_{0}/\partial n)_{T,
+              V}-k_{B}T\frac{\int D\rho \int D\omega
+             \ln Q[i\omega] \exp(-H[\rho,  \omega])}{\int D\rho \int D\omega
+              \exp(-H[\rho,  \omega])}
+              \\
+              &=-k_{B}T(\partial\ln Z_{0}/\partial n)_{T,V}-k_{B}T\langle \ln
+              Q[i\omega] \rangle.
+       \end{aligned}
+       \label{A.18}
+    \end{equation}
+即得到公式(\ref{eq.34}).
+\par
+\textbf{公式(\ref{eq.35})}
+\\
+根据(\ref{eq.29})由
+ \begin{equation}
+       \begin{aligned}
+           \rho_{0}&\equiv  \frac{\langle n \rangle}{V}=\left(\frac{\partial \ln
+           Z_{G}(\mu, V, T)}{\partial \ln z}\right)_{V, T}/V
+           \\
+           &=\frac{1}{Z_{G}} z \frac{\partial Z_{G}}{\partial z}/V
+           \\
+           &=\frac{1}{Z_{G}} z \int D\rho \int D\omega
+           Q[i\omega]\exp(-H_{G}[\rho, \omega])
+           \\
+           &=z\langle Q[i\omega] \rangle.
+    \end{aligned}
+       \label{A.19}
+    \end{equation}
+即得到公式(\ref{eq.35}).
+\par
+\textbf{公式(\ref{eq.39})第三个等式的推导}
+\\
+由公式(\ref{eq.12})
+ \begin{equation}
+       \begin{aligned}
+         Q[i\omega]=\frac{1}{V}\int d\bm{r}\ e^{-i\omega}
+       \end{aligned}
+       \label{A.19}
+    \end{equation}
+则$\ \frac{\delta Q[i\omega]}{\delta
+\omega(\bm{r})}=-\frac{i}{V}\exp[-i\omega(\bm{r})]$,
+将其代入(\ref{eq.39})第二个等号则得到公式(\ref{eq.39}).
+\par
+\textbf{公式(\ref{eq.42})}
+\\
+由(\ref{eq.4})-(\ref{eq.5})可知
+ \begin{equation}
+       \begin{aligned}
+           \beta p/rho_{0}&=1-\frac{\beta}{6n}\sum^{n}_{j=1}\sum^{n}_{k=1(\neq
+           j)}\langle v(|\bm{r}_{j}-\bm{r}_{k}|)\rangle
+           \\
+            &=1-\frac{\beta}{6n}(\int d\bm{r}\int d\bm{r^{'}}\rho(r)\int D\rho
+            \int d\omega v(|\bm{r}-\bm{r^{'}|})\rho(\bm{r}^{'})
+            \\
+            &-\int d\bm{r}\int d\bm{r^{'}} \int D\rho \int D\omega
+            \rho(r)v(|\bm{r}-\bm{r^{'}}|)_{\bm{r}=\bm{r^{'}}}\rho(\bm{r^{'}}))
+           \\
+           &=1-\frac{\beta}{6n} \int d\bm{r} \int d\bm{r^{'}}
+           v(|\bm{r}-\bm{r^{'}} |) [\langle \rho(\bm{r})\rho(\bm{r^{'}})
+           \rangle -\delta(\bm{r}-\bm{r^{'}})\langle\rho(\bm{r})\rangle ].
+       \end{aligned}
+       \label{A.20}
+    \end{equation}
+即公式得证.
+
+
+
+
+
+%\end{appendix}
+
+
+
