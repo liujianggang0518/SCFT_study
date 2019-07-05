@@ -1,10 +1,11 @@
 # SCFT_study
 
 本文档为蒋凯课题组讨论学习[1]的笔记。
+
 [1] Glenn H. Fredrickson《The Equilibrium Theory of Inhomogeneous Polymers》
 
 
-#由多人完成，相关章节以及主要贡献人为：
+# 由多人完成，相关章节以及主要贡献人为：
 
 ## 第二章
 + 2.1.tex——杨雅晴 
