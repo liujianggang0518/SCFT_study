@@ -1,6 +1,6 @@
 # SCFT_study
 
-## 本文档为蒋凯课题组讨论学习[1]的笔记。
+## 本文档为蒋凯课题组学习著作[1]的z中文笔记。
 
 ## [1] Glenn H. Fredrickson《The Equilibrium Theory of Inhomogeneous Polymers》
 
