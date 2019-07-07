@@ -15,14 +15,14 @@
 \subsection{密度算子}
 首先，我们考虑在化学势$w(\br)$作用下的单个柔性聚合物的平均段数密度的计算问题。这个数量定义为：
 \begin{equation}\label{3.48}
-\rho(\br;[w])\equiv<\tilde{\rho}(\br)>_{[w]}
+\rho(\br;[w])\equiv<\hat{\rho}(\br)>_{[w]}
 \end{equation}
 
-其中微观密度$\tilde{\rho}(\br)$由公式(\ref{3.3})或(\ref{3.18})给出，这取决于采用的是离散的或连续的高斯链模型。我们将$\rho(\br;[w])$称为单链密度算子，因为它将平均段密度表示为强加场$w$的一个泛函。我们将在第四章中看到，场构造分布合适时，许多聚合物相互作用流体的平均单体密度与算子$\rho(\br;[w])$的平均值成正比。在这种情况下场不是外部强加的，而是由非键单体之间的相互作用在内部产生的。因此，在多链流体中的“可观测”量的计算将涉及两种不同类型全体平均：(i)公式(\ref{3.46})和(\ref{3.47})描述单链的平均；(ii)内部产生电势场分布的场论平均值。关于第二类平均的讨论将推迟到第四章。
+其中微观密度$\hat{\rho}(\br)$由公式(\ref{3.3})或(\ref{3.18})给出，这取决于采用的是离散的或连续的高斯链模型。我们将$\rho(\br;[w])$称为单链密度算子，因为它将平均段密度表示为强加场$w$的一个泛函。我们将在第四章中看到，场构造分布合适时，许多聚合物相互作用流体的平均单体密度与算子$\rho(\br;[w])$的平均值成正比。在这种情况下场不是外部强加的，而是由非键单体之间的相互作用在内部产生的。因此，在多链流体中的“可观测”量的计算将涉及两种不同类型全体平均：(i)公式(\ref{3.46})和(\ref{3.47})描述单链的平均；(ii)内部产生电势场分布的场论平均值。关于第二类平均的讨论将推迟到第四章。
 
-在计算公式(\ref{3.48})时，我们再次指出$w(\br)$和$\tilde{\rho}(\br)$是热力学共轭变量。因此，$-lnQ[w]$泛函关于$w(\br)$的导数会生成单链$\tilde{\rho}(\br)$的平均。例如：在离散高斯链的情况下，关于$Q$的公式(\ref{3.4})和单链平均定义(\ref{3.46})。特别是：
+在计算公式(\ref{3.48})时，我们再次指出$w(\br)$和$\hat{\rho}(\br)$是热力学共轭变量。因此，$-lnQ[w]$泛函关于$w(\br)$的导数会生成单链$\hat{\rho}(\br)$的平均。例如：在离散高斯链的情况下，关于$Q$的公式(\ref{3.4})和单链平均定义(\ref{3.46})。特别是：
 \begin{equation}\label{3.49}
--\frac{\delta~lnQ[w]}{\delta w(\br)}=-\frac{1}{Q[w]}\frac{\delta Q[w]}{\delta w(\br)}=<\tilde{\rho}(\br)>_{[w]}
+-\frac{\delta~lnQ[w]}{\delta w(\br)}=-\frac{1}{Q[w]}\frac{\delta Q[w]}{\delta w(\br)}=<\hat{\rho}(\br)>_{[w]}
 \end{equation}
 因此，段密度算子的另一个表达式是
 \begin{equation}\label{3.50}
@@ -60,16 +60,16 @@
 
 密度算子$\rho(\br,[w])$描述了链段的平均密度，而不是它们沿聚合物的位置。另一个有用的密度算子，例如:连续高斯链是数量:
 \begin{equation}\label{3.56}
-\rho(\br,s;[w])\equiv <\tilde{\rho}(\br,s)>_{[w]}
+\rho(\br,s;[w])\equiv <\hat{\rho}(\br,s)>_{[w]}
 \end{equation}
-表示位于等高线位置s的分段的平均密度。用$\tilde{\rho}(\br,s)=\delta(\br-\br(s))$表示各段在位置s的微观密度。通过引入共轭场$\omega_s(\br)$来计算$\tilde{\rho}(\br,s)$
+表示位于等高线位置s的分段的平均密度。用$\hat{\rho}(\br,s)=\delta(\br-\br(s))$表示各段在位置s的微观密度。通过引入共轭场$\omega_s(\br)$来计算$\hat{\rho}(\br,s)$
 ，仅能计算单体s，并对相互作用能贡献一个附加项:
 \begin{equation}\label{3.57}
-\beta U_1[\br,w ,w_s]=\int [\tilde{\rho}(\br^{'})w (\br^{'})+\tilde{\rho}(\br^{'},s)w_s(\br^{'})]~d\br^{'}
+\beta U_1[\br,w ,w_s]=\int [\hat{\rho}(\br^{'})w (\br^{'})+\hat{\rho}(\br^{'},s)w_s(\br^{'})]~d\br^{'}
 \end{equation}
 下面的参数类似于公式(\ref{3.50})的参数，给出结果：
 \begin{equation}\label{3.58}
-\rho(\br,s;[w])=<\tilde{\rho}(\br,s)>_{[w]}
+\rho(\br,s;[w])=<\hat{\rho}(\br,s)>_{[w]}
 =-\frac{\delta~lnQ[w,w_s]}{\delta w_s(\br)} \bigg |_{w_s=0}
 \end{equation}
 我们现回到$Q[w,w_s]$的路径积分离散化的步骤，对$w_s$微分，并取连续极限。如果令$w_s(\br)=0$,结果是：
@@ -89,7 +89,7 @@
 \begin{equation}\label{3.60}
 \rho(\br;[w])=\int_{0}^{N}\rho(\br,s;[w])~ds
 \end{equation}
-该公式与微观密度$\tilde{\rho}(\br)$和$\tilde{\rho}(\br,s)$之间的关系有明显的一致性。
+该公式与微观密度$\hat{\rho}(\br)$和$\hat{\rho}(\br,s)$之间的关系有明显的一致性。
 
 公式(\ref{3.59})的一个特例是特别令人感兴趣的。通过设置$s=0$或$s=N$，可以得到链端段的平均密度。在目前的均聚物的情况下，两个链端是不可区分的，所以总链端密度可以由
 \begin{equation}\label{3.61}
@@ -99,9 +99,9 @@
 \end{equation}
 在这个表达式的第二行中，我们使用了$q(\br,0;[w])=1$。因此，在应用规范化$\frac{2}{VQ[w]}$后，传播子$q(\br,N;[w])$可以解释为链端在r位置的平均密度。
 
-公式(\ref{3.56})-(\ref{3.61})中的结果可以很容易地推广到离散高斯链模型。为了简洁起见，我们省略简结的概括，转而转向类似蠕虫的链。在类虫链模型，引入了一个场$w(\br,\bu)$，它与片段位置和取向的微观密度$\tilde{\rho}(\br,\bu)$的共轭。因此，对于段位置和取向密度的单链平均值的算子可以被定义为：
+公式(\ref{3.56})-(\ref{3.61})中的结果可以很容易地推广到离散高斯链模型。为了简洁起见，我们省略简结的概括，转而转向类似蠕虫的链。在类虫链模型，引入了一个场$w(\br,\bu)$，它与片段位置和取向的微观密度$\hat{\rho}(\br,\bu)$的共轭。因此，对于段位置和取向密度的单链平均值的算子可以被定义为：
 \begin{equation}\label{3.62}
-\rho(\br,\bu;[w])\equiv <\tilde{\rho}(\br,\bu)>_{[w]}=-\frac{\delta lnQ[w]}{\delta w(\br,\bu)}
+\rho(\br,\bu;[w])\equiv <\hat{\rho}(\br,\bu)>_{[w]}=-\frac{\delta lnQ[w]}{\delta w(\br,\bu)}
 \end{equation}
 这个表达式可以通过离散$Q[w]$的路径积分、对$w(r,u)$的微分和恢复连续极限来计算。结果如下：
 \begin{equation}\label{3.63}
@@ -145,20 +145,20 @@ q(\br,\bu,s;[w])\equiv \exp[-\int_{0}^{s}w(\br-s^{'}\bu,\bu)~ds^{'}]
 
 单链密度算子范畴下的最后一个话题是段密度的高阶矩。对象$Q[w]$和$ln Q[w]$可视为生成泛函(Van Kampen1981)，因为这些量的泛函导数分别产生了微观单链密度的矩和累积量(见附录B)。实际上，对于高斯链模型的一阶矩可以表示为：
 \begin{equation}\label{3.70}
-<\tilde{\rho}(\br)>_{[w]}=-\frac{\delta lnQ[w]}{\delta w(\br)}=-\frac{1}{Q[w]}\frac{\delta Q[w]}{\delta w(\br)}
+<\hat{\rho}(\br)>_{[w]}=-\frac{\delta lnQ[w]}{\delta w(\br)}=-\frac{1}{Q[w]}\frac{\delta Q[w]}{\delta w(\br)}
 \end{equation}
 同样地，从规范化的配分函数和单链平均的定义中看出，微观密度的第二矩是由Q的第二泛函导数给出的。
 \begin{equation}\label{3.71}
-<\tilde{\rho}(\br)\tilde{\rho}(\br^{'})>_{[w]}=\frac{1}{Q[w]}\frac{\delta^2 Q[w]}{\delta w(\br)\delta  w(\br^{'})}
+<\hat{\rho}(\br)\hat{\rho}(\br^{'})>_{[w]}=\frac{1}{Q[w]}\frac{\delta^2 Q[w]}{\delta w(\br)\delta  w(\br^{'})}
 \end{equation}
 第二累积矩同样由lnQ的第二泛函导数来表示:
 \begin{equation}\label{3.72}
-<\tilde{\rho}(\br)\tilde{\rho}(\br^{'})>_{[w]}-<\tilde{\rho}(\br)>_{[w]}<\tilde{\rho}(\br^{'})>_{[w]}=\frac{\delta^2 lnQ[w]}{\delta w(\br)\delta w(\br^{'})}
+<\hat{\rho}(\br)\hat{\rho}(\br^{'})>_{[w]}-<\hat{\rho}(\br)>_{[w]}<\hat{\rho}(\br^{'})>_{[w]}=\frac{\delta^2 lnQ[w]}{\delta w(\br)\delta w(\br^{'})}
 \end{equation}
 我们回顾了公式(\ref{3.53})和(\ref{3.55})给出了链传播子q与微观段密度的第一矩之间高斯链模型的明确关系。传播子和矩之间的这种联系可以扩展到高阶矩，方法是采用附加的函数导数，从而在附加点上考虑链的统计权重。例如，在连续高斯链的情况下，二阶矩，或密度-密度相关函数，给出：
 \begin{equation}\label{3.73}
 \begin{aligned}
-<\tilde{\rho}(\br)\tilde{\rho}(\br^{'})>_{[w]}&=\frac{1}{VQ[w]}\int_{0}^{N} \int_{0}^{s}q(\br,N-s;[w])\\&\times g(\br,\br^{'},s-s^{'};[w])~q(\br^{'},s^{'};[w])~dsds^{'}\\&+\frac{1}{VQ[w]}\int_{0}^{N} \int_{0}^{s^{'}}q(\br^{'},N-s^{'};[w])\\&\times g(\br^{'},\br,s^{'}-s;[w])~q(\br,s;[w])~ds^{'}ds
+<\hat{\rho}(\br)\hat{\rho}(\br^{'})>_{[w]}&=\frac{1}{VQ[w]}\int_{0}^{N} \int_{0}^{s}q(\br,N-s;[w])\\&\times g(\br,\br^{'},s-s^{'};[w])~q(\br^{'},s^{'};[w])~dsds^{'}\\&+\frac{1}{VQ[w]}\int_{0}^{N} \int_{0}^{s^{'}}q(\br^{'},N-s^{'};[w])\\&\times g(\br^{'},\br,s^{'}-s;[w])~q(\br,s;[w])~ds^{'}ds
 \end{aligned}
 \end{equation}
 这个方程中出现的函数$g(\br,s,[w])$是一个新的链传播子，它满足公式(\ref{3.25})，但服从$\delta$函数初始条件，即:
@@ -185,7 +185,7 @@ g(\br,\br^{'},0;[w])=\delta(\br-\br{'})
 其中，单链平均是根据公式(\ref{3.47})计算的。用离散高斯链模型计算这个表达式的右边会产生两个不同的表达式，
 \begin{equation}\label{3.77}
 \begin{aligned}
-\sigma(\br;[w,\epsilon])&=\frac{\int {\tilde{\sigma}}(\br)~\exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}{\int \exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}\\&=\frac{\int \tilde{\sigma}(\br)~\exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}{Q[w,\epsilon]~\int \exp[-\beta U_0(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}
+\sigma(\br;[w,\epsilon])&=\frac{\int {\hat{\sigma}}(\br)~\exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}{\int \exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}\\&=\frac{\int \hat{\sigma}(\br)~\exp[-\beta U(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}{Q[w,\epsilon]~\int \exp[-\beta U_0(\br^{N+1})-\beta U_{el}(\br^{N+1})]~d\br^{N+1}}
 \end{aligned}
 \end{equation}
 第二个是最方便计算的。在最后一个表达式中插入微观应力运算符公式(\ref{3.11})的显式形式将导致：
