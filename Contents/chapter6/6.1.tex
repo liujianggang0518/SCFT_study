@@ -18,16 +18,1464 @@
      邱群
 \end{center}}
 
+
 \subsection{有限元方法}
 
 {\color{red}\begin{center}
      王刘彭
 \end{center}}
 
+
 \subsection{虚单元方法}
 {\color{red}\begin{center}
     王鑫
 \end{center}}
+
+虚单元方法(VEM)是有限元法(FEM)的推广，它从现代拟有限差分(MFD)格式中得到启发。VEM
+允许使用非常一般的多边形和多面体网格，多边形(多面体)网格更容易、更好地剖分区域，
+并且自动包含“悬点”.\\
+
+这里以泊松方程为模型来介绍虚单元方法.\\
+
+  \subsubsection{模型：泊松方程}
+    
+     \begin{equation}\label{eq:dirichlet}
+     \begin{cases}
+     -\Delta u =f,\qquad  in\quad \Omega.\\
+     u=g_D,\qquad on \quad\partial \Omega 
+     \end{cases}
+     \end{equation}
+     $\Omega $是$\mathbb{R}^2$中的多边形区域\\
+     
+     找到$ u \in H_{g_D}^{1}(\Omega)$:
+     \begin{equation}
+     (\nabla u,\nabla v)=(f,v) ,\qquad \forall v \in H_0^1(\Omega)
+     \end{equation}
+     
+     其中
+     \begin{equation}
+     H_{g_D}^{1}=\{u \in H^1(\Omega)\text{且}u|_{ \partial \Omega} = g_D\}\\
+     H_{0}^{1}=\{v \in H^1(\Omega)\text{且}u|_{ \partial \Omega} =0\}
+     \end{equation}
+     
+      \subsubsection{二维局部虚单元空间 $\mathcal V_k(E)$}
+     \begin{table}[H]
+     	\centering
+     \begin{tabular}{ cc }   
+     	\hline
+     	符号 & 含义 \\
+     	\hline
+     	$E$ & 多边形，可以是非凸的 \\
+     	
+     	$\Omega$ & 二维有界区域． $\Omega$$\subset$ $\mathbb{R}^2$, $\Omega$ =$\cup_{E\in \mathcal{P}_h}E$ \\
+     
+     	$V_i$ & $E$ 上逆时针顺序标记的顶点，其中 $i = 1,\cdots, N^V,N^V$ 表示 $E$ 的总的顶点数目 \\
+     	
+     	$e_i$ & $E$ 中连接 $V_i$ 和 $V_{i+1}$ 的边． 允许两条相邻的边构成 $180$ 度角 \\
+     	\hline
+     \end{tabular}
+     \end{table}
+     
+    定义函数 $v_h$, $v_h\in\mathcal V_k(E)$ 且满足如下性质：\\
+    \\
+    $1$) $v_h$ 在 $E$ 的每条边 $e$ 上是一个次数 $\le k$ 多项式, i.e.,$v_h|_e \in \mathcal P_k(e)$\\
+    $2$) $v_h$ 在 $E$ 的边界 $\partial E$ 上是全局连续的,i.e.,$v_h|_{\partial E} \in \mathcal C^0(\partial E)$\\
+    $3$) $\Delta v_h$ 在 $E$ 内是一个次数 $\le k - 2$ 的多项式, i.e., $\Delta v_h \in \mathcal P_{k-2}(E)$\\
+    
+    所以 $\mathcal{P}_k(E)$ 是 $V_k(E)$ 子空间. \\
+    
+    $v_h\in \mathcal V_k(E)$ 的自由度定义如下：\\
+    \\
+    (1) $v_h$ 在 $E$ 的所有顶点处的函数值\\
+    (2) $v_h$ 在 $E$ 的每条除顶点以外的 $k-1$ 个 Gauss-Lobatto 积分点处函数值 \\ 
+    (3) $v_h$ 在单元 $E$ 内部与 $\mathcal P_{k-2}(E)$ 中所有单项式 $m_\alpha$ 的乘积的积分平均值， $$ \frac{1}{|E|}\int_E v_h m_\alpha, \quad \alpha = 1, \ldots, n_{k-2}$$
+    其中 $n_{k-2} = \dim \mathcal P_{k-2}(E)$\\
+    
+    易知 $\mathcal V_k(E)$ 的维数为 \\
+    \begin{equation}
+    N^{dof} = \text{dim} \mathcal V_k(E) = N^V + N^V(k - 1) + n_{k - 2} = N^Vk+ \frac{(k-1)k}{2}.
+    \end{equation}
+    
+    定义从 $V_k(E)$ 到 $\mathbb{R}$ 的算子 $dof_i$ \\
+    \begin{equation}
+    dof_{i}(v_h) = v_h \text{的第} i \text{个自由度}, \,\ i,j = 1,\cdots, N^{dof} 
+    \end{equation}
+    
+    其中 $N^{dof} := dimV_k(E)$ \\
+    
+    对于基函数 $\varphi_j \in V_k(E)$ \\
+    \begin{equation}
+    dof_{i}(\varphi_j) = \delta_{ij},\quad i,j = 1,\cdots,N^{dof} 
+    \end{equation}
+    
+    由于边界自由度在每条边界上都是唯一的次数 $\le k$ 的多项式. 因此, 可以定义全局虚单元空间 $V_h \subset H_0^1(\mathcal D)$ \\
+    \begin{equation*}
+    V_h := {v_h \in H_0^1(\mathcal D) : \text{对所有} E\in\mathcal{P}_h \text{满足} v_h|_E \in V_k(E)}
+    \end{equation*}
+    
+    $v_h$ 有以下的全局自由度: \\
+    \\
+    1) $v_h$ 在剖分后的区域的所有内部顶点处的值 \\
+    2) $K + 1$ 点 $Guass-Lobatto$ 型求积公式在每条内部边 $e$ 上有 $k - 1$ 个内部积分值, $v_h$ 在所有边内部积分点处的积分值 \\  
+    3) 每一个多边形 $E$ 内部的 $n_{k - 2}$个自由度\\
+    \begin{equation}
+    \frac{1}{|E|}\int_{E}v_hm_{\alpha},\,\ \alpha = 1,\cdots,n_k
+    \end{equation}
+    
+    其中 $n_{k-2} = dim\mathcal{P}_{k - 2}(E)$\\
+    
+   \subsubsection{计算单元刚度矩阵}
+  
+    定义在多边形 $E$ 上的 $Laplace$ 算子的单元刚度矩阵\\
+    \begin{equation}
+    \mathbf(K_E)_{ij} = (\nabla\varphi_i, \nabla\varphi_j)_{0,E},\quad i,j = 1,\cdots,N^{dof}
+    \end{equation}
+    其中 $\varphi_i \in V_k(E)$ 是 $(2.2)$ 定义的基函数. \\
+    
+    VEM方法的好处:\\
+    
+    既不要求使用积分公式也不需要基函数的近似表达式\\
+    
+     \subsubsection{投影算子 $\Pi^{\nabla}$}
+    
+    定义 $\Pi^\nabla: \mathcal V_k(E)\rightarrow \mathcal{P}_k(E)$ 如下: 给定  $ v_h \in
+    \mathcal V_k(E)$, 找到 $\Pi^\nabla v_h \in \mathcal{P}_k(E)$ 满足: \\
+    \begin{equation}
+    (\nabla \Pi^\nabla v_h, \nabla p_k) = (\nabla v_h, \nabla p_k), \forall p_k\in\mathcal{P}_k(E)
+    \end{equation}
+    
+    如上所示，满足性质 $(3.2)$ 的 $\Pi^{\nabla}v_h$ 仅为常量，为了确定这个常量可以定义投影: \\
+    $ P_0: \mathcal V_k(E) \rightarrow
+    \mathcal{P}_0(E)$:
+    
+    \begin{equation}
+    P_0(\Pi^\nabla v_h - v_h) = 0
+    \end{equation}
+    
+    具体定义如下: \\
+    \begin{equation}
+    \begin{aligned}
+    P_0 v_h :=& \frac{1}{N^V}\sum_{i=1}^{N^V} v_h(\mathbf x_i)\text{, for } k=1 \\
+    P_0 v_h :=& \frac{1}{|E|} \int_{E}v_h = \frac{1}{|E|} (1, v_h)_E\text{, for } k\geq 2
+    \end{aligned}
+    \end{equation}
+    
+    其中 $\frac{1}{|E|} (1, v_h)_E$ 为 $v_h$ 在 $E$ 内部自由度处的值.\\
+    
+    对于一个给定的 $v_h \in V_k(E)$, 下面展示只使用 $v_h$ 的自由度计算 $\Pi^{\nabla}v_h$ 的过程. \\
+    
+    因为 $\mathcal M _k(E)$ 是 $\mathcal P_k(E)$ 的一组基，所以让符合性质 $(3.2)$ 的 $p_k$ 只在 $\mathcal M _k(E)$ 范围内变化，即 \\
+    \begin{equation}
+    (\nabla m_{\alpha}, \nabla(\Pi^{\nabla}v_h) - v_h)_{0,E} = 0,\,\ \alpha = 1,2,\cdots, n_k
+    \end{equation}
+    
+    因为 $\Pi^{\nabla}v_h \in \mathcal P_k(E)$,所以 $\Pi^{\nabla}v_h$ 也可以由基 $\mathcal M_k(E)$ 表示\\
+    \begin{equation}
+    \Pi^\nabla v_h = \sum_{\beta = 1}s^{\beta}m_\beta
+    \end{equation}
+    
+    把公式 $(3.6)$ 代入公式 $(3.5)$, 得 \\
+    \begin{equation}
+    \sum_{\beta = 1}^{n_k}s^{\beta}(\nabla m_{\alpha},\nabla m_{\beta})_{0,E} = (\nabla m_{\alpha, \nabla v_h})_{0,E}
+    \end{equation}
+    
+    公式 $(3.7)$ 是由含 $n_k$ 个未知数 $s^{\beta} = s^{\beta}(v_h)$ 的 $n_k$ 个方程组成的线性系统.然而当 $\alpha = 1$ 时, $m_{\alpha} \equiv 1$, 从而方程 $3.7$ 变为 $0 = 0$, 使得方程的解是不确定的. 为了消除这种不确定性,条件 $(3.3)$ 增加一个线性方程: \\
+    \begin{equation}
+    \sum_{\beta = 1}^{n_k}s^{\beta}P_0m_{\beta} = P_0v_h
+    \end{equation}
+    那么结合 $(3.7)$ 和 $(3.8)$, 线性方程组可以写成 \\
+    \begin{equation*}
+    \left[ \begin{array}{cccc}
+    P_0m_1 & P_0m_2  &\cdots&P_0m_{n_k} \\
+    0 & (\nabla m_2,\nabla m_2)_{0,E} & \cdots & (\nabla m_2,\nabla m_{n_k})_{0,E} \\
+    \vdots & \vdots & \ddots & \vdots\\
+    0& (\nabla m_{n_k},\nabla m_2)_{0,E} & \cdots & (\nabla m_{n_k},\nabla m_{n_k})_{0,E}
+    \end{array} \right]
+    \left[ \begin{array}{c}
+    s^1\\
+    s^2\\
+    \vdots\\
+    s^{n_k}
+    \end{array} \right]
+    = \left[\begin{array}{c}
+    P_0v_h\\
+    (\nabla m_2,\nabla v_h)_{0,E} \\
+    \vdots\\
+    (\nabla m_{n_k},\nabla v_h)_{0,E} 
+    \end{array}\right]
+    \end{equation*}
+    
+    换一种写法，也就是 \\
+    \begin{equation}
+    G\underline{s} = \underline{b}
+    \end{equation}
+    
+    其中 \\
+    \begin{equation}
+    G := \begin{bmatrix}
+    P_0m_1 & P_0m_1 &\cdots&P_0m_{n_k} \\
+    0 & (\nabla m_2,\nabla m_2)_{0,E} & \cdots & (\nabla m_2,\nabla m_{n_k})_{0,E} \\
+    \vdots & \vdots & \ddots & \vdots\\
+    0& (\nabla m_{n_k},\nabla m_2)_{0,E} & \cdots & (\nabla m_{n_k},\nabla m_{n_k})_{0,E}
+    \end{bmatrix}\\
+    \end{equation}
+    \begin{equation}
+    \underline b := \begin{bmatrix}
+    P_0v_h\\
+    (\nabla m_2,\nabla v_h)_{0,E} \\
+    \vdots\\
+    (\nabla m_{n_k},\nabla v_h)_{0,E} 
+    \end{bmatrix}
+    \end{equation}
+    
+    假定 $E$ 上的多项式的积分是可以计算的, 公式 $(3.10)$ 中的矩阵 $G$ 是可以计算的. \\
+    \subsubsection{计算 $\Pi^{\nabla}$}
+
+对每个基函数$\varphi_i$，定义$s_i^{\alpha}$为$\Pi^{\nabla}\varphi_i$由基$m_{\alpha}$表示的系数: \\
+\begin{equation}
+\Pi^\nabla \varphi_i = \sum_{\alpha = 1}^{n_k}s_{i}^{\alpha}m_\alpha,\quad i = 1,\cdots,N^{dof}
+\end{equation}
+
+在公式 $(3.9)$ 的右端项中用$\varphi_i$代替$v_h$，$s_i^{\alpha}$是下列方程的解: \\
+\begin{equation*}
+ \left[\begin{array}{cccc}
+P_0m_1 & P_0m_1 &\cdots&P_0m_{n_k} \\
+0 & (\nabla m_2,\nabla m_2)_{0,E} & \cdots & (\nabla m_2,\nabla m_{n_k})_{0,E} \\
+\vdots & \vdots & \ddots & \vdots\\
+0& (\nabla m_{n_k},\nabla m_2)_{0,E} & \cdots & (\nabla m_{n_k},\nabla m_{n_k})_{0,E}
+\end{array}\right]
+\left[\begin{array}{c}
+s_i^1\\
+s_i^2\\
+\vdots\\
+s_i^{n_k}
+\end{array}\right]
+= \left[\begin{array}{c}
+P_0\varphi_i\\
+(\nabla m_2,\nabla \varphi_i)_{0,E} \\
+\vdots\\
+(\nabla m_{n_k},\nabla \varphi_i)_{0,E}
+\end{array}\right]
+\end{equation*}
+
+换一种形式为: \\
+\begin{equation*}
+\underline s^{(i)} = G^{-1}\underline b^{(i)}
+\end{equation*}
+
+把 $n_k \times N^{dof}$ 矩阵 $B$ 记为 \\
+\begin{equation}
+\begin{aligned}
+B &:= \begin{bmatrix}
+b^{(1)} & b^{(2)} & \cdots & b^{(N^{dof})}
+\end{bmatrix} \\
+& = \begin{bmatrix}
+P_0\varphi_1 & \cdots & P_0\varphi_{N^{dof}}\\
+(\nabla m_2, \nabla\varphi_1)_{0, E} & \cdots & (\nabla m_2, \nabla\varphi_{N^{dof}})_{0, E}\\
+\cdots & \cdots & \cdots \\
+(\nabla m_{n_k}, \nabla\varphi_1)_{0, E} & \cdots & (\nabla m_{n_k}, \nabla\varphi_{N^{dof}})_{0, E}\\
+\end{bmatrix}\\
+& = \begin{bmatrix}
+P_0\varphi_1 & \cdots & P_0\varphi_{N^{dof}}\\
+-(\Delta m_2,\varphi_1)_{0, E} & \cdots & -(\Delta m_2,\varphi_{N^{dof}})_{0, E}\\
+\cdots & \cdots & \cdots \\
+-(\Delta m_{n_k}, \varphi_1)_{0, E} & \cdots & -(\Delta m_{n_k},\varphi_{N^{dof}})_{0, E}\\
+\end{bmatrix}\\
+& +\begin{bmatrix}
+0 & \cdots & 0\\
+(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
+\cdots & \cdots & \cdots \\
+(\frac{\partial m_{n_k}}{\partial \mathbf n}, \varphi_1)_{\partial E} & \cdots & (\frac{\partial m_{n_k}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+\end{bmatrix}\\
+\end{aligned}
+\end{equation}
+
+算子 $\Pi^{\nabla}$ 的矩阵表达 $\boldsymbol{\Pi}_{\ast}^{\nabla}$: 由$V_k{E}$ 到 $\mathcal{P}_k(E)$ 的基 $\mathcal{M}_k(E)$ 的映射，通过 \\
+\begin{equation*}
+(\boldsymbol{\Pi}_{\ast}^{\nabla})_{\alpha i} = s_i^{\alpha}
+\end{equation*}
+
+给出，也就是 \\
+\begin{equation}
+\boldsymbol{\Pi}_{\ast}^{\nabla} = G^{-1}B
+\end{equation}
+
+令 \\
+\begin{equation*}
+\Pi^{\nabla} \varphi_i = \sum_{j=1}^{N^{dof}}\pi_i^j \varphi_j, \quad i = 1,\cdots,N^{dof}
+\end{equation*}
+
+其中 \\
+\begin{equation*}
+\pi_i^j = dof_j(\Pi^{\nabla}\varphi_i)
+\end{equation*}
+
+从公式 $(3.13)$ 和 $(2.3)$，可得 \\
+\begin{equation*}
+\Pi^{\nabla} \varphi_i = \sum_{\alpha=1}^{n_k}s_i^{\alpha}\sum_{j=1}^{N^{dof}}dof_j(m_{\alpha})\varphi_j
+\end{equation*}
+
+因此 \\
+\begin{equation}
+\pi_i^j = \sum_{\alpha=1}^{n_k}s_i^{\alpha}dof_j(m_{\alpha})
+\end{equation}
+
+为了用矩阵表示公式 $(3.16)$, 定义 $N^{dof}\times n_k$ 维矩阵 $D$ \\
+\begin{equation*}
+D_{i\alpha} := dof_i(m_{\alpha})\quad i = 1,\cdots,N^{dof},\quad\alpha = 1,\cdots,n_k
+\end{equation*}
+
+即 \\
+\begin{equation}
+D = \begin{bmatrix}
+dof_1(m_1) & dof_1(m_2) & \cdots & dof_1(m_{n_k})\\
+dof_2(m_1) & dof_2(m_2) & \cdots & dof_2(m_{n_k})\\
+\vdots & \vdots & \ddots & \vdots\\
+dof_{N^{dof}}(m_1) & dof_{N^{dof}}(m_2) & \cdots & dof_{N^{dof}}(m_{n_k})\\
+\end{bmatrix}
+\end{equation}
+
+方程 $(3.16)$ 变为 \\
+\begin{equation*}
+\pi_i^j = \sum_{\alpha=1}^{n_k}(G^{-1}B)_{\alpha i}D_{j \alpha} = \sum_{\alpha=1}^{n_k}D_{j \alpha}(G^{-1}B)_{\alpha i} = (DG^{-1}B)_{ji}
+\end{equation*}
+
+因此，算子 $\Pi^{\nabla}:V_k(E) \to V_k(E)$在基 $(2.2)$ 的矩阵表达 $\boldsymbol{\Pi}^{\nabla}$ 满足 \\
+\begin{equation}
+\boldsymbol{\Pi}^{\nabla} = D G^{-1} B = D \boldsymbol{\Pi}_{\ast}^{\nabla}
+\end{equation}
+
+注解 \\
+\begin{equation}
+G = BD
+\end{equation}
+证明如下: \\
+
+当 $\alpha = 1$ 时
+\begin{equation*}
+\begin{aligned}
+\sum_{i = 1}^{N^{dof}}{B}_{1i}{D}_{i\beta} & = \sum_{i = 1}^{N^{dof}}P_0\varphi_idof_i(m_{\beta}) \\
+& = P_0(\sum_{i = 1}^{N^{dof}}\varphi_idof_i(m_{\beta})) \\& = P_0m_{\beta} \\
+& = G_{1\beta}
+\end{aligned}
+\end{equation*}
+
+当 $\alpha \ge 2$　时 \\
+\begin{equation*}
+\begin{aligned}
+\sum_{i = 1}^{N^{dof}}{B}_{\alpha i}{D}_{i\beta} & = \sum_{i = 1}^{N^{dof}}(\nabla m_{\alpha},\nabla \varphi_i)_{0,E}dof_i(m_{\beta}) \\
+& = (\nabla m_{\alpha},\sum_{i = 1}^{N^{dof}}dof_i(m_{\beta})\nabla \varphi_i)_{0,E} \\
+& = (\nabla m_{\alpha},\nabla(\sum_{i = 1}^{N^{dof}}dof_i(m_{\beta})\varphi_i))_{0,E} \\
+& = (\nabla m_{\alpha},\nabla m_{\beta})_{0,E} \\
+& = G_{\alpha\beta}
+\end{aligned}
+\end{equation*}
+
+我们使用公式 $(3.10)$ 计算 $G$, 使用公式 $(3.19)$ 检验 $B, D, G$ 的正确性．\\
+\subsubsection{单元刚度矩阵构造}
+
+定义在多边形 $E$ 上的 Laplace 算子的单元刚度矩阵. 利用投影算子$\Pi^{\nabla}$, 作分解: \\
+\begin{equation*} 
+\varphi_i = \Pi^{\nabla} \varphi_i + (I-\Pi^{\nabla})\varphi_i 
+\end{equation*}
+
+\begin{equation*} 
+\varphi_j = \Pi^{\nabla} \varphi_j + (I-\Pi^{\nabla})\varphi_j
+\end{equation*}
+
+把上式代入到 $(3.1)$, 然后展开可得 \\
+\begin{equation*}
+\begin{aligned}
+(\mathbf K_{E})_{i j} = & (\nabla(\Pi^{\nabla} \varphi_i + (I-\Pi^{\nabla})\varphi_i),\nabla(\Pi^{\nabla} \varphi_j + (I-\Pi^{\nabla})\varphi_j)) \\
+=& (\nabla \Pi^{\nabla} \varphi_i, \nabla \Pi^{\nabla} \varphi_j) + (\nabla(I-\Pi^{\nabla})\varphi_i,\nabla(I-\Pi^{\nabla})\varphi_j)\\
+& + (\nabla \Pi^{\nabla} \varphi_i,\nabla(I-\Pi^{\nabla})\varphi_j)+(\nabla(I-\Pi^{\nabla})\varphi_i,\nabla \Pi^{\nabla} \varphi_j)\\ 
+= &(\nabla \Pi^{\nabla} \varphi_i, \nabla \Pi^{\nabla} \varphi_j) + (\nabla(I-\Pi^{\nabla})\varphi_i,\nabla(I-\Pi^{\nabla})\varphi_j)
+\end{aligned}
+\end{equation*}
+
+第二个等号到第三个等号: \\
+
+由投影算子 $\Pi^{\nabla}$ 的定义可知，后两项为 $0$,所以等号是成立的．\\
+
+单元刚度矩阵的第 $1$ 项确保一致性，可以精确计算; 第 $2$ 项确保稳定性，可以近似求解．从文献 $5$ 中可知\\
+
+我们选择标准基函数 $\varphi_1,\cdots,\varphi_{N^{dof}}$: \\
+\begin{equation}
+\chi_i(\varphi_j) = \delta_{ij},\quad i,j = 1,2,\cdots,N^{dof}
+\end{equation}
+
+A0.3: 假设 $\exists \gamma > 0$ s.t. 对 $\forall h$ 和每个单元 $E \in \mathcal{P}_h$ 并且在 $E$ 的任意两个顶点之间的距离都 $\ge \gamma h_E$.
+
+在 A0.3 的前提下，有 \\
+\begin{equation*}
+(\nabla(I-\Pi^{\nabla})\varphi_i,\nabla(I-\Pi^{\nabla})\varphi_j) = \sum_{r = 1}^{N^{dof}} \chi_r((I-\Pi^{\nabla})\varphi_i) \chi_r((I-\Pi^{\nabla})\varphi_j)
+\end{equation*}
+
+由 $(3.20)$ 和 $(2.2)$ 可知 \\
+\begin{equation}
+\begin{aligned}
+(\nabla(I-\Pi^{\nabla})\varphi_i,\nabla(I-\Pi^{\nabla})\varphi_j) & = \sum_{r = 1}^{N^{dof}} \chi_r((I-\Pi^{\nabla})\varphi_i) \chi_r((I-\Pi^{\nabla})\varphi_j) \\
+& = \sum_{r = 1}^{N^{dof}} dof_r((I-\Pi^{\nabla})\varphi_i) dof_r((I-\Pi^{\nabla})\varphi_j) \\
+\end{aligned}
+\end{equation}
+
+现在单元刚度矩阵可以写为 \\
+\begin{equation}
+(K_{E}^h)_{ij} := (\nabla \Pi^{\nabla}\varphi_i, \nabla \Pi^{\nabla}\varphi_j)_{0,E} + \sum_{r = 1}^{N^{dof}} dof_r((I-\Pi^{\nabla})\varphi_i) dof_r((I-\Pi^{\nabla})\varphi_j)
+\end{equation}
+
+这样就把虚单元法单元刚度矩阵的计算分解为可计算的两部分， 其中第一部分从公式 $(3.13)$ 可知 \\
+\begin{equation}
+\begin{aligned}
+&\begin{bmatrix}
+(\nabla\Pi^\nabla\varphi_1, \nabla\Pi^\nabla\varphi_1) & (\nabla\Pi^\nabla\varphi_1, \nabla\Pi^\nabla\varphi_2) & \cdots & (\nabla\Pi^\nabla\varphi_1, \nabla\Pi^\nabla\varphi_{N^{dof}})\\
+(\nabla\Pi^\nabla\varphi_2, \nabla\Pi^\nabla\varphi_1) & (\nabla\Pi^\nabla\varphi_2, \nabla\Pi^\nabla\varphi_2) & \cdots & (\nabla\Pi^\nabla\varphi_2, \nabla\Pi^\nabla\varphi_{N^{dof}})\\
+\cdots & \cdots & \cdots & \cdots \\
+(\nabla\Pi^\nabla\varphi_{N^{dof}}, \nabla\Pi^\nabla\varphi_1) & (\nabla\Pi^\nabla\varphi_{N^{dof}}, \nabla\Pi^\nabla\varphi_2) & \cdots & (\nabla\Pi^\nabla\varphi_{N^{dof}}, \nabla\Pi^\nabla\varphi_{N^{dof}})\\
+\end{bmatrix}\\
+& = \int_E \begin{bmatrix} 
+\nabla\Pi^\nabla\varphi_1\\ 
+\nabla\Pi^\nabla\varphi_2 \\ 
+\vdots\\
+\nabla\Pi^\nabla\varphi_{N^{dof}}
+\end{bmatrix}\begin{bmatrix} 
+\nabla\Pi^\nabla\varphi_1\\ 
+\nabla\Pi^\nabla\varphi_2 \\ 
+\vdots\\
+\nabla\Pi^\nabla\varphi_{N^{dof}}
+\end{bmatrix}^T\mathrm d \mathbf x\\
+& = \int_E \begin{bmatrix} 
+\nabla(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 1}\cdot m_{\alpha})\\ 
+\nabla(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 2}\cdot m_{\alpha}) \\ 
+\vdots\\
+\nabla(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha N^{dof}}\cdot m_{\alpha})
+\end{bmatrix}\begin{bmatrix} 
+\nabla(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 1}\cdot m_{\alpha})\\ 
+\nabla(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 2}\cdot m_{\alpha}) \\ 
+\vdots\\
+\nabla(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha N^{dof}}\cdot m_{\alpha})
+\end{bmatrix}^T\mathrm d \mathbf x\\
+& = \int_E \begin{bmatrix} 
+(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 1}\cdot \nabla m_{\alpha})\\ 
+(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 2}\cdot \nabla m_{\alpha}) \\ 
+\vdots\\
+(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha N^{dof}}\cdot \nabla m_{\alpha})
+\end{bmatrix}\begin{bmatrix} \\
+(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 1}\cdot \nabla m_{\alpha})\\ 
+(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 2}\cdot \nabla m_{\alpha}) \\ 
+\vdots\\
+(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha N^{dof}}\cdot \nabla m_{\alpha})
+\end{bmatrix}^T \mathrm d \mathbf x \\
+& = \int_{E} \begin{bmatrix} 
+(\Pi_{*}^{\nabla})_{1 1} & (\Pi_{*}^{\nabla})_{2 1} & \cdots  & (\Pi_{*}^{\nabla})_{n_k 1} \\ 
+((\Pi_{*}^{\nabla})_{1 2} & (\Pi_{*}^{\nabla})_{2 2} & \cdots  & (\Pi_{*}^{\nabla})_{n_k 2} \\ 
+\vdots\\
+(\Pi_{*}^{\nabla})_{1 N^{dof}} & (\Pi_{*}^{\nabla})_{2 N^{dof}} & \cdots  & (\Pi_{*}^{\nabla})_{n_k N^{dof}}
+\end{bmatrix}
+\begin{bmatrix} 
+\nabla m_{1}\\ 
+\nabla m_{2} \\ 
+\vdots\\
+\nabla m_{n_k}
+\end{bmatrix}  \\
+&\begin{bmatrix} 
+\nabla m_{1} & \nabla m_{2} & \cdots &\nabla m_{n_k}
+\end{bmatrix}
+\begin{bmatrix} 
+(\Pi_{*}^{\nabla})_{1 1} & (\Pi_{*}^{\nabla})_{1 2} & \cdots  & (\Pi_{*}^{\nabla})_{1 N^{dof}} \\ 
+((\Pi_{*}^{\nabla})_{2 1} & (\Pi_{*}^{\nabla})_{2 2} & \cdots  & (\Pi_{*}^{\nabla})_{2 N^{dof}} \\ 
+\vdots\\
+(\Pi_{*}^{\nabla})_{n_k 1} & (\Pi_{*}^{\nabla})_{n_k 2} & \cdots  & (\Pi_{*}^{\nabla})_{n_k N^{dof}}
+\end{bmatrix} \mathrm d \mathbf x\\
+= & \int_E [\boldsymbol \Pi_{*}^\nabla]^T \begin{bmatrix}
+\nabla m_1 \\ \nabla m_2 \\\vdots\\ \nabla m_{n_k}
+\end{bmatrix}
+(\nabla m_1, \nabla m_2, \cdots,  \nabla m_{n_k}) \boldsymbol \Pi_{*}^{\nabla} \mathrm d \mathbf x \\
+= & [\boldsymbol \Pi_{*}^\nabla]^T \tilde{G} \boldsymbol \Pi_{*}^\nabla
+\end{aligned}
+\end{equation}
+
+其中 $\tilde{G}$ 的第一行元素都为 0，其它元素与 $G$ 保持一致．\\
+
+第二项的计算如下: \\
+\begin{equation}
+\begin{aligned}
+\sum_{r = 1}^{N^{dof}} \chi_r((I-\Pi^{\nabla})\varphi_i) \chi_r((I-\Pi^{\nabla})\varphi_j) & = \sum_{r = 1}^{N^{dof}} (\mathbf{I} - \boldsymbol {\Pi^{\nabla}})_{ri}\boldsymbol {\Pi^{\nabla}})_{ri} \\
+& = \sum_{r = 1}^{N^{dof}} (\mathbf{I} - \boldsymbol {\Pi^{\nabla}})_{ir}^T\boldsymbol {\Pi^{\nabla}})_{ri} \\
+& = \begin{bmatrix}(\mathbf{I} - \boldsymbol {\Pi^{\nabla}})^T(\mathbf{I} - \boldsymbol {\Pi^{\nabla}})\end{bmatrix}_{ij}
+\end{aligned}
+\end{equation}
+
+最后可以得到单元刚度矩阵的矩阵表达式: \\
+\begin{equation}
+\mathbf K_E^h = [\boldsymbol \Pi^\nabla_{*}]^T \tilde{G} \boldsymbol \Pi_{*}^\nabla + (\mathbf I - \boldsymbol \Pi^\nabla)^T(\mathbf I - \boldsymbol \Pi^\nabla)
+\end{equation}
+
+\subsubsection{$k = 1$ 时的情况}
+
+当 $k=1$ 时，容易给出$\Pi^{\nabla} v_h$的公式。因为1次多项式的梯度为常向量，方程 $(3.2)$ 可化为 \\
+\begin{equation}
+|E| \nabla p_1 \cdot \nabla(\Pi^{\nabla}v_h) = \nabla p_1 \cdot \int_E \nabla v_h
+\end{equation}
+
+过程: \\
+\begin{equation*}
+\begin{aligned}
+(\nabla p_1, \nabla(\Pi^\nabla v_h - v_h))_{0,E} & = 0 \\
+\Rightarrow
+(\nabla p_1, \nabla\Pi^\nabla v_h)_{0,E} & = (\nabla p_1, \nabla v_h)_{0,E} \\
+\Rightarrow
+|E| \nabla p_1 \cdot \nabla(\Pi^{\nabla}v_h) & = \nabla p_1 \cdot \int_E \nabla v_h
+\end{aligned}
+\end{equation*}
+
+通过取$p_1 = x_1,p_1 =x_2$，方程 $(3.26)$ 等价于 \\
+\begin{equation}
+\mathbf g(v_h) := \nabla(\Pi^{\nabla} v_h) = \frac{1}{|E|} \int_E \nabla v_h
+\end{equation}
+
+因此 \\
+\begin{equation}
+\Pi^{\nabla} v_h = x\mathbf g(v_h) + c
+\end{equation}
+
+这里，$c$是取决于$v_h$的常量函数。\\
+
+有了表达式 $(3.28)$，我们可以计算出公式 $(3.22)$ 中的一致项。\\
+
+由定义 $(3.27)$，方程 $(3,23)$ 右端第一项变为 \\
+\begin{equation*}
+(\nabla\Pi^{\nabla} \varphi_i,\nabla\Pi^{\nabla} \varphi_j)_{0,E}=|E|\mathbf g(\varphi_i)\mathbf g(\varphi_j)
+\end{equation*}
+
+因为 $\varphi_i$ 在每条边上都是线性的，容易知道 \\
+\begin{equation}
+|E|\mathbf g(\varphi_i) \equiv \int_E \nabla \varphi_i = \frac{1}{2} (|e_{i-1}| \mathbf{n}_{i-1} + |e_i| \mathbf{n}_i) = \frac{1}{2} \mathbf{d}_i^\perp
+\end{equation}
+
+其中，符号 $\perp$ 表示逆时针旋转 $90^\circ$, \\
+\begin{equation*}
+\mathbf{d}_i = V_{i-1}-V_{i+1}
+\end{equation*}
+
+\begin{equation*}
+\mathbf{d}_i^{\perp}=\begin{bmatrix}0&-1\\1&1\end{bmatrix}\mathbf{d}_i
+\end{equation*}
+
+下面证明 $\int_E \nabla \varphi_i = \frac{1}{2} (|e_{i-1}| \mathbf{n}_{i-1} + |e_i| \mathbf{n}_i)$:
+
+证明:记 $V = (x,y)^T$ 为多边形边界上任意一点，$V_i$ 为多边形顶点，$e_i$ 为 $V_iV_{i+1}$, $\mathbf{n}_i$ 为边 $e_i$ 上的单位外法向量． \\
+
+令 $V = (1 - t)V_i + tV_{i + 1}$, 则 \\
+\begin{equation*}
+\begin{aligned}
+x(t) & = (1 - t)x_i + tx_{i + 1} \\
+y(t) & = (1 - t)y_i + ty_{i + 1} \\
+x'(t) & = x_{i + 1} - x_i \\
+y'(t) & = y_{i + 1} - y_i
+\end{aligned}
+\end{equation*}
+
+记 $\tilde{\varphi}_i = \varphi_i(V)$, 由于 $\varphi$ 在边界上为线性多项式，且 \\
+\begin{equation*}
+\varphi_i(V_i) = 1,\,\ \varphi_i(V_j) = 0\,\ (i\ne j)
+\end{equation*}
+
+则可设 \\
+\begin{equation*}
+\begin{aligned}
+\tilde{\varphi}_i(t) & = at + b \\
+\tilde{\varphi}_i(0) & = \varphi_i(V_i),\,\ \text{即} b = 1 \\
+\tilde{\varphi}_i(1) & = \varphi_i(V_{i+1}),\,\ \text{即} a + b = 0 \\
+\text{则} \,\ \tilde{\varphi}_i(t) & = 1 - t 
+\end{aligned}
+\end{equation*}
+
+从而 \\
+\begin{equation*}
+\begin{aligned}
+\int_{e_i}\varphi_i & = \int_0^1 \tilde{\varphi}_i(t)\sqrt{\begin{bmatrix}x'(t)\end{bmatrix}^2 + \begin{bmatrix}y'(t)\end{bmatrix}^2} \mathrm dt\\ 
+& = \int_0^1 \tilde{\varphi}_i(t)\sqrt{(x_{i+1} - x_i)^2 + (y_{i+1} - y_i)^2} \mathrm dt \\
+& = |e_i|\int_0^1\tilde \varphi_i(t) \mathrm dt \\
+& = |e_i|\int_0^1(1 - t) \mathrm dt \\
+& = \frac{1}{2}|e_i|
+\end{aligned}
+\end{equation*}
+
+类似可得 \\
+\begin{equation*}
+\int_{e_{i - 1}}\varphi_i = \frac{1}{2}|e_{i - 1}|
+\end{equation*}
+
+从而 \\
+\begin{equation*}
+\begin{aligned}
+|E|g(\varphi_i) & = \int_{E} \nabla \varphi_i \\
+& = \begin{pmatrix}
+\int_{E} \frac{\partial \varphi_i}{\partial x} \\
+\\
+\int_{E} \frac{\partial \varphi_i}{\partial y}
+\end{pmatrix} \\
+& = \begin{pmatrix}
+\int_{E} div\begin{pmatrix}
+\varphi_i \\
+0
+\end{pmatrix} \\
+\\
+\int_{E} div\begin{pmatrix}
+0 \\
+\varphi_i 
+\end{pmatrix} 
+\end{pmatrix} \\
+& = \begin{pmatrix}
+\int_{\partial E} \begin{pmatrix}
+\varphi_i \\
+0
+\end{pmatrix}\cdot \mathbf n \\
+\\
+\int_{\partial E} \begin{pmatrix}
+0 \\
+\varphi_i 
+\end{pmatrix}\cdot \mathbf n \\
+\end{pmatrix} \\
+& = \begin{pmatrix}
+\int_{\partial E} \varphi_i n_x \\
+\\
+\int_{\partial E} \varphi_i n_x 
+\end{pmatrix} \\
+& = \int_{\partial E} \varphi_i \mathbf n \\
+& = \int_{e_{i - 1}}\varphi_i \mathbf {n}_{i - 1} + \int_{e_{i}}\varphi_i \mathbf {n}_{i} \\
+& = \frac{1}{2}(|e_{i - 1}|\mathbf{n}_{i - 1} + |e_i|\mathbf{n}_i)
+\end{aligned}
+\end{equation*}
+其中 $\mathbf{n}$ 为 $\partial E$ 上的单位外法向量． \\
+
+因此 \\
+\begin{equation*}
+(\nabla\Pi^{\nabla} \varphi_i,\nabla\Pi^{\nabla} \varphi_j)_{0,E} = \frac{1}{4|E|} \mathbf{d}_i^\perp \cdot \mathbf{d}_j^\perp = \frac{1}{4|E|} \mathbf{d}_i \cdot \mathbf{d}_j
+\end{equation*}
+
+为了获得公式 $(3.22)$ 中的稳定项，需要计算$\Pi^{\nabla}\varphi_i$的自由度，在 $k=1$ 时只需 $\Pi^{\nabla}\varphi_i$ 在多边形 $E$ 顶点处的值。首先，需要知道 $(3.28)$ 中的常量$c$。从 $(3.3)$ 可得 \\
+\begin{equation}
+P_0(\Pi^{\nabla}v_h) \equiv P_0(x) \cdot \mathbf g(v_h) + P_0c = P_0 v_h
+\end{equation}
+
+明显有 $P_0c=c$，回顾方程 $(3.4)$，定义$\bar{V}, \bar{v}_h$为结点中心的坐标和$v_h$的平均结点值。\\
+\begin{equation*}
+\begin{aligned}
+\bar{V} &:= P_0(x) = \frac{1}{N^V} \sum_{i=1}^{N^V}V_i\\
+\bar{v}_h &:= P_0v_h = \frac{1}{N^V}\sum_{i=1}^{N^V}v_h(V_i)
+\end{aligned}
+\end{equation*}
+
+从 $(3.30)$ 可以推出 \\
+\begin{equation*}
+c= P_0 v_h - P_0(x) \cdot \mathbf g(v_h) =\bar{v}_h - \bar{V}\cdot \mathbf g(v_h)
+\end{equation*}
+
+因此 \\
+\begin{equation*}
+\Pi^{\nabla}v_h = (x-\bar{V}) \cdot g(v_h) + \bar{v}_h
+\end{equation*}
+
+用$\varphi_i$代替$v_h$，代入上式，在利用 $(3.29)$，可以得到 \\
+\begin{equation*}
+\Pi^{\nabla}\varphi_i = \frac{1}{2|E|} (x-\bar{V})\cdot \mathbf{d}_i^\perp + \frac{1}{N^V} 
+\end{equation*}
+
+因此 \\
+\begin{equation}
+(\Pi^{\nabla})_{ri} = dof_r(\Pi^{\nabla} \varphi_i) = (\Pi^{\nabla} \varphi_i)(V_r) =  \frac{1}{2|E|} (V_r-\bar{V})\cdot\mathbf{d}_i^\perp + \frac{1}{N^V}
+\end{equation}
+
+导出 \\
+\begin{equation}
+(I-\Pi^{\nabla})_{ri} = dof_r(I-\Pi^{\nabla} \varphi_i) = (\delta_{ir} - \frac{1}{N^V})- \frac{1}{2|E|} (V_r-\bar{V})\cdot \mathbf{d}_i^\perp 
+\end{equation}
+
+\subsubsection{$L^2$ 投影}
+
+我们给出 $v_h \in V_k(E)$ 的自由度. 参考前面的部分我们可以得到 $v_h$ 的信息: \\
+\begin{flalign}
+\begin{split}
+& 1). v_h\text{在多边形} E \text{的边上的} \text{的每点的值}; \\
+& 2). v_h\text{在次数} \le k - 2 \text{的多项式空间上的} L^2 \text{投影}; \\
+& 3). v_h \text{在次数} \le k \text{的多项式空间的投影}\Pi^{\nabla}v_h. \\
+\end{split}
+\end{flalign}
+
+这样我们可以通过计算右端项 $(\mathbf{b}_E)_i = \int_Ef\varphi_i$ 得到 $\mathbf{b}_E^h$ 的近似. \\
+
+这个近似确保 $VEM$ 的解 $u_h$ 满足最佳误差估计: \\
+\begin{equation*}
+||u - u_h||_{0,\Omega} = O(h^{k+1}),\quad ||\nabla u - \nabla u_h||_{0,\Omega} = O(h^{k})
+\end{equation*}
+
+\subsubsection{$L^2$ 投影的定义与性质}
+
+对于每个 $v_h \in V_h$, 定义投影算子 $\Pi^0:\mathcal V_k(E)\to \mathcal P_k(E)$, 满足: \\
+\begin{equation}
+(p_k, \Pi^0 v_h - v_h)_{0,E} = 0, \quad \forall p_k \in \mathcal P_k(E)
+\end{equation}
+
+与第三部分类似，我们定义矩阵 \\
+\begin{equation}
+H_{\alpha \beta} := (m_\alpha, m_\beta)_{0,E}\quad \alpha,\beta = 1,2,\cdots, n_k
+\end{equation}
+
+$t^{\alpha} = t^{\alpha}(v_h)$ 是 $\Pi^0v_h$ 在基 $m_\alpha$ 处的系数: \\
+
+\begin{equation}
+\Pi^0v_h = \sum_{\alpha = 1}^{n_k}t^{\alpha}m_{\alpha}
+\end{equation}
+
+因为$\mathcal{M}_k(E)$是$\mathcal{P}_k(E)$的一组基，让符合性质 $(4.2)$ 的$p_k$只在$\mathcal{M}_k(E)$范围内变化，即 \\
+\begin{equation*}
+(m_{\alpha}, \Pi^0 v_h)_{0,E} = (m_{\alpha}, v_h)_{0,E}, \quad \forall m_{\alpha} \in \mathcal {P}_k(E)\,\ \alpha =1,...,n_k
+\end{equation*}
+
+把 $(4.4)$ 代入上式中可以得到 \\
+\begin{equation*}
+\sum_{\beta = 1}^{n_k}t^{\beta}(m_{\alpha}, m_{\beta})_{0,E} = (m_{\alpha}, v_h)_{0,E}\quad \alpha =1,...,n_k 
+\end{equation*}
+
+令 \\
+\begin{equation}
+c^{\alpha}:= (m_{\alpha},v_h)_{0,E}
+\end{equation}
+
+即 \\
+\begin{equation*}
+\begin{bmatrix}
+(m_1,m_1)_{0,E} & (m_1,m_2)_{0,E} & \cdots & (m_1,m_{n_k})_{0,E} \\
+(m_2,m_1)_{0,E} & (m_2,m_2)_{0,E} & \cdots &
+(m_2,m_{n_k})_{0,E} \\
+\vdots & \vdots & \ddots & \vdots \\
+(m_{n_k}, m_1)_{0,E} & (m_{n_k},m_2)_{0,E} & \cdots & (m_{n_k},m_{n_k})_{0,E}
+\end{bmatrix}\begin{bmatrix}
+t^1 \\
+t^2 \\
+\vdots \\
+t^{n_k}
+\end{bmatrix}
+= \begin{bmatrix}
+(m_1,v_h)_{0,E} \\
+(m_2,v_h)_{0,E} \\
+\vdots \\
+(m_{n_k},v_h)_{0,E}
+\end{bmatrix} 
+\end{equation*}
+
+我们也可以简记为 \\
+\begin{equation}
+\mathbf{H}\underline{t} = \underline{c}\quad \text{that is} \quad \underline{t} = \mathbf{H}^{-1}\underline{c}
+\end{equation}
+
+我们仅仅使用 $v_h$ 的自由度计算 $(4.5)$ 中 $\underline{c}$．\\
+
+我们知道，对于每一个 $v_h \in \mathcal{V}_k(E)$,计算 $\Pi^{\nabla}v_h$ 的时候仅仅使用 $v_h$ 的自由度．\\
+
+那么我们指出，对于每一个 $v_h \in \mathcal{V}_k(E)$, $\Pi^{\nabla}v_h$ 和 $\Pi^{0}v_h$ 都是 $v_h$ 很好的近似，并且当 $v_h$ 在多项式空间 $\mathcal{P}_{k}(E)$ 时与 $v_h$ 一致．因此，它们非常相近．\\
+
+那么对于次数为 $k$ 和 $k_1$ 的单项式 $m_{\alpha}$, 我们可以使用下式代替 $(4.5)$: \\
+\begin{equation}
+c^{\alpha}:= (m_{\alpha},\Pi^{\nabla}v_h)_{0,E}
+\end{equation}
+
+通过 $v_h$ 的自由度计算．\\
+
+我们引入一个新的空间 $W_k(E)$, 且它满足 $\mathcal{V}_k(E)$ 的全部的好的性质: \\
+
+* 在 E 的每条边 e 上 $W_K(E)$ 的元素都是 k 次多项式;  \\
+
+* $\mathcal {P}_k(E)\subset W_k(E)$;  \\
+
+* 在 $W_k(E)$ 中我们使用与 $\mathcal{V}_k(E)$ 相同的自由度．　\\　
+
+再加一个性质  \\
+\begin{equation}
+\int_{E} w_hm_{\alpha} = \int_{E}\Pi^{\nabla} w_h m_{\alpha}\quad |\alpha| = k-1,k,\,\ w_h \in W_k(E)
+\end{equation}
+
+此时，$(4.5)$ 和 $(4.7)$ 是等价的．\\
+
+\subsubsection{ $k = 1, k = 2$ 的例子}
+
+如果 $k = 1 \quad\text{or}\quad k = 2$, 我们容易得到 $\Pi^\nabla = \Pi^0$. \\
+
+1). $k = 1$ \\
+
+由方程 $(4.2)$ 可知 \\
+\begin{equation*}
+(p_1,\Pi^0 v_h)_{0,E} = (p_1,v_h)_{0,E},\quad p_1 \in \mathcal{P}_1(E)
+\end{equation*}
+
+公式 $(4.8)$ 中的 $w_h$ 换成 $v_h$, $m_\alpha$ 换成 $p_1$, 有 \\
+\begin{equation*}
+(p_1,\Pi^\nabla v_h)_{0,E} = (p_1,v_h)_{0,E},\quad p_1 \in \mathcal{P}_1(E)
+\end{equation*}
+
+因此 \\
+\begin{equation*}
+\Pi^\nabla = \Pi^0
+\end{equation*}
+
+2). $k = 2$: \\
+
+由条件 $(3.3)$ 和定义 $(3.4)$, 有 \\
+\begin{equation*}
+(1,\Pi^\nabla v_h)_{0,E} = (1,v_h)_{0,E}
+\end{equation*}
+
+证明如下: \\
+\begin{equation*}
+\begin{aligned}
+P_0(\Pi^\nabla v_h - v_h) & = 0 \\
+\Rightarrow \Pi^\nabla v_h - P^0 v_h & = 0 \\
+\Rightarrow \Pi^\nabla v_h & = \frac{1}{|E|} \int_{E}v_h \\
+\Rightarrow |E|\Pi^\nabla v_h & = \int_{E}v_h \\
+\Rightarrow \int_{E}\Pi^\nabla v_h & = \int_{E}v_h \\
+\Rightarrow (1,\Pi^\nabla v_h)_{0,E} & = (1,v_h)_{0,E}
+\end{aligned}
+\end{equation*}
+
+结合 $(5.8)$,有 \\
+\begin{equation*}
+(p_2,\Pi^\nabla v_h)_{0,E} = (p_2,v_h)_{0,E}\quad p_2 \in \mathcal{P}_2(E)
+\end{equation*}
+
+因此，再由 $(4.2)$ 我们可以得出 \\
+\begin{equation*}
+\Pi^\nabla = \Pi^0
+\end{equation*}
+
+\subsubsection{基于基函数构造 $L^2$ 投影}
+
+在程序中，需要计算 $W_k(E)$ 中的每个基函数 $\varphi_i$ 的 $L^2$ 投影，以及分别用单项式或虚单元的基表示给出的投影的相关的矩阵 $\boldsymbol\Pi^\nabla$ 和 $\boldsymbol\Pi^0$. \\
+
+形式为: \\
+\begin{equation}
+(\boldsymbol{\Pi}_{*}^0)_{\alpha i} := t^{\alpha}(\varphi_i) = \sum_{\beta = 1}^{n_k}(\mathbf{H}^{-1})_{\alpha\beta}c_{i}^{\beta} = (\mathbf{H}^{-1}\mathbf{C})_{\alpha i}
+\end{equation}
+
+其中 $\mathbf H$ 是公式 $(4.3)$ 给出的，$\mathbf C$ 是 $n_k \times N^{dof}$ 的矩阵 \\
+\begin{equation*}
+\mathbf C = \begin{bmatrix}
+(m_1, \varphi_1)_{0,E} & (m_1, \varphi_2)_{0,E} & \cdots & (m_1, \varphi_{N^{dof}})_{0,E} \\
+(m_2, \varphi_1)_{0,E} & (m_2, \varphi_2)_{0,E} & \cdots & (m_2, \varphi_{N^{dof}})_{0,E}\\
+\vdots & \vdots & \vdots & \vdots \\
+(m_{n_k}, \varphi_1)_{0,E} & (m_{n_k}, \varphi_2)_{0,E} & \cdots & (m_{n_k}, \varphi_{N^{dof}})_{0,E}
+\end{bmatrix}
+\end{equation*}
+
+又因为 $W_k(E)$ 的定义可知 \\
+\begin{equation}
+C_{\alpha i} = 
+\begin{cases}
+(m_{\alpha},\varphi_i)_{0,E}, & 1 \le \alpha \le n_k\\
+(m_{\alpha},\Pi^{\nabla}\varphi_i)_{0,E}, & n_{k-2} + 1\le \alpha \le n_k
+\end{cases}
+\end{equation}
+
+因此，有 \\
+\begin{equation*}
+\begin{aligned}
+\mathbf C = & \begin{bmatrix}
+(m_1, \varphi_1)_{0,E} & (m_1, \varphi_2)_{0,E} & \cdots & (m_1, \varphi_{N^{dof}})_{0,E} \\
+(m_2, \varphi_1)_{0,E} & (m_2, \varphi_2)_{0,E} & \cdots & (m_2, \varphi_{N^{dof}})_{0,E}\\
+\vdots & \vdots & \vdots & \vdots \\
+(m_{n_k}, \varphi_1)_{0,E} & (m_{n_k}, \varphi_2)_{0,E} & \cdots & (m_{n_k}, \varphi_{N^{dof}})_{0,E}
+\end{bmatrix} \\
+\\
+= & \begin{bmatrix}
+\mathbf C_{n_{k-2}\times kN^V} & \mathbf C_{n_{k-2}\times n_{k-2}}\\
+\mathbf C_{(n_{k} - n_{k-2})\times kN^V} & \mathbf C_{(n_{k} - n_{k-2})\times n_{k-2}}
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+其中 \\
+\begin{equation*}
+\begin{aligned}
+\mathbf C_{n_{k-2}\times kN^V} = & \mathbf 0 \\
+\mathbf C_{n_{k-2}\times n_{k-2}} = &|E| \mathbf I\\
+(\mathbf C_{(n_{k} - n_{k-2})\times kN^V}, \mathbf C_{(n_{k} - n_{k-2})\times n_{k-2}}) = & \mathbf H\mathbf G^{-1}\mathbf B[n_{k-2}+1:n_k,1:N_k]
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+C_{\alpha i} = 
+\begin{cases}
+|E|, &i = kN^V+\alpha\\
+(\mathbf H\mathbf G^{-1}\mathbf B)_{\alpha i}, &n_{k-2} < \alpha \leq n_k\\
+0, & \text{others}
+\end{cases}
+\end{equation*}
+
+证明如下: \\
+1). 如果 $1 \le \alpha \le n_{k - 2}$, $\mathbf{C}_{\alpha i} = 0,\,\ i = 1,2,\cdots,kN^V$,这是因为 $\alpha(I−Π∇)$ 在这个范围内的时候，$\varphi_i$ 是边界上的自由度，因此在单元上的积分为 $0$. \\
+2). $\mathbf{C}$ 的第二块 $\mathbf{C}_{\alpha i},\,\ \alpha = 1,2,\cdots,n_{k - 2}, i = kN^V +1,\cdots N^{dof}$, 有 \\ 
+\begin{equation*}
+\mathbf{C}_{\alpha i} = (m_\alpha,\varphi_i)_{0,E} = |E|dof_(kN^V + \alpha)(\varphi_i)
+\end{equation*}
+
+因此 \\
+\begin{equation*}
+\mathbf{C}_{n_{k-2}\times n_{k-2}} = |E|\mathbf{I}
+\end{equation*}
+
+3). 如果 $n_{k-2} + 1 \le \alpha \le n_k$ \\
+\begin{equation*}
+\begin{aligned}
+\mathbf{C}_{\alpha i} & = (m_{\alpha, \varphi_i})_{0,E} \\
+& = (m_{\alpha}, \Pi^{\nabla}\varphi_i)_{0,E} \\
+& = (m_\alpha,\sum_{\beta = 1}^{n_k}s_i^{\beta}m_\beta)_{0,E} \\
+& = \sum_{\beta = 1}^{n_k}s_i^{\beta}(m_\alpha,m_\beta)_{0,E} \\
+& = \sum_{\beta = 1}^{n_k}(\Pi_{*}^\nabla)_{\beta i}\mathbf{H}_{\alpha\beta} \\
+& = \sum_{\beta = 1}^{n_k}(\mathbf{G}^{-1}\mathbf{B})_{\beta i}\mathbf{H}_{\alpha\beta} 
+& = (\mathbf{HG^{-1}B})_{\alpha i}
+\end{aligned}
+\end{equation*}
+
+记 $\Pi_{*}^0: \mathcal V_k(E) \rightarrow \mathcal{P}_k(E)$ 和 $\Pi^0: \mathcal V_k(E) \rightarrow \mathcal V_k(E)$:
+
+\begin{equation}
+\boldsymbol \Pi^0 = \mathbf D\boldsymbol \Pi_{*}^0 = \mathbf D\mathbf H^{-1} \mathbf C 
+\end{equation}
+
+\subsubsection{质量矩阵}
+定义在多边形 $E$ 上的 Laplace 算子的质量矩阵，i.e.,
+\begin{equation*}
+(\mathbf{M}_E)_{ij} = \int_{E}\varphi_i \varphi_j \quad i,j=1,...,N_{dof}
+\end{equation*}
+
+利用投影算子$\Pi^{\nabla}$, 作分解：
+\begin{equation*}
+\varphi_i = \Pi^{0} \varphi_i + (I-\Pi^{0})\varphi_i\\
+\varphi_j = \Pi^{0} \varphi_j + (I-\Pi^{0})\varphi_j
+\end{equation*}
+
+\begin{equation}
+\begin{aligned}
+(\mathbf M_{E})_{i j} =& (\Pi^{0} \varphi_i, \Pi^{0} \varphi_j) + ((I-\Pi^{0})\varphi_i,(I-\Pi^{0})\varphi_j)\\
+& + (\Pi^{0} \varphi_i,(I-\Pi^{0})\varphi_j)+((I-\Pi^{0})\varphi_i,\Pi^{0} \varphi_j)\\
+= &(\Pi^{0} \varphi_i,  \Pi^{0} \varphi_j) + ((I-\Pi^{0})\varphi_i,(I-\Pi^{0})\varphi_j)\\
+\end{aligned}
+\end{equation}
+中间两项是利用正交性后为 $0$.
+
+这样就把虚单元法单元质量矩阵的计算分解为可计算的两部分， 其中第一部分：\\
+\begin{equation*}
+\begin{aligned}
+&\begin{pmatrix}
+(\Pi^0\varphi_1, \Pi^0\varphi_1) & (\Pi^0\varphi_1, \Pi^0\varphi_2) & \cdots & (\Pi^0\varphi_1, \Pi^0\varphi_{N^{dof}})\\
+(\Pi^0\varphi_2, \Pi^0\varphi_1) & (\Pi^0\varphi_2, \Pi^0\varphi_2) & \cdots & (\Pi^0\varphi_2, \Pi^0\varphi_{N^{dof}})\\
+\cdots & \cdots & \cdots & \cdots \\
+(\Pi^0\varphi_{N^{dof}}, \Pi^0\varphi_1) & (\Pi^0\varphi_{N^{dof}}, \Pi^0\varphi_2) & \cdots & (\Pi^0\varphi_{N^{dof}}, \Pi^0\varphi_{N^{dof}})\\
+\end{pmatrix}\\
+= & \int_E \begin{pmatrix} 
+\Pi^0\varphi_1\\ 
+\Pi^0\varphi_2 \\ 
+\vdots\\
+\Pi^0\varphi_{N^{dof}}
+\end{pmatrix}\begin{pmatrix} 
+\Pi^0\varphi_1\\ 
+\Pi^0\varphi_2 \\ 
+\vdots\\
+\Pi^0\varphi_{N^{dof}}
+\end{pmatrix}^T\mathrm d \mathbf x\\
+= & \int_E \begin{pmatrix} 
+\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{0})_{\alpha 1}\cdot m_{\alpha}\\ 
+\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{0})_{\alpha 2}\cdot m_{\alpha} \\ 
+\vdots\\
+\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{0})_{\alpha N^{dof}}\cdot m_{\alpha}
+\end{pmatrix}\begin{pmatrix} 
+\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{0})_{\alpha 1}\cdot m_{\alpha}\\ 
+\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{0})_{\alpha 2}\cdot m_{\alpha} \\ 
+\vdots\\
+\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{0})_{\alpha N^{dof}}\cdot m_{\alpha}
+\end{pmatrix}^T\mathrm d \mathbf x\\
+= & \begin{pmatrix} 
+(\Pi_{*}^{0})_{1 1} & (\Pi_{*}^{0})_{2 1} & \cdots  & (\Pi_{*}^{0})_{n_k 1} \\ 
+((\Pi_{*}^{0})_{1 2} & (\Pi_{*}^{0})_{2 2} & \cdots  & (\Pi_{*}^{0})_{n_k 2} \\ 
+\vdots\\
+(\Pi_{*}^{0})_{1 N^{dof}} & (\Pi_{*}^{0})_{2 N^{dof}} & \cdots  & (\Pi_{*}^{0})_{n_k N^{dof}}
+\end{pmatrix}\begin{pmatrix} 
+ m_{1}\\ 
+ m_{2} \\ 
+\vdots\\
+ m_{n_k}
+\end{pmatrix}\begin{pmatrix} 
+m_{1} & m_{2} & \cdots & m_{n_k}
+\end{pmatrix}
+\begin{pmatrix} 
+(\Pi_{*}^{0})_{1 1} & (\Pi_{*}^{0})_{1 2} & \cdots  & (\Pi_{*}^{0})_{1 N^{dof}} \\ 
+((\Pi_{*}^{0})_{2 1} & (\Pi_{*}^{0})_{2 2} & \cdots  & (\Pi_{*}^{0})_{2 N^{dof}} \\ 
+\vdots\\
+(\Pi_{*}^{0})_{n_k 1} & (\Pi_{*}^{0})_{n_k 2} & \cdots  & (\Pi_{*}^{0})_{n_k N^{dof}}
+\end{pmatrix} \mathrm d \mathbf x\\
+= & \int_E [\boldsymbol \Pi_{*}^0]^T \begin{pmatrix}
+m_1 \\
+m_2 \\
+\vdots\\
+m_{n_k}
+\end{pmatrix}
+(m_1, m_2, \cdots, m_{n_k}) \boldsymbol \Pi_{*}^{0} \mathrm d \mathbf x \\
+= & [\boldsymbol \Pi_{*}^0]^T \mathbf{H} \boldsymbol \Pi_{*}^0 \\
+= & \mathbf{C}^T\mathbf{H}^{-1}\mathbf{C}
+\end{aligned}
+\end{equation*}
+
+结合 $(2.3)$,单元质量矩阵的第二项为 \\
+\begin{equation}
+\begin{aligned}
+\int_{E}(I - \Pi^0)\varphi_i(I - \Pi^0)\varphi_j & = (\sum_{r = 1}^{N^{dof}}dof_r((I - \Pi^0)\varphi_i)\varphi_r, \sum_{r = 1}^{N^{dof}}dof_r((I - \Pi^0)\varphi_j)\varphi_r) \\
+& = \sum_{r = 1}^{N^{dof}}dof_r((I - \Pi^0)\varphi_i)dof_r((I - \Pi^0)\varphi_i)(\varphi_r,\varphi_r) \\
+& = |E|\sum_{r = 1}^{N^{dof}}dof_r((I - \Pi^0)\varphi_i)dof_r((I - \Pi^0)\varphi_i) \\
+& = |E|\sum_{r = 1}^{N^{dof}}(\mathbf{I} - \boldsymbol \Pi^0)_{ri}(\mathbf{I} - \boldsymbol \Pi^0)_{rj} \\
+& = |E|\sum_{r = 1}^{N^{dof}}(\mathbf{I} - \boldsymbol \Pi^0)_{ir}^T(\mathbf{I} - \boldsymbol \Pi^0)_{rj} \\
+& = |E|\left[(\mathbf{I} - \boldsymbol \Pi^0)^T(\mathbf{I} - \boldsymbol \Pi^0)\right]_{ij}
+\end{aligned}
+\end{equation}
+
+因此，单元质量矩阵为 \\
+\begin{equation}
+\mathbf M_E^h = \mathbf C^T\mathbf H^{-1}\mathbf C + |E|(\mathbf I - \boldsymbol \Pi^0)^T(\mathbf I - \boldsymbol \Pi^0)
+\end{equation}
+
+\subsubsection{右端项}
+
+定义右端项 \\
+\begin{equation}
+(b_E^h)_i := \int_{E}f\Pi_k^0\varphi_i
+\end{equation}
+
+由文献 [1] 知道即使不使用 $\mathcal P_k(E)$ 上的完整的 $L^2$ 投影，我们仍然可以得到最佳误差逼近．特别的，有 \\
+\begin{equation}
+\begin{aligned}
+(b_E^h)_i & := \int_{E}f\Pi_{k-1}^0\varphi_i\,\ for \,\ k = 1,2 \\
+(b_E^h)_i & := \int_{E}f\Pi_{k-2}^0\varphi_i\,\ for \,\ k \ge 3
+\end{aligned}
+\end{equation}
+
+总的区域上的右端项为: \\
+\begin{equation*}
+\begin{aligned}
+\mathbf F & = \begin{bmatrix}
+(f, \Pi^0_k\varphi_1) \\
+(f, \Pi^0_k\varphi_2) \\
+\vdots\\
+(f, \Pi^0_k\varphi_{N^{dof}})
+\end{bmatrix} \\
+\\
+& = \begin{bmatrix}
+(f,\sum_{\alpha = 1}^{n_k}(\boldsymbol \Pi_{*}^0)_{\alpha 1}m_\alpha) \\
+(f,\sum_{\alpha = 1}^{n_k}(\boldsymbol \Pi_{*}^0)_{\alpha 2}m_\alpha) \\
+\vdots \\
+(f,\sum_{\alpha = 1}^{n_k}(\boldsymbol \Pi_{*}^0)_{\alpha N^{dof}}m_\alpha)
+\end{bmatrix} \\
+\\
+& = \begin{bmatrix}
+\sum_{\alpha = 1}^{n_k}(f,(\boldsymbol \Pi_{*}^0)_{\alpha 1}m_\alpha) \\
+\sum_{\alpha = 1}^{n_k}(f,(\boldsymbol \Pi_{*}^0)_{\alpha 2}m_\alpha) \\
+\vdots \\
+(f,\sum_{\alpha = 1}^{n_k}(\boldsymbol \Pi_{*}^0)_{\alpha N^{dof}}m_\alpha)
+\end{bmatrix} \\
+\\
+& =(\boldsymbol \Pi_{*}^0)^T\begin{bmatrix}
+(f, m_1)\\ (f, m_2) \\ \vdots \\ (f, m_{n_k})
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+\subsubsection{各种情形}
+\subsubsection{$k= 1$}
+
+\begin{equation*}
+\begin{aligned}
+\mathbf G = &
+\begin{bmatrix}
+P_0 m_1 & P_0m_2 &  P_0 m_{3} \\
+0 & (\nabla m_2, \nabla m_2)_{0,E} &  (\nabla m_2, \nabla m_{3})_{0,E}\\
+0 & (\nabla m_{3}, \nabla m_2)_{0,E} &  (\nabla m_{3}, \nabla m_{3})_{0,E}
+\end{bmatrix}\\
+\\
+= & \begin{bmatrix}
+1 & \sum_{i=1}^{N^V} \frac{x_i - x_{E}}{h_EN^V} & \sum_{i=1}^{N^V} \frac{y_i - y_{E}}{h_EN^V}\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{bmatrix}\\
+\\
+=& \begin{bmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+其中\\
+\begin{equation*}
+\begin{aligned}
+& P_0m_1 = \frac{1}{N^V}\sum_{i = 1}^{N^V}m_1(V_i) = \frac{1}{|E|}\cdot 1 = 1 \\
+& P_0m_2 = \frac{1}{N^V}\sum_{i = 1}^{N^V}m_2(V_i) = \sum_{i=1}^{N^V} \frac{x_i - x_{E}}{h_EN^V} = 0 \\
+& P_0m_3 = \frac{1}{N^V}\sum_{i = 1}^{N^V}m_3(V_i) = \sum_{i=1}^{N^V} \frac{y_i - y_{E}}{h_EN^V} = 0 \\
+& (\nabla m_2,\nabla m_2)_{0,E} = \int_{E} (\frac{1}{2},0)\times(\frac{1}{2},0) = 1 \\
+& (\nabla m_3,\nabla m_3)_{0,E} = \int_{E} (0, \frac{1}{2})\times(0, \frac{1}{2}) = 1 \\
+& (\nabla m_2,\nabla m_3)_{0,E} = \int_{E} (\frac{1}{2},0)\times(0,\frac{1}{2}) = 0 \\
+& (\nabla m_3,\nabla m_2)_{0,E} = \int_{E} (0,\frac{1}{2})\times(\frac{1}{2},0) = 0 \\
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+\mathbf B = & 
+\begin{bmatrix}
+P_0\varphi_1 & \cdots & P_0\varphi_{N^{V}}\\
+(\nabla m_2, \nabla\varphi_1)_{0, E} & \cdots & (\nabla m_2, \nabla\varphi_{N^{V}})_{0, E}\\
+(\nabla m_{3}, \nabla\varphi_1)_{0, E} & \cdots & (\nabla m_{3}, \nabla\varphi_{N^{V}})_{0, E}\\
+\end{bmatrix}\\
+\\
+=& \begin{bmatrix}
+0 & \cdots & 0\\
+-(\Delta m_2,\varphi_1)_{0, E} & \cdots & -(\Delta m_2,\varphi_{N^{V}})_{0, E}\\
+-(\Delta m_{3}, \varphi_1)_{0, E} & \cdots & -(\Delta m_{3},\varphi_{N^{V}})_{0, E}\\
+\end{bmatrix}\\
+\\
+& + \begin{bmatrix}
+P_0\varphi_1 & \cdots & P_0\varphi_{N^{V}}\\
+(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{V}})_{\partial E}\\
+(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{V}})_{\partial E}\\
+\end{bmatrix}\\
+\\
+= & \begin{bmatrix}
+\frac{1}{N^V} & \cdots & \frac{1}{N^V}\\
+(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial\mathbf n},\varphi_{N^{V}})_{\partial E}\\
+(\frac{\partial m_{3}}{\partial\mathbf n}, \varphi_1)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial\mathbf n}, \varphi_{N^{V}})_{\partial E}\\
+\end{bmatrix}\\
+\\
+=&\begin{pmatrix}
+\frac{1}{N^V} & \cdots  & \frac{1}{N^V}\\
+\frac{1}{h_E}\sum_e \mathbf n_e\int_e\varphi_1 & \cdots& \frac{1}{h_E}\sum_e \mathbf n_e\int_e\varphi_{N^V_P})
+\end{pmatrix}\\
+\\
+= & \begin{pmatrix}
+\frac{1}{N^V} & \cdots & \frac{1}{N^V}\\
+\frac{1}{h_E}\mathbf d_1 & \cdots & \frac{1}{h_E} \mathbf d_{N_E^V}\\
+\end{pmatrix}\\
+\end{aligned}
+\end{equation*}
+
+其中 $$\mathbf d_{i} = \frac{1}{2}\mathbf W^T(\mathbf x_{i+1} - \mathbf x_{i-1})$$ .
+
+\begin{equation*}
+\begin{aligned}
+\mathbf D = &\begin{bmatrix}
+dof_1(m_1) & dof_1(m_2) &  dof_1(m_{3}) \\
+dof_2(m_1) & dof_2(m_2) &  dof_2(m_{3}) \\
+\vdots & \vdots & \vdots \\
+dof_{N^{v}}(m_1) & dof_{N^{v}}(m_2) & dof_{N^{v}}(m_{3}) 
+\end{bmatrix}\\
+\\
+= & \begin{bmatrix}
+1 & \frac{x_1 - x_{c,E}}{h_E} &  \frac{y_1 - y_{c,E}}{h_E} \\
+1 & \frac{x_2 - x_{c,E}}{h_E} &  \frac{y_2 - y_{c,E}}{h_E} \\
+\vdots & \vdots & \vdots \\
+1 & \frac{x_{N^V} - x_{c,E}}{h_E} & \frac{y_{N^V} - y_{c,E}}{h_E}
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\mathbf H = \begin{bmatrix}
+(m_1, m_1) & (m_1, m_2) &  (m_1, m_{3}) \\
+(m_2, m_1) & (m_2, m_2) &  (m_2, m_{3}) \\
+(m_{3}, m_1) & (m_{3}, m_2) & (m_{3}, m_{3}) 
+\end{bmatrix}
+\end{equation*}
+
+对于 $H$ 的计算，我们应用齐次函数这种积分形式 \\
+
+对于齐次函数 $f(\lambda\mathbf x) = \lambda^qf(\mathbf x),\quad \forall \lambda > 0$,对 $\lambda$ 进行求导可得 $q\lambda^{q-1}f(\mathbf x) = \nabla f \cdot\mathbf{x}$, 取 $\lambda = 1$, 可得 $qf(\mathbf x) = \nabla f(\mathbf x)\cdot\mathbf x$. \\
+
+给定一个定义在多边形 $E$ 上的齐次函数 $f(\mathbf{x})$, 记 \\
+\begin{equation*}
+\mathbf{F} := \mathbf{x}f(\mathbf{x})
+\end{equation*}
+
+代入散度定理公式\\
+\begin{equation*}
+\int_{E}\nabla\cdot\mathbf{F}\mathrm{d}\mathbf{x} = \int_{\partial E}\mathbf{F}\cdot\mathbf{n}\mathrm{d}\mathbf{x}
+\end{equation*}
+
+可得 \\
+\begin{equation*}
+\begin{aligned}
+& \int_E\nabla\cdot[\mathbf x f(\mathbf x)]\mathrm d \mathbf x \\
+=& \int_E (\nabla\cdot\mathbf x)f(\mathbf x)\mathrm d \mathbf x + 
+\int_E \mathbf x\cdot \nabla f(\mathbf x)\mathrm d \mathbf x\\
+=& 2 \int_E f(\mathbf x)\mathrm d \mathbf x + 
+\int_E qf(\mathbf x)\mathrm d \mathbf x\\
+=& (q+2) \int_E f(\mathbf x)\mathrm d \mathbf x \\
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+& \int_{\partial E} (\mathbf x\cdot \mathbf n)  f(\mathbf x)\mathrm ds\\
+=& \sum_{e_i\in\partial E}\int_{e_i} (\mathbf x\cdot \mathbf n_i)  f(\mathbf x)\mathrm ds\\
+=& \sum_{e_i\in\partial E}\int_{e_i} [(\mathbf x - \mathbf x_i + \mathbf x_i)\cdot \mathbf n_i] f(\mathbf x)\mathrm ds\\
+=& \sum_{e_i\in\partial E}\int_{e_i} (\mathbf x_i\cdot \mathbf n_i)  f(\mathbf x)\mathrm ds\\
+=& \sum_{e_i\in\partial E}(\mathbf x_i\cdot \mathbf n_i)\int_{e_i} f(\mathbf x)\mathrm ds\\
+\end{aligned}
+\end{equation*}
+
+因此 \\
+\begin{equation*}
+\begin{aligned}
+\int_{E}\nabla\cdot\mathbf{F}\mathrm{d}\mathbf{x} & = \int_{\partial E}\mathbf{F}\cdot\mathbf{n}\mathrm{d}\mathbf{x} \\
+\Rightarrow
+(q+2) \int_E f(\mathbf x)\mathrm d \mathbf x & = \sum_{e_i\in\partial E}(\mathbf x_i\cdot \mathbf n_i)\int_{e_i} f(\mathbf x)\mathrm ds \\
+\Rightarrow
+\int_E f(\mathbf x)\mathrm d \mathbf x & = \frac{1}{q + 2}\sum_{e_i\in\partial E}(\mathbf x_i\cdot \mathbf n_i)\int_{e_i} f(\mathbf x)\mathrm ds
+\end{aligned}
+\end{equation*}
+
+其中 $n_i$ 是单元 $E$ 上的第 $i$ 条边的单位外法向量．\\
+
+\begin{equation*}
+\begin{aligned}
+\mathbf C =& \begin{bmatrix}
+(m_1, \varphi_1) & (m_1, \varphi_2) & \cdots & (m_1, \varphi_{N^{V}}) \\
+(m_2, \varphi_1) & (m_2, \varphi_2) & \cdots & (m_2, \varphi_{N^{V}})\\
+(m_{3}, \varphi_1) & (m_{3}, \varphi_2) & \cdots & (m_{3},\varphi_{N^{V}})
+\end{bmatrix}\\
+= & \mathbf H\mathbf G^{-1}\mathbf B
+\end{aligned}
+\end{equation*}
+
+\subsubsection{$k = 2$}
+
+\begin{equation*}
+\begin{aligned}
+\mathbf G = &
+\begin{bmatrix}
+P_0 m_1 & P_0m_2 &  P_0 m_{3} & P_0m_4 & P_0m_5 & P_0m_6 \\
+0 & (\nabla m_2, \nabla m_2)_{0,E} & (\nabla m_2, \nabla m_{3})_{0,E}& (\nabla m_2, \nabla m_{4})_{0,E} & (\nabla m_2, \nabla m_{5})_{0,E} & (\nabla m_2, \nabla m_{6})_{0,E}\\
+0 & (\nabla m_{3}, \nabla m_2)_{0,E} & (\nabla m_{3}, \nabla m_{3})_{0,E} & (\nabla m_{3}, \nabla m_{4})_{0,E} & (\nabla m_{3}, \nabla m_{5})_{0,E} & (\nabla m_{3}, \nabla m_{6})_{0,E}\\
+0 & (\nabla m_4, \nabla m_2)_{0,E} & (\nabla m_4, \nabla m_{3})_{0,E}& (\nabla m_4, \nabla m_{4})_{0,E} & (\nabla m_4, \nabla m_{5})_{0,E} & (\nabla m_4, \nabla m_{6})_{0,E}\\
+0 & (\nabla m_5, \nabla m_2)_{0,E} & (\nabla m_5, \nabla m_{3})_{0,E}& (\nabla m_5, \nabla m_{4})_{0,E} & (\nabla m_5, \nabla m_{5})_{0,E} & (\nabla m_5, \nabla m_{6})_{0,E}\\
+0 & (\nabla m_6, \nabla m_2)_{0,E} & (\nabla m_6, \nabla m_{3})_{0,E}& (\nabla m_6, \nabla m_{4})_{0,E} & (\nabla m_6, \nabla m_{5})_{0,E} & (\nabla m_6, \nabla m_{6})_{0,E}\\
+\end{bmatrix}\\
+\\
+= &
+\begin{bmatrix}
+1 & \frac{1}{|E|}\int_E m_2 & \frac{1}{|E|}\int_E m_3 & \frac{1}{|E|}\int_E m_4 & \frac{1}{|E|}\int_E m_5 & \frac{1}{|E|}\int_E m_6\\
+0 & (\nabla m_2, \nabla m_2)_{0,E} & (\nabla m_2, \nabla m_{3})_{0,E}& (\nabla m_2, \nabla m_{4})_{0,E} & (\nabla m_2, \nabla m_{5})_{0,E} & (\nabla m_2, \nabla m_{6})_{0,E}\\
+0 & (\nabla m_{3}, \nabla m_2)_{0,E} & (\nabla m_{3}, \nabla m_{3})_{0,E} & (\nabla m_{3}, \nabla m_{4})_{0,E} & (\nabla m_{3}, \nabla m_{5})_{0,E} & (\nabla m_{3}, \nabla m_{6})_{0,E}\\
+0 & (\nabla m_4, \nabla m_2)_{0,E} & (\nabla m_4, \nabla m_{3})_{0,E}& (\nabla m_4, \nabla m_{4})_{0,E} & (\nabla m_4, \nabla m_{5})_{0,E} & (\nabla m_4, \nabla m_{6})_{0,E}\\
+0 & (\nabla m_5, \nabla m_2)_{0,E} & (\nabla m_5, \nabla m_{3})_{0,E}& (\nabla m_5, \nabla m_{4})_{0,E} & (\nabla m_5, \nabla m_{5})_{0,E} & (\nabla m_5, \nabla m_{6})_{0,E}\\
+0 & (\nabla m_6, \nabla m_2)_{0,E} & (\nabla m_6, \nabla m_{3})_{0,E}& (\nabla m_6, \nabla m_{4})_{0,E} & (\nabla m_6, \nabla m_{5})_{0,E} & (\nabla m_6, \nabla m_{6})_{0,E}\\
+\end{bmatrix}\\
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+\mathbf B =& 
+\begin{bmatrix}
+P_0\varphi_1 & P_0\varphi_2 & \cdots & P_0\varphi_{N^{dof}}\\
+(\nabla m_2, \nabla\varphi_1)_{0, E} & (\nabla m_2, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_2, \nabla\varphi_{N^{dof}})_{0, E}\\
+(\nabla m_{3}, \nabla\varphi_1)_{0, E} & (\nabla m_3, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_{3}, \nabla\varphi_{N^{dof}})_{0, E}\\
+(\nabla m_{4}, \nabla\varphi_1)_{0, E} & (\nabla m_4, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_{4}, \nabla\varphi_{N^{dof}})_{0, E}\\
+(\nabla m_{5}, \nabla\varphi_1)_{0, E} & (\nabla m_5, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_{5}, \nabla\varphi_{N^{dof}})_{0, E}\\
+(\nabla m_{6}, \nabla\varphi_1)_{0, E} & (\nabla m_6, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_{6}, \nabla\varphi_{N^{dof}})_{0, E}\\
+\end{bmatrix}\\
+\\
+= & \begin{bmatrix}
+0 & 0 & \cdots & 0\\
+-(\Delta m_2,\varphi_1)_{0, E} & -(\Delta m_2,\varphi_2)_{0, E} & \cdots & -(\Delta m_2,\varphi_{N^{dof}})_{0, E}\\
+-(\Delta m_{3}, \varphi_1)_{0, E} & -(\Delta m_{3}, \varphi_2)_{0, E} & \cdots & -(\Delta m_{3},\varphi_{N^{dof}})_{0, E}\\
+-(\Delta m_{4}, \varphi_1)_{0, E} & -(\Delta m_{4}, \varphi_2)_{0, E} & \cdots & -(\Delta m_{4},\varphi_{N^{dof}})_{0, E}\\
+-(\Delta m_{5}, \varphi_1)_{0, E} & -(\Delta m_{5}, \varphi_2)_{0, E} & \cdots & -(\Delta m_{5},\varphi_{N^{dof}})_{0, E}\\
+-(\Delta m_{6}, \varphi_1)_{0, E} & -(\Delta m_{6}, \varphi_2)_{0, E} & \cdots & -(\Delta m_{6},\varphi_{N^{dof}})_{0, E}\\
+\end{bmatrix}\\
+\\
++ & \begin{bmatrix}
+P_0\varphi_1 & P_0\varphi_2 & P_0\varphi_3 & \cdots & P_0\varphi_{N^{dof}}\\
+(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+\end{bmatrix}\\
+\\
+= & \int_{E}\begin{bmatrix}
+0 \\
+-\Delta m_2 \\
+-\Delta m_3 \\
+-\Delta m_4 \\
+-\Delta m_5 \\
+-\Delta m_6 \\
+\end{bmatrix}
+\begin{bmatrix}
+\varphi_1 & \varphi_2 & \varphi_3 & \cdots & \varphi_{N^{dof}}\\
+\end{bmatrix}\\
+\\
++ & \begin{bmatrix}
+\frac{1}{|E|} \int_E \varphi_1 & \frac{1}{|E|} \int_E \varphi_2 & \frac{1}{|E|} \int_E \varphi_3 & \cdots & \frac{1}{|E|} \int_E \varphi_{N^{dof}}\\
+(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+\end{bmatrix}\\
+\end{aligned}
+\end{equation*}
+\begin{equation*}
+\begin{aligned}
+= & \begin{bmatrix}
+0 \\
+0 \\
+0 \\
+-\frac{2}{{h_E}^2} \\
+0 \\
+-\frac{2}{{h_E}^2} \\
+\end{bmatrix}
+\begin{bmatrix}
+m_1\\
+\end{bmatrix}
+\begin{bmatrix}
+\varphi_1 & \varphi_2 & \varphi_3 & \cdots & \varphi_{N^{dof}}\\
+\end{bmatrix}\\
+\\
+& (\text{这里是由前面所求的拉普拉斯算子的矩阵得到的}) \\
+\\
++ & \begin{bmatrix}
+\frac{1}{|E|} \int_E \varphi_1 & \frac{1}{|E|} \int_E \varphi_2 & \frac{1}{|E|} \int_E \varphi_3 & \cdots & \frac{1}{|E|} \int_E \varphi_{N^{dof}}\\
+(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+\end{bmatrix}\\
+\\
+= & \begin{bmatrix}
+0 \\
+0 \\
+0 \\
+-\frac{2}{{h_E}^2} \\
+0 \\
+-\frac{2}{{h_E}^2} \\
+\end{bmatrix}
+\begin{bmatrix}
+\varphi_1 & \varphi_2 & \varphi_3 & \cdots & \varphi_{N^{dof}}\\
+\end{bmatrix}\\
+\\
++ & \begin{bmatrix}
+\frac{1}{|E|} \int_E \varphi_1 & \frac{1}{|E|} \int_E \varphi_2 & \frac{1}{|E|} \int_E \varphi_3 & \cdots & \frac{1}{|E|} \int_E \varphi_{N^{dof}}\\
+(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+\end{bmatrix}\\
+\end{aligned}
+\end{equation*}
+\begin{equation*}
+\begin{aligned}
+= & \begin{bmatrix}
+0 & 0 & 0 & \cdots & 0\\
+0 & 0 & 0 & \cdots & 0\\
+0 & 0 & 0 & \cdots & 0\\
+0 & 0 & 0 & \cdots & -\frac{2}{{h_E}^2}|E|\\
+0 & 0 & 0 & \cdots & 0\\
+0 & 0 & 0 & \cdots & -\frac{2}{{h_E}^2}|E|\\
+\end{bmatrix}\\
+\\
+& (\text{当基函数为单元的顶点以及边上的点时，乘积为}0)\\
+\\
++ & \begin{bmatrix}
+\frac{1}{|E|} \int_E \varphi_1 & \frac{1}{|E|} \int_E \varphi_2 & \frac{1}{|E|} \int_E \varphi_3 & \cdots & \frac{1}{|E|} \int_E \varphi_{N^{dof}}\\
+(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
+\end{bmatrix}\\
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+(\frac{\partial m_\alpha}{\partial n},\varphi_i)_{\partial E} =\sum_e\sum_k n\cdot\nabla m_\alpha \varphi_i(x_k)\boldsymbol{w}_s(x_k) \\
+\end{equation*}
+$i = k$ 时值为 $1$, $i \ne k$ 时值为 $0$.
+
+
+\begin{equation*}
+\begin{aligned}
+\mathbf D = &\begin{bmatrix}
+dof_1(m_1) & dof_1(m_2) &  dof_1(m_{3}) & dof_1(m_4) & dof_1(m_5) & dof_1(m_6) \\
+dof_2(m_1) & dof_2(m_2) &  dof_2(m_{3}) & dof_2(m_4) & dof_2(m_5) & dof_2(m_6)\\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+dof_{N^{dof}}(m_1) & dof_{N^{dof}}(m_2) & dof_{N^{dof}}(m_{3}) & dof_{N^{dof}}(m_{4}) & dof_{N^{dof}}(m_{5}) & dof_{N^{dof}}(m_{6})
+\end{bmatrix} \\
+\\
+= & \begin{bmatrix}
+1 & \frac{x_1 - x_{c,E}}{h_E} & \frac{y_1 - y_{c,E}}{h_E} & (\frac{x_1 - x_{c,E}}{h_E})^2 & (\frac{x_1 - x_{c,E}}{h_E})(\frac{y_1 - y_{c,E}}{h_E}) & (\frac{y_1 - y_{c,E}}{h_E})^2\\
+1 & \frac{x_2 - x_{c,E}}{h_E} & \frac{y_2 - y_{c,E}}{h_E} & (\frac{x_2 - x_{c,E}}{h_E})^2 & (\frac{x_2 - x_{c,E}}{h_E})(\frac{y_2 - y_{c,E}}{h_E}) & (\frac{y_2 - y_{c,E}}{h_E})^2\\
+\vdots &\vdots & \vdots & \vdots \\
+1 & \frac{x_{N^{dof}} - x_{c,E}}{h_E} & \frac{y_{N^{dof}} - y_{c,E}}{h_E} & (\frac{x_{N^{dof}} - x_{c,E}}{h_E})^2 & (\frac{x_{N^{dof}} - x_{c,E}}{h_E})(\frac{y_{N^{dof}} - y_{c,E}}{h_E}) & (\frac{y_{N^{dof}} - y_{c,E}}{h_E})^2\\
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\mathbf H = \begin{bmatrix}
+(m_1, m_1) & (m_1, m_2) & (m_1, m_{3}) & (m_1, m_4) & (m_1, m_5) & (m_1, m_6)\\
+(m_2, m_1) & (m_2, m_2) & (m_2, m_{3}) & (m_2, m_4) & (m_2, m_5) & (m_2, m_6)\\
+(m_3, m_1) & (m_3, m_2) & (m_3, m_{3}) & (m_3, m_4) & (m_3, m_5) & (m_3, m_6)\\
+(m_4, m_1) & (m_4, m_2) & (m_4, m_{3}) & (m_4, m_4) & (m_4, m_5) & (m_4, m_6)\\
+(m_5, m_1) & (m_5, m_2) & (m_5, m_{3}) & (m_5, m_4) & (m_5, m_5) & (m_5, m_6)\\
+(m_6, m_1) & (m_6, m_2) & (m_6, m_{3}) & (m_6, m_4) & (m_6, m_5) & (m_6, m_6)\\
+\end{bmatrix}
+\end{equation*}
+
+
+\begin{equation*}
+\begin{aligned}
+\mathbf C =& \begin{bmatrix}
+(m_1, \varphi_1) & (m_1, \varphi_2) & \cdots & (m_1, \varphi_{N^{dof}}) \\
+(m_2, \varphi_1) & (m_2, \varphi_2) & \cdots & (m_2, \varphi_{N^{dof}})\\
+(m_{3}, \varphi_1) & (m_{3}, \varphi_2) & \cdots & (m_{3},\varphi_{N^{dof}})\\
+(m_4, \varphi_1) & (m_4, \varphi_2) & \cdots & (m_4,\varphi_{N^{dof}})\\
+(m_5, \varphi_1) & (m_5, \varphi_2) & \cdots & (m_5,\varphi_{N^{dof}})\\
+(m_6, \varphi_1) & (m_6, \varphi_2) & \cdots & (m_6,\varphi_{N^{dof}})\\
+\end{bmatrix}\\
+=& \mathbf H\mathbf G^{-1}\mathbf B
+\end{aligned}
+\end{equation*}
+
+其中:
+
+\begin{equation*}
+\begin{aligned}
+\mathbf C_{n_{k-2}\times kN^V} = & \mathbf 0 \\
+\mathbf C_{n_{k-2}\times n_{k-2}} = &|E| \mathbf I\\
+(\mathbf C_{(n_{k} - n_{k-2})\times kN^V}, \mathbf C_{(n_{k} - n_{k-2})\times n_{k-2}}) = & \mathbf H\mathbf G^{-1}\mathbf B[n_{k-2}+1:n_k,1:N_k]
+\end{aligned}
+\end{equation*}
+
+
+即
+
+\begin{equation*}
+\begin{aligned}
+\mathbf C_{1 \times 2N^V} =& \mathbf 0 \\
+\mathbf C_{1 \times 1} =& |E| \\
+(\mathbf C_{5 \times 2N^V}, \mathbf C_{5 \times 1}) =& \mathbf H \mathbf G^{-1} \mathbf B[2:6, 1:6]
+\end{aligned}
+\end{equation*}
 
 \subsection{准晶结构的计算方法}
 {\color{red}\begin{center}
