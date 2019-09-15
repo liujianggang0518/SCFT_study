@@ -4,6 +4,72 @@
 {\color{red}\begin{center}
      高晨阳
 \end{center}}
+Euler方法是最简单的数值方法，我们以常微分方程初值问题
+\begin{equation}\label{eq:ODE}
+		\begin{cases}
+				y'=f(x,y), \quad\quad a\le x\le b , \quad |y| < \infty ,\\
+				y(a)=y_0
+		\end{cases}
+\end{equation}
+为例进行说明。其中$f$为$x,y$的已知函数，$y_0$为给定的初值。
+
+在$[a,b]$中插入分点
+$$ a = x_0 < x_1 <x_2 < ... < x_N = b ,$$
+记$h_m = x_{m+1}- x_{m}$, $h_m$称为步长，如无特殊说明，下面总是假定$h_m = h$
+为定步长。
+
+我们的目的是寻求问(\ref{eq:ODE})在这一系列节点$x_0, x_1, ... ,x_N$上的近似解$y_1, y_2,... , y_N$. 为此，将(\ref{eq:ODE})的微分方程写成等价的积分方程形式：
+\begin{equation}\label{eq:ODE_quard}
+		y(x+h)=y(x)+\int_x^{x+h} f(\tau, y(\tau)) \, d\tau
+\end{equation}
+在式(\ref{eq:ODE_quard})中，令$x=x_m$,并用左矩形公式计算右端积分，得到
+\begin{equation}\label{eq:ODE_dis}
+		y(x_m+h)= y(x_m) +h f(x_m, y(x_m)) + R_m
+\end{equation}
+其中$R_m$称为余项。
+\begin{equation}\label{eq:Rm}
+		R_m=\int_{x_m}^{x_{m+1}}f(x, y(x))dx- h f(x_m,y(x_m))
+\end{equation}
+在式(\ref{eq:ODE_dis})中截去余项$R_m$, 便得近似计算公式
+\begin{equation}\label{eq:ODE_solution}
+		y(x_{m+1}) \approx y(x_m) + h f(x_m,y(x_m))
+\end{equation}
+由于除$m=0$外，$y(x_m)$是未知的,设$y_m$为$y(x_m)$的近似值，以$y_m+h f( x_m, y_m)$作为$ y(x_{m+1})$的近似值，记为$y_{m+1}$, 则得出求各个节点处解的近似值的递推公式。
+\begin{equation}
+		y_{m+1} = y_m + h f(x_m , y_m), \quad \quad m = 0, 1, ... ,N-1.
+\end{equation}
+这便是Euler方法。
+
+同样地，在(\ref{eq:ODE_quard})中令$x = x_m$, 并分别用右矩形公式和梯形公式计算右端积分，且作同样的处理后，得到递推公式：
+\begin{equation}\label{eq:ODE_implicit}
+		\begin{aligned}
+				y_{m+1}=y_m + h f(x_{m+1} , y_{m+1})\\
+		        R_m = \int_xm^x_{m+1} f(x,y(x)) dx - h f(x_{m+1}, y_{m+1})
+        \end{aligned}
+\end{equation}
+\begin{equation}\label{eq:ODE_modifty}
+		\begin{aligned}
+				y_{m+1}= y_m + h \frac{f(x_m,y_m) + f(x_{m+1},y_{m+1})}{2},\\
+				R_m = \int_{x_m}^{x_{m+1}} f(x,y(x))dx- \frac{h}{2}[f(x_m,y(x_m))+ f(x_{m+1},y(x_{m+1}))]
+		\end{aligned}
+\end{equation}
+我们称(\ref{eq:ODE_implicit})为隐式Euler方法， 而(\ref{eq:ODE_modifty})常称为改进的Eulur方法。
+\subsubsection{Eulur方法的局部截断误差}
+进一步假设$f(x,y)$关于$x$满足Lipschitz条件，K为Lipschitz常数，则由(\ref{eq:Rm})得
+\begin{equation*}
+		\begin{aligned}
+				|R_m|= & | \int_{x_m}^{x_{m+1}} [f(x,y(x)) - f(x_m,y(x_m))] dx|\\
+				&\leq \int_{x_m}^{x_{m+1}}|f(x,y(x)) - f(x_m, y(x))| dx\\
+				&+\int_{x_m}^{x_{m+1}}|f(x_m,y(x)) - f(x_m, y(x_m))| dx\\
+				&\leq K \int_{x_m}^{x_{m+1}}|x-x_m|dx + L\int_{x_m}^{x_{m+1}}|y(x)-y(x_m)|dx\\
+				&\leq \frac{Kh^2}{2}+ L\int_{x_m}^{x_{m+1}}|y'(x_m+\theta (x-x_m))|(x-x_m)dx\\
+				&\leq \frac{(K+LM)h^2}{2}
+		\end{aligned}
+\end{equation*}
+
+其中$0 <\theta < 1$,$ M = \max\limits_{x \in [a,b]}|y'(x)| = \max\limits_{x\in[a,b]}|f(x,y(x))|$,记$R= (K+LM)h^2/2$, 则有
+$$ |R_m| \leq R $$
+由此可知，Euler方法的局部截断误差是二阶的。
 
 \subsection{Runge-Kutta方法}
 {\color{red}\begin{center}
