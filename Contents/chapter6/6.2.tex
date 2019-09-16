@@ -75,7 +75,180 @@ $$ |R_m| \leq R $$
 {\color{red}\begin{center}
      高晨阳
 \end{center}}
+\subsubsection{(1)显式方法}
 
+考察差商$\frac{y(x_{m+1})-y(x_m)}{h}$,根据微分中值定理，存在点$\xi$, $x_m < \xi <x_{m+1}$, 使得
+$$y(x_m+1)- y(x_m)=h y'(\xi)$$
+从而利用所给方程$y' = f(x,y)$, 得
+\begin{equation}\label{eq:quot}
+        y(x_{m+1}) = y(x_m) + h f(\xi,y(\xi))
+\end{equation}
+记$ k = f(\xi,y(\xi))$, 称$k$为区间$[x_m,x_{m+1}]$上曲线$y = y(x)$的平均斜率。只要对平均斜率提供一种算法，由式(\ref{eq:quot})便相应的导出微分方程的一种数值计算格式。例如，取点$x_m$的斜率值$k_1= f(x_m ,y_m )$作为平均斜率$k$, 则得到前面讨论的$Euler$方法，其精度当然很低。
+
+又如，改进的$Euler$方法(\ref{eq:ODE_modifty})可以改写成下面的平均形式：
+\begin{equation}
+		\begin{cases}
+				y_{m+1} = y_m +h(k1+k2)/2\\
+				k_1 = f(x_m,y_m)\\
+				k_2 = f(x_{m+1} , y_m+hk_1)
+		\end{cases}
+\end{equation}
+因此可以理解为：它用$x_m$与$x_{m+1}$两个点的斜率值$k_1$和$k_2$，取算术平均作为平均斜率$k$,而$x_{m+1}$处的斜率值$k_2$则利用已知信息通过Euler公式来预报。这各处理过程启发我们，如果设法在$[x_m,x_{m+1}]$内多预报几个点的斜率值，然后将它们加权平均作为平均斜率$k$,则有可能构造出具有更高精度的计算格式，这就是Runge-Kutta方法的基本思想。根据这种思想，令
+\begin{equation}\label{eq:formation}
+		y_{m+1}= y_m + h \sum_{i=1}^s b_i k_i
+\end{equation}
+其中$b_i$为待定权因子，s为所使用的斜率值的个数，$k_i$满足下列方程
+\begin{equation}\label{eq:para}
+		k_i = f(x_m+c_i h , y_m +h \sum_{j=1}^{i-1} a_{ij}k_j) , \quad\quad i = 1, ... s
+\end{equation}
+且
+$$ c_1 = 0 , c_i = \sum_{j=1}^{i-1}a_{ij}, \quad\quad i = 2 , ... ,s$$
+当$s =1$时，(\ref{eq:formation})和(\ref{eq:para})即前面讨论的Euler方法。(\ref{eq:formation})和(\ref{eq:para})中出现的参数$b_1,b_2,...,b_s,c_1,c_2,...c_s$及$a_{ij}$为提高方法的精度创造了条件。Runge-Kutta方法中的系数可以这样来决定。设$y(x)$满足微分方程，将式（\ref{eq:para}）的右端在$x_m$点展开成关于h的Taylor级数，然后代入(\ref{eq:formation})中，同时将$y(x_m+h)$在$x_m$点展开成Taylor级数，使左右两端h的次数不超过q的项的系数对应相等，就得到确定系数$b_i, c_i, a_{ij}$的方程组，求解它的解也就得到q阶的Runge-Kutta方法的算式。
+
+现以$s=2$的情形为例，来构造Runge-Kutta方法。
+
+设为微分方程的真解$y(x_m)$具有充分高阶导数，将$y(x_m+h)$及$k_1,k_2$在$x_m$点展开成$Taylor$公式：
+\begin{equation*}
+		\begin{aligned}
+				y(x_m+h) =& y(x_m) +hy'(x_m) +\frac{h^2}{2!}y''(x_m)+\frac{h^3}{3!}y'''(x_m)+O(h^4)\\
+				= & y(x_m)+hf+\frac{h^2}{2!}(f_x+f_y \cdot f)+\frac{h^3}{3!}(f_{xx}+2f \cdot f_{xy}+f^2 \cdot f_{yy}+f_x f_y +f^2_y \cdot f)+O(h^4)\\
+				k_1=&f(x_m,y_m)\\
+				k_2= &f(x_m+c_2h,y_m+ha_{21}k_1)\\
+				= & f(x_m,y_m)+h(c_2 f_x+a_{21}f \cdot f_y) + O(h^2)
+		\end{aligned}
+\end{equation*}
+其中$f,f_x,f_y,f_{xx}$分别表示f(x,y)及其偏导数在点$(x_m,y_m)$的值。将$k_1,k_2$的展开式代入(\ref{eq:formation})的左边，并与$y(x_m+h)$的展开式比较的展开式比较，令$h,h^2$项系数相等，便得到
+\begin{equation*}
+		\begin{cases}
+				b_1+b_2=1\\
+				b_2c_2=1/2\\
+				b_2a_{21}=1/2
+		\end{cases}
+\end{equation*}
+取$c_2$作为自由参数便可以确定出$b_1,b_2,a_{21}$.特别地，若分别取$c_2$为$1/2,2/3$和$1$,就得到相应的$(b_1,b_2,a_{21})$分别为$(0,1,1/2),(1/4,3/4,2/3),(1/2,1/2,1)$, 相应的Runge-Kutta方法为
+\begin{equation*}
+		\begin{cases}
+				y_{m+1} =y_m +h f\bigg(x_m+\frac{1}{2}h, y_m+\frac{1}{2}hf_m\bigg)\\
+				y_{m+1} =y_m +\frac{1}{4}h\bigg[ f(x_m,y_m)+3f(x_m+\frac{2}{3}h, y_m+\frac{2}{3}hf_m)\bigg]\\
+				y_{m+1} =y_m +\frac{1}{2}h [f(x_m,y_m)+f(x_m+h,y_m+hf_m)]
+		\end{cases}
+\end{equation*}
+其中$f_m=f(x_m,y_m)$.这是三个典型的二阶Runge-Kutta方法，它们分别被称为中点公式、Heun公式和改进的Euler公式。
+
+对于$s=3,4$的情形，我们可以完全仿上述的方法推导出三阶和四阶Runge-Kutta公式，下面给出几个著名的公式列举如下：
+
+三级三阶显式Heun公式:
+\begin{equation*}\label{eq:Heun_3}
+		\begin{cases}
+				y_{m+1}=y_m + h(k_1+3k_3)/4\\
+				k_1=f(x_m,y_m)\\
+				k_2=f(x_m+h/3,y_m+hk_1/3)\\
+				k_3=f(x_m+2h/3,y_m+2hk_2/3)
+		\end{cases}
+\end{equation*}
+
+三级三阶显式Kutta公式:
+\begin{equation*}\label{eq:Kutta_3}
+		\begin{cases}
+				y_{m+1}=y_m + h(k_1+4k_2+k_3)/6\\
+				k_1=f(x_m,y_m)\\
+				k_2=f(x_m+h/2,y_m+hk_1/2)\\
+				k_3=f(x_m+h,y_m-hk_1+2hk_2)
+		\end{cases}
+\end{equation*}
+
+四级四阶古典显式Runge-Kutta公式:
+\begin{equation*}\label{eq:Runge-Kutta_3}
+		\begin{cases}
+				y_{m+1}=y_m + h(k_1+2k_2+2k_3+k_4)/6\\
+				k_1=f(x_m,y_m)\\
+				k_2=f(x_m+h/2,y_m+hk_1/2)\\
+				k_3=f(x_m+h/2,y_m+hk_2/2)\\
+                                k_4=f(x_m+h,y_m+hk_3)
+		\end{cases}
+\end{equation*}
+
+四级四阶古典显式Kutta公式:
+\begin{equation*}\label{eq:Kutta_4}
+		\begin{cases}
+				y_{m+1}=y_m + h(k_1+3k_2+3k_3+k_4)/8\\
+				k_1=f(x_m,y_m)\\
+				k_2=f(x_m+h/3,y_m+hk_1/3)\\
+				k_3=f(x_m+2h/3,y_m-hk_1/3+hk_2)\\
+                                k_4=f(x_m+h,y_m+hk_1-hk_2+hk_3)
+		\end{cases}
+\end{equation*}
+
+四级四阶古典显式Gill公式:
+\begin{equation*}\label{eq:Gill_4}
+		\begin{cases}
+				y_{m+1}=y_m + h(k_1+(2-\sqrt{2})k_2+(2+\sqrt{2})k_3+k_4)/6\\
+				k_1=f(x_m,y_m)\\
+				k_2=f(x_m+h/2,y_m+hk_1/2)\\
+				k_3=f(x_m+h/2,y_m+\frac{\sqrt{2}-1}{2}hk_1+(1-\frac{\sqrt{2}}{2})hk_2)\\
+                                k_4=f(x_m+h,y_m-\frac{\sqrt{2}}{2}hk_2+(1+\frac{\sqrt{2}}{2})hk_3)
+		\end{cases}
+\end{equation*}
+
+\subsubsection{(2)隐式方法}
+
+上面的公式有一个共同的特点，就是在计算$k_{i+1}$时，只用到$k_1,k_2,...,k_i$.所以，上述公式都被称为显式Runge-Kutta方法。如果把(\ref{eq:para})改写成
+\begin{equation}\label{implit}
+		k_i = f\bigg( x_m+c_i h , y_m+ h\sum_{j=1}^sa_{ij}k_j\bigg), \quad i=1,2,..s
+\end{equation}
+且
+$$\sum_{j=1}^s a_{ij} = c_i$$
+则每个$k_i$中含有$k_1,...,k_s$，这时称Runge-Kutta方法(\ref{eq:formation})$\sim$ (\ref{implit})为隐式的，它的待定系数可以表示如下：
+\begin{table}[H]
+		\centering
+		\begin{tabular}{c|cccc}
+				$c_1$ & $a_{11}$ & $a_{12}$ & ... & $a_{1s}$\\
+		        $c_2$ & $a_{21}$ & $a_{22}$ & ... & $a_{2s}$\\
+		        \vdots & \vdots & \vdots &   & \vdots \\
+		       $c_s$ & $a_{s1}$ & $a_{s2}$ & ... & $a_{ss}$\\ \hline
+		            &  $b_1$   & $b_2$   &  ...& $b_s$
+		\end{tabular}
+\end{table}
+记A$=(a_{ij})_{s \times s}, c=(c_1,c_2,...c_s)^T, b=(b_1,b_2,...,b_s)^T$,则Runge-Kutta方法(\ref{eq:formation})$\sim$ (\ref{implit})可以简记为
+\begin{table}[htbp!]\label{coff}
+		\centering
+		\begin{tabular}{c|c}
+				c & A\\ \hline
+				  & $b^T$ 
+		\end{tabular}
+\end{table}
+以后均用(\ref{coff})表示Runge-Kutta方法，而且前面讨论过的显式Runge-Kutta方法
+对应A为主对角线上元素为零的下三角阵，因而它们也可以表示为(\ref{coff})的形式。如果A是一个主对角元素为非零的下三角矩阵，相应的Runge-Kutta方法称为半隐式的；如果A为一般的s级方阵，相应的公式是全隐式的。隐式方法也可以像显式方法的推导方法一样，用Taylor展开的方法来构造。下面是几个常用的隐式方法。
+
+中点公式($m=1,p=2$)：
+\begin{table}[htbp!]\label{coff1}
+		\centering
+		\begin{tabular}{c|c}
+				$\frac{1}{2}$& $\frac{1}{2}$\\ \hline
+				  & $1$ 
+		\end{tabular}\caption{隐式中点公式}
+\end{table}
+\newpage
+隐式Runge-Kutta公式($m=2,p=4$)：
+\begin{table}[htbp!]\label{coff2}
+		\centering
+		\begin{tabular}{c|cc}
+				$\frac{3-\sqrt{3}}{6}$& $\frac{1}{4}$ & $\frac{3-2\sqrt{3}}{12}$\\ 
+				$\frac{3+\sqrt{3}}{6}$ & $\frac{3+2\sqrt{3}}{12}$  &$ \frac{1}{4}$ \\\hline
+                                                        &$ \frac{1}{2}$ &$ \frac{1}{2}$
+		\end{tabular}\caption{隐式Runge-Kutta公式}
+\end{table}
+
+Kuntzmann和Butcher公式($m=2,p=4$)：
+\begin{table}[htbp!]\label{coff3}
+		\centering
+		\begin{tabular}{c|ccc}
+				$\frac{5-\sqrt{15}}{10}$&$ \frac{5}{36}$ &$ \frac{10-3\sqrt{15}}{45}$ &$ \frac{25-6\sqrt{15}}{180}$\\ 
+				$\frac{1}{2}$& $\frac{10+3\sqrt{15}}{72}$ &$\frac{2}{9}$ & $\frac{10-23\sqrt{15}}{72}$ \\
+                                $\frac{5+\sqrt{15}}{10}$& $\frac{25+6\sqrt{15}}{180}$ & $\frac{10+3\sqrt{15}}{45}$ & $\frac{5}{36}$\\\hline
+                                                        & $\frac{5}{18}$ & $\frac{4}{9}$ &$\frac{5}{18}$
+		\end{tabular}\caption{Kuntzmann和Butcher公式}
+\end{table}
 \subsection{线性多步法}
 {\color{red}\begin{center}
      司伟
