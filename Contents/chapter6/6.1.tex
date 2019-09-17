@@ -424,7 +424,8 @@ A0.3: 假设 $\exists \gamma > 0$ s.t. 对 $\forall h$ 和每个单元 $E \in \m
 (K_{E}^h)_{ij} := (\nabla \Pi^{\nabla}\varphi_i, \nabla \Pi^{\nabla}\varphi_j)_{0,E} + \sum_{r = 1}^{N^{dof}} dof_r((I-\Pi^{\nabla})\varphi_i) dof_r((I-\Pi^{\nabla})\varphi_j)
 \end{equation}
 
-这样就把虚单元法单元刚度矩阵的计算分解为可计算的两部分， 其中第一部分从公式 $(3.13)$ 可知 \\
+这样就把虚单元法单元刚度矩阵的计算分解为可计算的两部分， 其中第一部分从公式
+$(3.13)$ 可知 \\
 \begin{equation}
 \begin{aligned}
 &\begin{bmatrix}
@@ -455,6 +456,10 @@ A0.3: 假设 $\exists \gamma > 0$ s.t. 对 $\forall h$ 和每个单元 $E \in \m
 \vdots\\
 \nabla(\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha N^{dof}}\cdot m_{\alpha})
 \end{bmatrix}^T\mathrm d \mathbf x\\
+\end{aligned}
+\end{equation}
+\begin{equation*}
+    \begin{aligned}
 & = \int_E \begin{bmatrix} 
 (\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 1}\cdot \nabla m_{\alpha})\\ 
 (\sum_{\alpha = 1}^{n_k}(\Pi_{*}^{\nabla})_{\alpha 2}\cdot \nabla m_{\alpha}) \\ 
@@ -493,7 +498,7 @@ A0.3: 假设 $\exists \gamma > 0$ s.t. 对 $\forall h$ 和每个单元 $E \in \m
 (\nabla m_1, \nabla m_2, \cdots,  \nabla m_{n_k}) \boldsymbol \Pi_{*}^{\nabla} \mathrm d \mathbf x \\
 = & [\boldsymbol \Pi_{*}^\nabla]^T \tilde{G} \boldsymbol \Pi_{*}^\nabla
 \end{aligned}
-\end{equation}
+\end{equation*}
 
 其中 $\tilde{G}$ 的第一行元素都为 0，其它元素与 $G$ 保持一致．\\
 
@@ -510,6 +515,7 @@ A0.3: 假设 $\exists \gamma > 0$ s.t. 对 $\forall h$ 和每个单元 $E \in \m
 \begin{equation}
 \mathbf K_E^h = [\boldsymbol \Pi^\nabla_{*}]^T \tilde{G} \boldsymbol \Pi_{*}^\nabla + (\mathbf I - \boldsymbol \Pi^\nabla)^T(\mathbf I - \boldsymbol \Pi^\nabla)
 \end{equation}
+
 
 \subsubsection{$k = 1$ 时的情况}
 
@@ -973,6 +979,10 @@ C_{\alpha i} =
 \cdots & \cdots & \cdots & \cdots \\
 (\Pi^0\varphi_{N^{dof}}, \Pi^0\varphi_1) & (\Pi^0\varphi_{N^{dof}}, \Pi^0\varphi_2) & \cdots & (\Pi^0\varphi_{N^{dof}}, \Pi^0\varphi_{N^{dof}})\\
 \end{pmatrix}\\
+\end{aligned}
+\end{equation*}
+\begin{equation*}
+    \begin{aligned}
 = & \int_E \begin{pmatrix} 
 \Pi^0\varphi_1\\ 
 \Pi^0\varphi_2 \\ 
@@ -1007,8 +1017,8 @@ C_{\alpha i} =
  m_{n_k}
 \end{pmatrix}\begin{pmatrix} 
 m_{1} & m_{2} & \cdots & m_{n_k}
-\end{pmatrix}
-\begin{pmatrix} 
+\end{pmatrix}\\
+&\begin{pmatrix} 
 (\Pi_{*}^{0})_{1 1} & (\Pi_{*}^{0})_{1 2} & \cdots  & (\Pi_{*}^{0})_{1 N^{dof}} \\ 
 ((\Pi_{*}^{0})_{2 1} & (\Pi_{*}^{0})_{2 2} & \cdots  & (\Pi_{*}^{0})_{2 N^{dof}} \\ 
 \vdots\\
@@ -1042,6 +1052,7 @@ m_{n_k}
 \begin{equation}
 \mathbf M_E^h = \mathbf C^T\mathbf H^{-1}\mathbf C + |E|(\mathbf I - \boldsymbol \Pi^0)^T(\mathbf I - \boldsymbol \Pi^0)
 \end{equation}
+
 
 \subsubsection{右端项}
 
@@ -1088,7 +1099,6 @@ m_{n_k}
 \end{aligned}
 \end{equation*}
 
-\subsubsection{各种情形}
 \subsubsection{$k= 1$}
 
 \begin{equation*}
@@ -1254,228 +1264,6 @@ dof_{N^{v}}(m_1) & dof_{N^{v}}(m_2) & dof_{N^{v}}(m_{3})
 \end{aligned}
 \end{equation*}
 
-\subsubsection{$k = 2$}
-
-\begin{equation*}
-\begin{aligned}
-\mathbf G = &
-\begin{bmatrix}
-P_0 m_1 & P_0m_2 &  P_0 m_{3} & P_0m_4 & P_0m_5 & P_0m_6 \\
-0 & (\nabla m_2, \nabla m_2)_{0,E} & (\nabla m_2, \nabla m_{3})_{0,E}& (\nabla m_2, \nabla m_{4})_{0,E} & (\nabla m_2, \nabla m_{5})_{0,E} & (\nabla m_2, \nabla m_{6})_{0,E}\\
-0 & (\nabla m_{3}, \nabla m_2)_{0,E} & (\nabla m_{3}, \nabla m_{3})_{0,E} & (\nabla m_{3}, \nabla m_{4})_{0,E} & (\nabla m_{3}, \nabla m_{5})_{0,E} & (\nabla m_{3}, \nabla m_{6})_{0,E}\\
-0 & (\nabla m_4, \nabla m_2)_{0,E} & (\nabla m_4, \nabla m_{3})_{0,E}& (\nabla m_4, \nabla m_{4})_{0,E} & (\nabla m_4, \nabla m_{5})_{0,E} & (\nabla m_4, \nabla m_{6})_{0,E}\\
-0 & (\nabla m_5, \nabla m_2)_{0,E} & (\nabla m_5, \nabla m_{3})_{0,E}& (\nabla m_5, \nabla m_{4})_{0,E} & (\nabla m_5, \nabla m_{5})_{0,E} & (\nabla m_5, \nabla m_{6})_{0,E}\\
-0 & (\nabla m_6, \nabla m_2)_{0,E} & (\nabla m_6, \nabla m_{3})_{0,E}& (\nabla m_6, \nabla m_{4})_{0,E} & (\nabla m_6, \nabla m_{5})_{0,E} & (\nabla m_6, \nabla m_{6})_{0,E}\\
-\end{bmatrix}\\
-\\
-= &
-\begin{bmatrix}
-1 & \frac{1}{|E|}\int_E m_2 & \frac{1}{|E|}\int_E m_3 & \frac{1}{|E|}\int_E m_4 & \frac{1}{|E|}\int_E m_5 & \frac{1}{|E|}\int_E m_6\\
-0 & (\nabla m_2, \nabla m_2)_{0,E} & (\nabla m_2, \nabla m_{3})_{0,E}& (\nabla m_2, \nabla m_{4})_{0,E} & (\nabla m_2, \nabla m_{5})_{0,E} & (\nabla m_2, \nabla m_{6})_{0,E}\\
-0 & (\nabla m_{3}, \nabla m_2)_{0,E} & (\nabla m_{3}, \nabla m_{3})_{0,E} & (\nabla m_{3}, \nabla m_{4})_{0,E} & (\nabla m_{3}, \nabla m_{5})_{0,E} & (\nabla m_{3}, \nabla m_{6})_{0,E}\\
-0 & (\nabla m_4, \nabla m_2)_{0,E} & (\nabla m_4, \nabla m_{3})_{0,E}& (\nabla m_4, \nabla m_{4})_{0,E} & (\nabla m_4, \nabla m_{5})_{0,E} & (\nabla m_4, \nabla m_{6})_{0,E}\\
-0 & (\nabla m_5, \nabla m_2)_{0,E} & (\nabla m_5, \nabla m_{3})_{0,E}& (\nabla m_5, \nabla m_{4})_{0,E} & (\nabla m_5, \nabla m_{5})_{0,E} & (\nabla m_5, \nabla m_{6})_{0,E}\\
-0 & (\nabla m_6, \nabla m_2)_{0,E} & (\nabla m_6, \nabla m_{3})_{0,E}& (\nabla m_6, \nabla m_{4})_{0,E} & (\nabla m_6, \nabla m_{5})_{0,E} & (\nabla m_6, \nabla m_{6})_{0,E}\\
-\end{bmatrix}\\
-\end{aligned}
-\end{equation*}
-
-\begin{equation*}
-\begin{aligned}
-\mathbf B =& 
-\begin{bmatrix}
-P_0\varphi_1 & P_0\varphi_2 & \cdots & P_0\varphi_{N^{dof}}\\
-(\nabla m_2, \nabla\varphi_1)_{0, E} & (\nabla m_2, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_2, \nabla\varphi_{N^{dof}})_{0, E}\\
-(\nabla m_{3}, \nabla\varphi_1)_{0, E} & (\nabla m_3, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_{3}, \nabla\varphi_{N^{dof}})_{0, E}\\
-(\nabla m_{4}, \nabla\varphi_1)_{0, E} & (\nabla m_4, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_{4}, \nabla\varphi_{N^{dof}})_{0, E}\\
-(\nabla m_{5}, \nabla\varphi_1)_{0, E} & (\nabla m_5, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_{5}, \nabla\varphi_{N^{dof}})_{0, E}\\
-(\nabla m_{6}, \nabla\varphi_1)_{0, E} & (\nabla m_6, \nabla\varphi_2)_{0, E} & \cdots & (\nabla m_{6}, \nabla\varphi_{N^{dof}})_{0, E}\\
-\end{bmatrix}\\
-\\
-= & \begin{bmatrix}
-0 & 0 & \cdots & 0\\
--(\Delta m_2,\varphi_1)_{0, E} & -(\Delta m_2,\varphi_2)_{0, E} & \cdots & -(\Delta m_2,\varphi_{N^{dof}})_{0, E}\\
--(\Delta m_{3}, \varphi_1)_{0, E} & -(\Delta m_{3}, \varphi_2)_{0, E} & \cdots & -(\Delta m_{3},\varphi_{N^{dof}})_{0, E}\\
--(\Delta m_{4}, \varphi_1)_{0, E} & -(\Delta m_{4}, \varphi_2)_{0, E} & \cdots & -(\Delta m_{4},\varphi_{N^{dof}})_{0, E}\\
--(\Delta m_{5}, \varphi_1)_{0, E} & -(\Delta m_{5}, \varphi_2)_{0, E} & \cdots & -(\Delta m_{5},\varphi_{N^{dof}})_{0, E}\\
--(\Delta m_{6}, \varphi_1)_{0, E} & -(\Delta m_{6}, \varphi_2)_{0, E} & \cdots & -(\Delta m_{6},\varphi_{N^{dof}})_{0, E}\\
-\end{bmatrix}\\
-\\
-+ & \begin{bmatrix}
-P_0\varphi_1 & P_0\varphi_2 & P_0\varphi_3 & \cdots & P_0\varphi_{N^{dof}}\\
-(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-\end{bmatrix}\\
-\\
-= & \int_{E}\begin{bmatrix}
-0 \\
--\Delta m_2 \\
--\Delta m_3 \\
--\Delta m_4 \\
--\Delta m_5 \\
--\Delta m_6 \\
-\end{bmatrix}
-\begin{bmatrix}
-\varphi_1 & \varphi_2 & \varphi_3 & \cdots & \varphi_{N^{dof}}\\
-\end{bmatrix}\\
-\\
-+ & \begin{bmatrix}
-\frac{1}{|E|} \int_E \varphi_1 & \frac{1}{|E|} \int_E \varphi_2 & \frac{1}{|E|} \int_E \varphi_3 & \cdots & \frac{1}{|E|} \int_E \varphi_{N^{dof}}\\
-(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-\end{bmatrix}\\
-\end{aligned}
-\end{equation*}
-\begin{equation*}
-\begin{aligned}
-= & \begin{bmatrix}
-0 \\
-0 \\
-0 \\
--\frac{2}{{h_E}^2} \\
-0 \\
--\frac{2}{{h_E}^2} \\
-\end{bmatrix}
-\begin{bmatrix}
-m_1\\
-\end{bmatrix}
-\begin{bmatrix}
-\varphi_1 & \varphi_2 & \varphi_3 & \cdots & \varphi_{N^{dof}}\\
-\end{bmatrix}\\
-\\
-& (\text{这里是由前面所求的拉普拉斯算子的矩阵得到的}) \\
-\\
-+ & \begin{bmatrix}
-\frac{1}{|E|} \int_E \varphi_1 & \frac{1}{|E|} \int_E \varphi_2 & \frac{1}{|E|} \int_E \varphi_3 & \cdots & \frac{1}{|E|} \int_E \varphi_{N^{dof}}\\
-(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-\end{bmatrix}\\
-\\
-= & \begin{bmatrix}
-0 \\
-0 \\
-0 \\
--\frac{2}{{h_E}^2} \\
-0 \\
--\frac{2}{{h_E}^2} \\
-\end{bmatrix}
-\begin{bmatrix}
-\varphi_1 & \varphi_2 & \varphi_3 & \cdots & \varphi_{N^{dof}}\\
-\end{bmatrix}\\
-\\
-+ & \begin{bmatrix}
-\frac{1}{|E|} \int_E \varphi_1 & \frac{1}{|E|} \int_E \varphi_2 & \frac{1}{|E|} \int_E \varphi_3 & \cdots & \frac{1}{|E|} \int_E \varphi_{N^{dof}}\\
-(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-\end{bmatrix}\\
-\end{aligned}
-\end{equation*}
-\begin{equation*}
-\begin{aligned}
-= & \begin{bmatrix}
-0 & 0 & 0 & \cdots & 0\\
-0 & 0 & 0 & \cdots & 0\\
-0 & 0 & 0 & \cdots & 0\\
-0 & 0 & 0 & \cdots & -\frac{2}{{h_E}^2}|E|\\
-0 & 0 & 0 & \cdots & 0\\
-0 & 0 & 0 & \cdots & -\frac{2}{{h_E}^2}|E|\\
-\end{bmatrix}\\
-\\
-& (\text{当基函数为单元的顶点以及边上的点时，乘积为}0)\\
-\\
-+ & \begin{bmatrix}
-\frac{1}{|E|} \int_E \varphi_1 & \frac{1}{|E|} \int_E \varphi_2 & \frac{1}{|E|} \int_E \varphi_3 & \cdots & \frac{1}{|E|} \int_E \varphi_{N^{dof}}\\
-(\frac{ \partial m_2}{\partial \mathbf n},\varphi_1)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_2)_{\partial E} & (\frac{ \partial m_2}{\partial \mathbf n},\varphi_3)_{\partial E} & \cdots & (\frac{\partial m_2}{\partial \mathbf n},\varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{3}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{4}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{5}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-(\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_1)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_2)_{\partial E} & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_3)_{\partial E} & \cdots & (\frac{\partial m_{6}}{\partial \mathbf n}, \varphi_{N^{dof}})_{\partial E}\\
-\end{bmatrix}\\
-\end{aligned}
-\end{equation*}
-
-\begin{equation*}
-(\frac{\partial m_\alpha}{\partial n},\varphi_i)_{\partial E} =\sum_e\sum_k n\cdot\nabla m_\alpha \varphi_i(x_k)\boldsymbol{w}_s(x_k) \\
-\end{equation*}
-$i = k$ 时值为 $1$, $i \ne k$ 时值为 $0$.
-
-
-\begin{equation*}
-\begin{aligned}
-\mathbf D = &\begin{bmatrix}
-dof_1(m_1) & dof_1(m_2) &  dof_1(m_{3}) & dof_1(m_4) & dof_1(m_5) & dof_1(m_6) \\
-dof_2(m_1) & dof_2(m_2) &  dof_2(m_{3}) & dof_2(m_4) & dof_2(m_5) & dof_2(m_6)\\
-\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
-dof_{N^{dof}}(m_1) & dof_{N^{dof}}(m_2) & dof_{N^{dof}}(m_{3}) & dof_{N^{dof}}(m_{4}) & dof_{N^{dof}}(m_{5}) & dof_{N^{dof}}(m_{6})
-\end{bmatrix} \\
-\\
-= & \begin{bmatrix}
-1 & \frac{x_1 - x_{c,E}}{h_E} & \frac{y_1 - y_{c,E}}{h_E} & (\frac{x_1 - x_{c,E}}{h_E})^2 & (\frac{x_1 - x_{c,E}}{h_E})(\frac{y_1 - y_{c,E}}{h_E}) & (\frac{y_1 - y_{c,E}}{h_E})^2\\
-1 & \frac{x_2 - x_{c,E}}{h_E} & \frac{y_2 - y_{c,E}}{h_E} & (\frac{x_2 - x_{c,E}}{h_E})^2 & (\frac{x_2 - x_{c,E}}{h_E})(\frac{y_2 - y_{c,E}}{h_E}) & (\frac{y_2 - y_{c,E}}{h_E})^2\\
-\vdots &\vdots & \vdots & \vdots \\
-1 & \frac{x_{N^{dof}} - x_{c,E}}{h_E} & \frac{y_{N^{dof}} - y_{c,E}}{h_E} & (\frac{x_{N^{dof}} - x_{c,E}}{h_E})^2 & (\frac{x_{N^{dof}} - x_{c,E}}{h_E})(\frac{y_{N^{dof}} - y_{c,E}}{h_E}) & (\frac{y_{N^{dof}} - y_{c,E}}{h_E})^2\\
-\end{bmatrix}
-\end{aligned}
-\end{equation*}
-
-\begin{equation*}
-\mathbf H = \begin{bmatrix}
-(m_1, m_1) & (m_1, m_2) & (m_1, m_{3}) & (m_1, m_4) & (m_1, m_5) & (m_1, m_6)\\
-(m_2, m_1) & (m_2, m_2) & (m_2, m_{3}) & (m_2, m_4) & (m_2, m_5) & (m_2, m_6)\\
-(m_3, m_1) & (m_3, m_2) & (m_3, m_{3}) & (m_3, m_4) & (m_3, m_5) & (m_3, m_6)\\
-(m_4, m_1) & (m_4, m_2) & (m_4, m_{3}) & (m_4, m_4) & (m_4, m_5) & (m_4, m_6)\\
-(m_5, m_1) & (m_5, m_2) & (m_5, m_{3}) & (m_5, m_4) & (m_5, m_5) & (m_5, m_6)\\
-(m_6, m_1) & (m_6, m_2) & (m_6, m_{3}) & (m_6, m_4) & (m_6, m_5) & (m_6, m_6)\\
-\end{bmatrix}
-\end{equation*}
-
-
-\begin{equation*}
-\begin{aligned}
-\mathbf C =& \begin{bmatrix}
-(m_1, \varphi_1) & (m_1, \varphi_2) & \cdots & (m_1, \varphi_{N^{dof}}) \\
-(m_2, \varphi_1) & (m_2, \varphi_2) & \cdots & (m_2, \varphi_{N^{dof}})\\
-(m_{3}, \varphi_1) & (m_{3}, \varphi_2) & \cdots & (m_{3},\varphi_{N^{dof}})\\
-(m_4, \varphi_1) & (m_4, \varphi_2) & \cdots & (m_4,\varphi_{N^{dof}})\\
-(m_5, \varphi_1) & (m_5, \varphi_2) & \cdots & (m_5,\varphi_{N^{dof}})\\
-(m_6, \varphi_1) & (m_6, \varphi_2) & \cdots & (m_6,\varphi_{N^{dof}})\\
-\end{bmatrix}\\
-=& \mathbf H\mathbf G^{-1}\mathbf B
-\end{aligned}
-\end{equation*}
-
-其中:
-
-\begin{equation*}
-\begin{aligned}
-\mathbf C_{n_{k-2}\times kN^V} = & \mathbf 0 \\
-\mathbf C_{n_{k-2}\times n_{k-2}} = &|E| \mathbf I\\
-(\mathbf C_{(n_{k} - n_{k-2})\times kN^V}, \mathbf C_{(n_{k} - n_{k-2})\times n_{k-2}}) = & \mathbf H\mathbf G^{-1}\mathbf B[n_{k-2}+1:n_k,1:N_k]
-\end{aligned}
-\end{equation*}
-
-
-即
-
-\begin{equation*}
-\begin{aligned}
-\mathbf C_{1 \times 2N^V} =& \mathbf 0 \\
-\mathbf C_{1 \times 1} =& |E| \\
-(\mathbf C_{5 \times 2N^V}, \mathbf C_{5 \times 1}) =& \mathbf H \mathbf G^{-1} \mathbf B[2:6, 1:6]
-\end{aligned}
-\end{equation*}
 
 \subsection{准晶结构的计算方法}
 {\color{red}\begin{center}
