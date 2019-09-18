@@ -3,10 +3,46 @@
 \subsection{简单混合迭代算法}
 
 \subsection{Anderson混合迭代算法}
-{\color{red}\begin{center}
-    陈昌
-\end{center}}
-
+Anderson 混合迭代算法主要用于求解不动点方程
+	\begin{align*}
+	u = G(u),
+	\end{align*}
+	其中$ u\in\mathbb{R}^n, G:\mathbb{R}^n\rightarrow \mathbb{R}^n. $算法框架如下
+	\begin{algorithm}[!pbht]
+		\caption{Anderson 混合迭代算法}
+		\label{alg:anderson}
+		\begin{algorithmic}[1]
+			\REQUIRE {$ u_0, G, m $}
+			\STATE $ u_1 = G(u_0) , F_0 = G(u_0) - u_0$;
+			\FOR {$ k=1,2,\cdots $}
+				\STATE $ m_k = \min(m, k) $;
+				\STATE $ F_k = G(u_k) - u_k; $;
+				\STATE Minimize $ \| \sum_{j=0}^{m_k}\alpha_j^kF_{k-m_k+j}\| $ subject to $ \sum_{j=0}^{m_k} \alpha^k_j = 1$;
+				\STATE $u_{k+1}  = (1-\beta_k)\sum_{j=0}^{m_k}\alpha^k_ju_{k-m_k+j} + \beta_k\sum_{j=0}^{m_k}\alpha^k_jG(u_{k-m_k+j}) $;
+			\ENDFOR			
+		\end{algorithmic}
+	\end{algorithm}
+	\begin{remark}
+		当$ m = 0 $时，算法 \ref{alg:anderson}就是简单的不动点迭代。
+	\end{remark}
+	\begin{remark}
+		算法\ref{alg:anderson}中，混合参数$ \{\beta_k\} $一般启发式地给定。在后续讨论中，我们假设$ \beta_k\equiv 1 $。
+	\end{remark}
+\paragraph{线性形式} 如果$ G $是线性的，即
+	\begin{align*}
+	G(u) = M(u) + b ,
+	\end{align*}
+	其中$ M $是线性算子并且$ \|M\|=c<1 $。
+    
+    下面定理表明线性情况下Anderson 迭代与广义极小残差法(GMRES)之间的关系。
+	\begin{lemma}[Theorem 2 \cite{}]
+        对于任意$ k>0 $，如果 $ r^{GMRES(m)} \neq 0$ 并且$
+        \|r_{j-1}^{GMRES(m)}\|_2> \|r_{j}^{GMRES(m)}\|_2 (j=1,2,\cdots,k)$， 那么
+		\begin{align*}
+            \sum_{j=0}^{m_k}\alpha^k_ju_k = u_k^{GMRES(m)},\quad u_{k+1} =
+            g(u_k^{GMRES(m)}).
+		\end{align*}
+    \end{lemma}
 \subsection{交替方向迭代算法}
 {\color{red}\begin{center}
     王鑫
