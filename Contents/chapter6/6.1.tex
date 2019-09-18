@@ -5,12 +5,411 @@
     谭力玮
 \end{center}}
 
-\subsection{谱方法}
+\subsection{谱方法}          
 
-\subsubsection{Fourier谱方法}
-{\color{red}\begin{center}
-     司伟
-\end{center}}
+    谱方法起源于1820年，Navier用双重三角函数来求解长方形薄板问题。但是，很长一段时间，谱方法并没有得到广泛应用，主要因为计算量过大，直到1965年快速Fourier变换的出现，谱方法的研究又得以快速发展，谱方法与差分法和有限元法有较大的不同，主要体现在谱方法的检验函数被取为无穷可微的整体函数。根据检验函数的不同，谱方法可分为Galer谱方法、Tau方法和配点法，其中，Galerkin谱方法可简称为谱方法，配点法又称为拟谱方法。如果按边值条件是否有周期性，又可分为Fourier谱方法（周期情形）、Chebyshev谱方法、Legendre谱方法和Hermite谱方法等，它们分别以三角函数、Chebyshev多项式、Legendre多项式和Hermite多项式为基函数来研究问题。
+
+\subsubsection{Fourier谱方法}                           
+{\color{red}\begin{center}             
+     刘双
+\end{center}}                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          \textbf{连续和离散傅里叶变换}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+    这部分致力于简单回顾傅里叶级数和傅里叶变换的性质。主要关注点放在离散傅里叶变换和傅里叶微分技术上，它们在傅里叶谱方法中发挥着重要的作用。
+        
+\begin{itemize}
+  \item  \textbf{连续傅里叶级数}
+\end{itemize}        
+
+    我们用下式来表示复指数    
+\begin{equation*}
+    E_k(x) := e^{ikx} = \cos kx + i\sin kx = (\cos x + i\sin x)^k, \   k \in \mathbb{Z},x \in \mathbb{R},
+\end{equation*}    
+    其中$i = \sqrt{-1}$。集合$\{ e^{ikx}:k \in \mathbb{Z} \}$构成复希尔伯特空间$L^2 (0,2\pi)$上的一个完全正交组，其中配有内积和范数    
+\begin{equation*}
+    (u,v) = \dfrac{1}{2\pi} \int_0^{2\pi} u(x)\bar{v}(x)dx, \  
+    \| u \| = \sqrt{(u,u)},
+\end{equation*}    
+    其中$\bar{v}$是$v$的共轭复数。$\{ E_k:k \in \mathbb{Z}\}$的正交性如下    
+\begin{equation}
+    (E_k,E_m) = \dfrac{1}{2\pi} \int_0^{2\pi} e^{i(k - m)x} dx = \delta_{km}
+\label{6.2.1}    
+\end{equation}    
+    其中$\delta_{km}$表示克罗内克符号。
+    
+    对任意复值函数$u \in L^2(0,2\pi)$，它的傅里叶级数定义为    
+\begin{equation}
+    u(x) \thicksim \mathcal{F} (u)(x) := \sum_{k = -\infty}^{\infty} \hat{u}_ke^{ikx} ,
+    \label{6.2.2}
+\end{equation}    
+    其中傅里叶系数由下式给出    
+\begin{equation}
+    \hat{u}_k = (u,e^{ikx}) = \dfrac{1}{2\pi} \int_0^{2\pi} u(x)e^{-ikx} dx .
+    \label{6.2.3}
+\end{equation}    
+
+    如果$u$是实值函数，显然它的傅里叶系数满足    
+\begin{equation}
+    \hat{u}_{-k} = \bar{\hat{u}}_k, \   k \in \mathbb{Z},
+    \label{6.2.4}
+\end{equation}    
+    由此易知此时$\hat{u}_0$是实数。
+    
+    事实上，傅里叶级数可以定义为通常$(0,2\pi)$上绝对可积函数，傅里叶展开的收敛性理论在傅里叶分析中已经有过严谨且彻底的研究（例如参见Zygmund (2002), Stein and Shakarchi (2003)）。我们知道，对于任意$u \in L^2(0.2\pi)$， 其截断傅里叶级数$\mathcal{F}_N(u) := \sum_{|k| \leq N} \hat{u}_k e^{ikx}$在$L^2$意义下收敛至$u$，且有Parseval恒等式：   
+\begin{equation}
+    \| u \|^2 = \sum_{k = -\infty}^{\infty} |\hat{u}_k|^2.
+    \label{6.2.5}
+\end{equation}       
+
+    如果$u$在$[0,2\pi]$上是连续的、周期的和有界变差的，那么$\mathcal{F}_N(u)$一致收敛于$u$。
+    
+    注意到截断傅里叶级数也可以用卷积的形式表示，即    
+\begin{equation}
+    \mathcal{F}_N(u)(x) = (\mathcal{D}_N * u)(x) = \dfrac{1}{2\pi} \int_0^{2\pi} \mathcal{D}_N(x - t)u(t) dt,
+\label{6.2.6}
+\end{equation}    
+    其中$\mathcal{D}_N$是已知的狄利克雷内核    
+\begin{equation}
+    \mathcal{D}_N(x) := \sum_{k = -N}^N e^{ikx} = 1 + 2\sum_{k = 1}^N \cos kx = \dfrac{\sin ((N + 1/2)x)}{\sin (x/2)}.
+    \label{6.2.7}
+\end{equation}    
+
+    有时用三角函数表示傅里叶级数较方便：   
+\begin{equation}
+    u(x) \thicksim \mathcal{T}(u)(x) = \dfrac{a_0}{2} + \sum_{k = 1}^{\infty} (a_k\cos kx + b_k\sin kx),
+    \label{6.2.8}
+\end{equation}    
+    其中展开项系数    
+\begin{equation*}
+    a_k = \dfrac{1}{\pi} \int_0^{2\pi} u(x)\cos kx dx, \  b_k = \dfrac{1}{\pi} \int_0^{2\pi} u(x)\sin kx dx.
+\end{equation*}    
+
+    系数的两种不同表达式（\ref{6.2.2}）和（\ref{6.2.8}）有下述关系    
+\begin{equation}
+    \hat{u}_0 = \dfrac{a_0}{2}, \  \hat{u}_k = 
+    \left\{
+    \begin{array}{l}
+        \dfrac{a_k - ib_k}{2}, \   if \   k\geq  1, \\
+          \dfrac{a_{-k} + ib_{-k}}{2}, \   if \    k\leq -1.    
+    \end{array}
+    \right.  
+    \label{6.2.9}
+\end{equation}    
+
+    特别地，如果$u$是实值函数，则    
+\begin{equation}
+    a_0 = 2\hat{u}_0, \   a_k = 2Re(\hat{u}_k), \   b_k = -2Im(\hat{u}_k), \   k\geq 1.
+    \label{6.2.10}
+\end{equation}    
+
+\begin{itemize}
+    \item  \textbf{离散傅里叶变换}
+\end{itemize}
+
+    给定一个正整数$N$，令
+\begin{equation}
+    x_j = jh = j\dfrac{2\pi}{N}, \   0\leq j\leq N-1,
+    \label{6.2.11}
+\end{equation}
+    为$[0,2\pi)$上$N$个等距节点，称为傅里叶配置点。我们通过下式定义离散内积   
+\begin{equation}
+    <u,v>_N = \dfrac{1}{N} \sum_{j = 0}^{N-1} u(x_j)\bar{v}(x_j).
+\end{equation}    
+
+    下述引理是（\ref{6.2.1}）在离散情况下的对应项。
+    
+\textbf{引理 \ 6.2.1.}  令$E_l(x) = e^{ilx}$。对任意整数$N \geq 1$，我们有
+\begin{equation}
+    <E_k,E_m>_N = 
+      \left\{
+        \begin{array}{l}
+           1, \   if \  k - m = lN, \forall l \in \mathbb{Z}, \\
+           0. \   otherwise.        
+        \end{array}         
+      \right.     
+      \label{6.2.12}
+\end{equation}    
+    证：观察到如果$k - m$不能被$N$整除,则
+\begin{equation*}
+\begin{gathered}
+    < E_k,E_m >_N = \dfrac{1}{N} \sum_{j = 0}^{N-1} e^{i(k - m)x_j} = \dfrac{1}{N} \sum_{j = 0}^{N-1} \left(e^{2\pi i (k - m)/N}\right)^j  \\
+                  = \dfrac{1}{N} \dfrac{e^{2\pi i(k-m)} - 1}{e^{2\pi i(k-m)/N}-1} = 0.
+\end{gathered}    
+\end{equation*}  
+    如果$k - m$能被$N$整除，我们有$e^{2\pi i(k -m)/N} = 1$，所以上面第二行的和等于1。 \quad   $\Box$
+
+    通常，在（\ref{6.2.3}）中傅里叶系数$\hat{u}_k$不能被准确计算，因此我们要用到求积公式。一种简单而精确的针于周期为$2\pi$函数的求积公式——矩形法则    
+\begin{equation}
+    \dfrac{1}{2\pi} \int_0^{2\pi} v(x) dx \approx \dfrac{1}{N} \sum_{j = 0}^{N-1} v(x_j),  \  \forall v \in C[0,2\pi),
+    \label{6.2.14}
+\end{equation}        
+其中对$v \in span\{ e^{ikx}: 0\leq |k| \leq N-1 \}$精确成立。
+
+    此外，易验证（\ref{6.2.14}）对$v = \sin (\pm Nx)$也精确成立，但对$v = \cos (\pm Nx)$不成立。
+    
+    应用（\ref{6.2.14}）-（\ref{6.2.3}）得到近似    
+\begin{equation}
+    \hat{u}_k \approx \widetilde{u}_k := \dfrac{1}{N} \sum_{j = 0}^{N-1} u(x_j)e^{-ikx_j}, \   k = 0,\pm 1,...
+    \label{6.2.15}
+\end{equation}    
+
+    注意到$\{ \widetilde{u}_k \}$是N周期的，即    
+\begin{equation*}
+    \widetilde{u}_{k\pm N} = \dfrac{1}{N} \sum_{j = 0}^{N-1} u(x_j)e^{-i(k\pm N)x_j} = \dfrac{1}{N} \sum_{j = 0}^{N-1} u(x_j)e^{-ikx_j}e^{\mp 2\pi ij} = \widetilde{u}_k,
+\end{equation*}    
+    这意味着对于偶数$N$，我们有    
+\begin{equation}
+    \widetilde{u}_{-N/2} = \widetilde{u}_{N/2}.
+\end{equation}    
+    因此，对于偶数$N$，节点$\{ x_j \}_{j = 0}^{N-1}$不能区分：$k = \pm N/2$。因为
+\begin{equation}
+    e^{iNx_j/2} = e^{ij\pi} = (-1)^j = e^{-iNx_j/2}, \   0\leq j\leq N-1.
+\end{equation}
+    换句话说，$k = \pm N/2$这两种情况是混叠的。
+    
+    为了有效实行离散傅里叶变换（DFT），最好使用偶数$N$，相应的，考虑对称有限集$-N/2\leq k\leq N/2$情况下的傅里叶级数（参见如下（\ref{6.2.20}））。鉴于（\ref{6.2.16}）-（\ref{6.2.17}），我们通过$k = \pm N/2$的两种情况重新定义近似（\ref{6.2.15}）：   
+\begin{equation}
+    \hat{u}_k \approx \widetilde{u}_k = \dfrac{1}{Nc_k} \sum_{j = 0}^{N-1} u(x_j)e^{-ikx_j}, \   k = -N/2,...,N/2,
+\label{6.2.18}
+\end{equation}    
+    其中$\forall |k| < N/2, c_k = 1;\forall k = \pm N/2, c_k = 2$。表达式（\ref{6.2.18}）被称为与（\ref{6.2.11}）中节点相关的$u(x)$的离散傅里叶变换。
+    
+    由（\ref{6.2.16}）知只有$N$个独立系数。因此，我们设    
+\begin{equation}
+    \mathcal{T}_N = \{ u = \sum_{k = -N/2}^{N/2} \widetilde{u}_k e^{ikx} : \widetilde{u}_{-N/2} = \widetilde{u}_{N/2} \},
+    \label{6.2.19}
+\end{equation}        
+    同时定义映射$I_N : C[0,2\pi) \rightarrow \mathcal{T}_N$：    
+\begin{equation}
+    (I_N u)(x) = \sum_{k = -N/2}^{N/2} \widetilde{u}_k e^{ikx},
+    \label{6.2.20}
+\end{equation}       
+    其中$\{ \widetilde{u}_k \}$在（\ref{6.2.18}）中已给出。下述引理说明$I_N$是从$C[0,2\pi)$映至$\mathcal{T}_N$的插值算子，且有    
+\begin{equation}
+    (I_N u)(x_j) = u(x_j), \   x_j = \dfrac{2\pi j}{N}, 0\leq j\leq N-1.
+    \label{6.2.21}
+\end{equation}    
+
+\textbf{引理 \  6.2.2.}  对任意$u \in C[0,2\pi)$，
+\begin{equation}
+    (I_N u)(x) = \sum_{j =0}^{N-1} u(x_j)h_j(x),
+    \label{6.2.22}
+\end{equation}        
+    其中    
+\begin{equation}
+    h_j(x) = \dfrac{1}{N} \sin \left[ N\dfrac{x - x_j}{2}\right] \cot \left[ \dfrac{x - x_j}{2}\right] \in \mathcal{T}_N 
+    \label{6.2.23}
+\end{equation}        
+    满足    
+\begin{equation}
+    h_j(x_k) = \delta_{jk}, \   \forall j,k = 0,1,...,N-1.
+    \label{6.2.24}
+\end{equation}       
+    证：由（\ref{6.2.18}）与（\ref{6.2.19}），   
+\begin{equation*}
+    \begin{gathered}
+        (I_N u)(x) = \sum_{k = -N/2}^{N/2} \left( \dfrac{1}{Nc_k} \sum_{j = 0}^{N-1} u(x_j)e^{-ikx_j}\right)e^{ikx} \\
+        = \sum_{j = 0}^{N-1} \left( \dfrac{1}{N} \sum_{k = -N/2}^{N/2} \dfrac{1}{c_k} e^{ik(x - x_j)} \right)u(x_j)  \\
+        =: \sum_{j = 0}^{N-1} h_j(x)u(x_j).
+    \end{gathered}
+\end{equation*}        
+    由（\ref{6.2.7}）直接计算得到   
+\begin{equation}
+    \begin{gathered}
+        h_j(x) = \dfrac{1}{N} \sum_{k = -N/2}^{N/2} \dfrac{1}{c_k} e^{ik(x - x_j)}  \\
+        = \dfrac{1}{N} \left(\mathcal{D}_{N/2-1} (x - x_j) + \cos\left[N\dfrac{x - x_j}{2} \right] \right) \\
+        = \dfrac{1}{N} \left( \dfrac{\sin \left[(N - 1)\dfrac{x - x_j }{2} \right]}{\sin \dfrac{x - x_j}{2}} + \cos \left[N\dfrac{x- x_j}{2}\right]\right)  \\
+        = \dfrac{1}{N} \sin \left[ N\dfrac{x- x_j}{2}\right] \cot \left[\dfrac{x - x_j}{2}\right].
+    \end{gathered}
+    \label{6.2.25}
+\end{equation}        
+    由（\ref{6.2.17}），我们有$h_j(x) \in \mathcal{T}_N$，显然对于$i \neq j$时有$h_j(x_j) = 0$。此外，在（\ref{6.2.25}）第一个等式中取$x = x_j$得$h_j(x_j) = 1$。
+    $\  \Box$
+    
+    在（\ref{6.2.20}）中取$x = x_j$并结合（\ref{6.2.21}）得傅里叶逆变换（或向后傅里叶变换）：    
+\begin{equation}
+    u(x_j) = \sum_{k = -N/2}^{N/2} \widetilde{u}_k e^{ikx_j}, \  j = 0,1,...,N-1.
+    \label{6.2.26}
+\end{equation}
+    显然傅里叶变换（\ref{6.2.18}）与其傅里叶逆变换可以通过$O(N^2)$阶运算的矩阵向量乘法来实现。由于Cooley和Tukey(1965)的快速傅里叶变换的出现，这样的过程可以通过$O(N\log_2N)$阶运算来实现。此外，如果$u$是实值函数，那么$\widetilde{u}_{-k} = \bar{\widetilde{u}}_k$，所以仅（\ref{6.2.26}）中一半的系数需要计算/储存。
+    
+     许多软件包都提供FFT和IFFT的计算程序。这里，我们将注意力集中在$\mathrm{Matlab}$上。给定在$\{ x_k = 2\pi k/N  \}_{k = 0}^{N-1}$上的样本数据$\{ \textbf{v}(j) = u(x_{j-1}) \}_{j = 1}^N$ ，命令“$\widetilde{\textbf{v}} = \mathrm{fft} (\textbf{v})$”返回通过下式定义的向量$\{ \widetilde{\textbf{v}}(k) \}_{k = 1}^N$，        
+\begin{equation}
+    \widetilde{\textbf{v}}(k) = \sum_{j = 1}^N \textbf{v}(j)e^{-2\pi i(j-1)(k-1)/N}, \   1\leq k\leq N,
+    \label{6.2.27}
+\end{equation}         
+
+    傅里叶逆变换可以通过命令“$\textbf{v} = \mathrm{ifft} (\widetilde{\textbf{v}})$”计算，通过下式返回物理值$\{ \textbf{v}(j) \}_{j = 1}^N$   
+\begin{equation}
+    \textbf{v}(j) = \dfrac{1}{N} \sum_{k = 1}^N \widetilde{\textbf{v}}(k)e^{2\pi i(j-1)(k-1)/N}, \   1\leq j\leq N.
+    \label{6.2.28}
+\end{equation}      
+    
+    请注意，必须在命令使用的顺序上有一些警惕。为了说明这一点，我们研究了变换（\ref{6.2.18}）与（\ref{6.2.26}）之间的一一对应关系。更准确的，令   
+\begin{equation}
+    u(x_j) = \textbf{v}(j+1), \  x_j = \dfrac{2\pi j}{N}, \  0\leq j\leq N-1.
+    \label{6.2.29}
+\end{equation}
+    我们发现   
+\begin{equation}
+    \begin{array}{l}
+        \widetilde{u}_k = \dfrac{1}{N}\widetilde{\textbf{v}}(k+1), \  0\leq k\leq \dfrac{N}{2}-1, \\
+        \widetilde{u}_k = \dfrac{1}{N}\widetilde{\textbf{v}}(k+N+1), \   -\dfrac{N}{2}+1\leq k\leq -1, \\
+        \widetilde{u}_{-N/2} = \widetilde{u}_{N/2} = \dfrac{1}{2N}\widetilde{\textbf{v}}(N/2+1).    
+    \end{array}
+    \label{6.2.30}
+\end{equation}        
+    
+    下表给出了上述关系的表格视图。    
+\begin{table}[h]
+\centering
+\caption{$\mathrm{Matlab}$中DFT与FFT$\&$IFFT的对应关系}
+\begin{tabular}{ccccccccccc}
+\hline
+ j&  1&  2&  ...&  N/2-1&  N/2&  N/2+1&  N/2+2&  ...&  N-1& N \\ \hline
+ $\textbf{u} = \textbf{v}$&  $u_0$&  $u_1$&  ...&  ...&  ...&  ...& ...&  ...&  $u_{N-2}$& $u_{N-1}$ \\
+ $\widetilde{\textbf{u}} = \widetilde{\textbf{v}}/N$&  $\widetilde{u}_0$&  $\widetilde{u}_1$&  ...&  $\widetilde{u}_{N/2-2}$&  $\widetilde{u}_{N/2-1}$&  $2\widetilde{u}_{N/2}$&  $\widetilde{u}_{-N/2+1}$&  ...&  $\widetilde{u}_{-2}$& $\widetilde{u}_{-1}$ \\
+ $\textbf{k}$&  0&  1&  ...&  N/2-2&  N/2-1&  0&  -N/2+1&  ...&  -2& -1 \\ \hline
+\end{tabular}
+\label{表6.2.1}
+\end{table}    
+    在表格中，我们列出$\{ u_j = \textbf{u}(j) \}_{j = 0}^{N-1}$和$\{ \widetilde{u}_k = \widetilde{\textbf{u}}(k) \}_{k = -N/2}^{N/2}$。最后一行给出了基于FFT的傅里叶谱微分的频率向量$\textbf{k}$，见后面频率空间上的微分。注意到在离散傅里叶变换中，频率$-N/2$与$N/2$相混叠。
+    
+\begin{itemize}
+    \item    \textbf{物理空间上的微分}
+\end{itemize}     
+
+    在一个傅里叶谱方法中，微分可以在频率空间上进行，也可以在物理空间上进行。
+    
+    我们从物理空间上的微分开始。令$\{ x_j \}$和$\{ h_j \}$分别为（\ref{6.2.11}）和（\ref{6.2.23}）中定义的。设    
+\begin{equation}
+    u(x) = \sum_{j = 0}^{N-1} u(x_j)h_j(x),
+\label{6.2.31}
+\end{equation}          
+    同时取m次微分得   
+\begin{equation}
+    u^{(m)}(x) = \sum_{j = 0}^{N-1} u(x_j)h_j^{(m)}(x).
+\label{6.2.32}
+\end{equation}    
+    该过程可以被表示成矩阵向量乘法    
+\begin{equation}
+    \textbf{u}^{(m)} = D^{(m)}\textbf{u}, \   m\geq 0,
+\label{6.2.33}
+\end{equation}    
+    其中    
+\begin{equation*}
+     \begin{array}{l}
+         D^{(m)} = \left(d_{kj}^{(m)} := h_j^{(m)}(x_k) \right)_{k,j = 0,...,N-1},  \\
+         \textbf{u} = \left(u(x_0),u(x_1),...,u(x_{N-1})\right)^T,  \\
+         \textbf{u}^{(m)} = \left( u^{(m)}(x_0),u^{(m)}(x_1),...,u^{(m)}(x_{N-1}) \right) ^T.
+     \end{array}
+\end{equation*}    
+    特别地，有$D = D^{(1)}$。下面给出一阶微分矩阵的紧化形式。
+    
+\textbf{引理 \  6.2.3.}  一阶傅里叶微分矩阵的元素由下式决定
+\begin{equation}
+    d_{kj}^{(1)} = h_j'(x_k) = 
+    \left\{
+        \begin{array}{l}
+            \dfrac{(-1)^{k+j}}{2} \cot\left[\dfrac{(k-j)\pi}{N}\right], \   if \ k\neq j, \\
+            0, \ \ \ \ \ \ if \ k = j.     
+        \end{array}
+    \right.
+    \label{6.2.34}
+\end{equation}    
+    证：直接微分（\ref{6.2.23}）中的Lagrange基得    
+\begin{equation*}
+\begin{gathered}
+    h_j'(x) = \dfrac{1}{2} \cos\left[N\dfrac{x - x_j}{2}\right] \cot\left[\dfrac{x - x_j}{2}\right] \\
+    - \dfrac{1}{2N} \sin\left[N\dfrac{x - x_j}{2}\right]\csc^2\left[\dfrac{x - x_j}{2}\right].
+\end{gathered}    
+\end{equation*}    
+    显然如果$x = x_k\neq x_j$，那么第二项是0，第一项正好满足（\ref{6.2.34}）中的表达。
+    
+    现在我们考虑$k = j$的情况。为了方便，令$\theta = (x - x_j)/2$，重写上述表达式为    
+\begin{equation}
+    h_j'(x) = \dfrac{1}{2} \dfrac{\cos(N\theta)\cos\theta\sin\theta - N^{-1}\sin(N\theta)}{\sin^2\theta}.
+    \label{6.2.35}
+\end{equation}    
+    使用泰勒展开，我们发现    
+\begin{equation*}
+    \cos(N\theta)\cos\theta\sin\theta = \theta + O(\theta^3) , \ N^{-1}\sin(N\theta) = \theta + O(\theta^3),\ |\theta| \ll 1.
+\end{equation*}        
+    因此，我们由（\ref{6.2.35}）推出当$\theta\to 0$时，$x\to x_j$,$h_j'(x) = \lim_{x\to x_j}h_j'(x) = 0$。  $\  \Box$
+    
+\textbf{Remark \ 6.2.1.}  一阶傅里叶微分矩阵有下述性质：
+\begin{itemize}
+    \item  D是实斜对称矩阵，因为$\cot(-x) = -\cot(x),d_{kk} = 0$。
+    \item  D是循环Toeplitz矩阵，因为$d_{kj} = d_{k+1,j+1}$。
+    \item  $\{ ik : -N/2 + 1\leq k\leq N/2 - 1 \}$是D的不同的特征值，且0是二重特征值。
+\end{itemize}
+
+    高阶微分的近似有着相同的过程。从（\ref{6.2.25}）的第一个关系式中，我们发现    
+\begin{equation}
+    h_j^{(m)}(x_i) = \dfrac{1}{N} \sum_{k=-N/2}^{N/2} \dfrac{(ik)^m}{c_k}e^{2\pi ik(i-j)/N}.
+    \label{6.2.36}
+\end{equation}        
+    特别地，二阶微分矩阵$D^{(2)}$的元素由下式给出   
+\begin{equation}
+    d_{kj}^{(2)} = h_j''(x_k) = 
+    \left\{
+        \begin{array}{l}                
+        -\dfrac{(-1)^{k+j}}{2} \sin^{-2}\left[\dfrac{(k-j)\pi}{N}\right], \  if \ k\neq j,  \\
+        -\dfrac{N^2}{12}-\dfrac{1}{6}, \  if \  k = j.
+        \end{array}
+    \right.
+    \label{6.2.37}
+\end{equation}    
+
+    必须指出的是$D^{(2)}\neq D^2$。确实，我们考虑$u = \cos(Nx/2)$并用u在$\{ x_j \}_{j = 0}^{N-1}$上的值构成的向量$\textbf{u}$。由于$u(x_j) = (-1)^j$，立马验证有$D\textbf{u} = \textbf{0}$和$D^2\textbf{u} = \textbf{0}$，而$D^{(2)}\textbf{u} = -N^2\textbf{u}/$。
+    
+    显然（\ref{6.2.33}）中的微分过程需要$O(N^2)$阶运算。我们将在后面展示如何在频率空间上用FFT使得实行微分只需要$O(Nlog_2N)$阶运算。
+    
+\begin{itemize}
+    \item    \textbf{频率空间上的微分}
+\end{itemize}
+    对于一个由（\ref{6.2.31}）给出的函数，我们可以重写为一个有限傅里叶级数       
+\begin{equation}
+    u(x) = \sum_{k = -N/2}^{N/2} \widetilde{u}_k e^{ikx},
+    \label{6.2.38}
+\end{equation}        
+    其中$\widetilde{u}_{N/2} = \widetilde{u}_{-N/2}$与之前一样。因此，我们有    
+\begin{equation}
+    u'(x_j) = \sum_{k = -N/2}^{N/2} ik\widetilde{u}_k e^{ikx_j},
+    \label{6.2.39}
+\end{equation}       
+    其中$\{ x_j = 2\pi j/N \}_{j = 0}^{N-1}$是（\ref{6.2.11}）中已给节点。给出物理值$\{ u(x_j) \}_{j = 0}^{N-1}$，微分值$\{ w_j = u'(x_j) \}_{j = 0}^{N-1}$的近似可以如下计算:    
+
+\begin{itemize}
+    \item  Call $\widetilde{\textbf{v}} = \mathrm{fft}(\textbf{v})$，其中输入向量$\textbf{v}$的分量为$v(j) = u(x_{j-1}),j = 1,...,N$，返回频率向量：
+    \begin{equation*}
+        \widetilde{\textbf{v}} = \left( \widetilde{v}_1,\widetilde{v}_2,...,\widetilde{v}_N \right).
+    \end{equation*}
+    \item  计算微分的扩展系数：
+    \begin{equation*}
+    \begin{gathered}
+        \widetilde{\textbf{v}}^{(1)} = i\textbf{k.}*\widetilde{\textbf{v}}  \\
+        = i\left( 0,\widetilde{v}_2,...,(N/2 - 1)\widetilde{v}_{N/2},0,(-N/2 + 1)\widetilde{v}_{N/2 + 2},...,-\widetilde{v}_N \right),
+    \end{gathered}    
+    \end{equation*}
+    其中乘法向量$\textbf{k}$在表\ref{表6.2.1} 已给出：
+    \begin{equation}
+        \textbf{k} = (0,1,...,N/2 - 1,0,-N/2 +1,...,-1).
+        \label{6.2.40}
+    \end{equation}
+    \item  Call $\textbf{w} = \mathrm{ifft}(\widetilde{\textbf{v}}^{(1)})$，产生期望的微分值$\{ w_j \}_{j = 0}^{N-1}$。
+\end{itemize}        
+
+    与上一节所描述的微分过程形成鲜明的对比，上述过程所需计算量为$O(Nlog_2N)$。此外，高阶微分可以通过重复使用上述三步来计算。多维情况可以通过使用合适的例程来类似的实行，例如$\mathrm{Matlab}$中的$\mathrm{fft2.m}$和$\mathrm{ifft2.m}$。
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[scale=0.5]{Contents/chapter6/figures/2-1.png}
+\caption{一阶（$"\circ"$）与二阶（$"\diamond"$）傅里叶谱微分的误差}
+\label{图2.1}
+\end{figure} 
+    
+    作为数值例子，我们考虑以$2\pi$为周期的函数$u(x) = e^{1 + \sin x}$的傅里叶谱微分。在图\ref{图2.1} 中，我们以半对数标度绘出不同$N$对应的一阶与二阶微分最大逐点误差。图\ref{图2.1}清楚表明了傅里叶谱微分的指数收敛过程。
 
 \subsubsection{球调和方法}
 
