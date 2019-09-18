@@ -411,6 +411,85 @@
     
     作为数值例子，我们考虑以$2\pi$为周期的函数$u(x) = e^{1 + \sin x}$的傅里叶谱微分。在图\ref{图2.1} 中，我们以半对数标度绘出不同$N$对应的一阶与二阶微分最大逐点误差。图\ref{图2.1}清楚表明了傅里叶谱微分的指数收敛过程。
 
+
+考虑这样的周期问题:
+\begin{equation}
+	\begin{aligned}
+		& -\nabla^{2} \phi + \phi^{2} = \omega
+		~~~ \text{ in } ~~ \Omega,
+		\\
+		& \partial_{\mbn} \phi = \partial_{\mbn} \omega = 0
+		~~~ \text{ on } ~~ \partial\Omega,
+	\end{aligned}
+	\label{eq:Fourier.1.model}
+\end{equation}
+其中, $ \Omega $ 是计算区域.
+$ \partial_{\mbn} \phi = \mbn \cdot \nabla \phi $ 和 $ \partial_{\mbn} \omega = \mbn \cdot \nabla \omega $, 其中, $ \mbn $ 是边界上的单位外法向量.
+令 $ v \in \text{span} \left\{ e^{i\bk\br} \right\}_{k=-N}^{N-1} $ 作为测试函数, 我们有 \eqref{eq:Fourier.1.model} 在 $ L^{2} $ 中 的弱形式:
+\begin{equation}
+	\left( \nabla \phi, \nabla v \right) + \left( \phi^{2}, v \right) = \left( \omega, v \right),
+	\label{eq:Fourier.1.model.weak}
+\end{equation}
+其中, $ \left( \cdot, \cdot \right) $ 代表 $ L^{2} $ 内积.
+
+对 $ \phi(\br) $ 利用 Fourier 展开:
+\begin{equation}
+	\phi(\br) = \sum_{\bk} \hat{\phi}(\bk) e^{i\bk\br},
+	\label{eq:Fourier.1.phi.expansion}
+\end{equation}
+其中, $ \hat{\phi}(\bk) $ 代表 $ \phi(\br) $ 的 Fourier 系数.
+再取测试函数 $ v = e^{i\bj\br} $, 由此 \eqref{eq:Fourier.1.model.weak} 左边可以写成如下形式:
+\begin{equation}
+	\begin{aligned}
+		\text{左边} & = \left( \nabla \sum_{\bk} \hat{\phi}(\bk) e^{i\bk\br}, \nabla e^{i\bj\br} \right) + \left( \left( \sum_{\bk_{1}} \hat{\omega}(\bk_{1}) e^{i\bk_{1}\br} \right) \left( \sum_{\bk_{2}} \hat{\omega}(\bk_{2}) e^{i\bk_{2}\br} \right), e^{i\bj\br} \right)
+		\\
+		& = \left( \sum_{\bk} i\bk \hat{\phi}(\bk) e^{i\bk\br}, i\bj e^{i\bj\br} \right) + \left( \sum_{\bk_{1}+\bk_{2}} \hat{\omega}(\bk_{1}) \hat{\omega}(\bk_{2}) e^{i(\bk_{1}+\bk_{2})\br}, e^{i\bj\br} \right).
+	\end{aligned}
+	\label{eq:Fourier.1.model.weak.left.expansion}
+\end{equation}
+根据 Fourier 基函数的正交性 $ \left( e^{i\bk\br}, e^{i\bj\br} \right) = \delta_{\bk,\bj} $, \eqref{eq:Fourier.1.model.weak.left.expansion} 可以写成:
+\begin{equation}
+	\text{左边} = -\bj^{2} \hat{\phi}(\bj) + \underline{ \sum_{\bk_{1}+\bk_{2}=\bj} \hat{\omega}(\bk_{1}) \hat{\omega}(\bk_{2}) }.
+	\label{eq:Fourier.1.model.weak.left.expansion.simple}
+\end{equation}
+对于 \eqref{eq:Fourier.1.model.weak.left.expansion.simple} 中的卷积项, 为了减少计算量, 我们可以作如下处理:
+
+令 $ \psi = \phi^{2} $, 利用 Fourier 展开 $ \psi(\br) = \sum_{\bk} \hat{\psi}(\bk) e^{i\bk\br} $, 有
+\begin{equation}
+	\begin{aligned}
+		\left( \phi^{2}, v \right) = \left( \psi, v \right)
+		= \left( \sum_{\bk} \hat{\psi}(\bk) e^{i\bk\br}, e^{i\bj\br} \right)
+		= \hat{\psi}(\bj).
+	\end{aligned}
+	\label{eq:Fourier.1.model.convolution.expansion}
+\end{equation}
+也就是说, 为避免卷积计算, \eqref{eq:Fourier.1.model.weak.left.expansion.simple} 可以写成:
+\begin{equation}
+	\text{左边} = -\bj^{2} \hat{\phi}(\bj) + \underline{ \hat{\psi}(\bj) },
+	~~~ \psi = \phi^{2}.
+	\label{eq:Fourier.1.model.weak.left.expansion.final}
+\end{equation}
+
+在 \eqref{eq:Fourier.1.model.weak} 右边, 对 $ \omega $ 利用 Fourier 展开
+\begin{equation}
+	\omega(\br) = \sum_{\bk} \hat{\omega}(\bk) e^{i\bk\br},
+	\label{eq:Fourier.1.omega.expansion}
+\end{equation}
+并且取测试函数 $ v = e^{i\bj\br} $, 我们得到:
+\begin{equation}
+	\text{右边} = \left( \sum_{\bk} \hat{\omega}(\bk) e^{i\bk\br}, e^{i\bj\br} \right)
+	= \sum_{\bk} \hat{\omega}(\bk) \left( e^{i\bk\br}, e^{i\bj\br} \right)
+	= \hat{\omega}(\bj).
+	\label{eq:Fourier.1.model.weak.right.expansion}
+\end{equation}
+结合 \eqref{eq:Fourier.1.model.weak.left.expansion} 和 \eqref{eq:Fourier.1.model.weak.right.expansion}, 有:
+\begin{equation}
+	-\bj^{2} \hat{\phi}(\bj) + \hat{\psi}(\bj) = \hat{\omega}(\bj), ~~~ \psi = \phi^{2}.	
+	\label{eq:Fourier.1.model.weak.total.expansion}
+\end{equation}
+
+
+
 \subsubsection{球调和方法}
 
 {\color{red}\begin{center}
