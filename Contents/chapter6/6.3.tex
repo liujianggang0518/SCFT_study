@@ -9,7 +9,7 @@ Anderson 混合迭代算法主要用于求解不动点方程
 	\end{align*}
 	其中$ u\in\mathbb{R}^n, G:\mathbb{R}^n\rightarrow \mathbb{R}^n. $算法框架如下
 	\begin{algorithm}[!pbht]
-		\caption{Anderson 混合迭代算法}
+		\caption{Anderson 混合迭代算法: Anderson(m)}
 		\label{alg:anderson}
 		\begin{algorithmic}[1]
 			\REQUIRE {$ u_0, G, m $}
@@ -28,21 +28,95 @@ Anderson 混合迭代算法主要用于求解不动点方程
 	\begin{remark}
 		算法\ref{alg:anderson}中，混合参数$ \{\beta_k\} $一般启发式地给定。在后续讨论中，我们假设$ \beta_k\equiv 1 $。
 	\end{remark}
-\paragraph{线性形式} 如果$ G $是线性的，即
+
+	算法第$ k $步需要求解一个带约束的子问题，利用关系
+	\begin{equation*}
+	m_k = 1- \sum_{j=0}^{m_k-1} \alpha_j^k,
+	\end{equation*}
+	我们可以转换为以下更容易求解的无约束问题
+	\begin{align}
+	\min_{\{\alpha_j^k\}_{j=0}^{m_k-1} }\quad \left\| F(u_k) + \sum_{j=0}^{m_k-1} \alpha_j^k (F(u_{k-m_k+j} - F(u_k))) \right\|^2.
+	\end{align}
+	
+	
+	\paragraph{线性形式} 如果$ G $是线性的，即
 	\begin{align*}
 	G(u) = M(u) + b ,
 	\end{align*}
-	其中$ M $是线性算子并且$ \|M\|=c<1 $。
-    
-    下面定理表明线性情况下Anderson 迭代与广义极小残差法(GMRES)之间的关系。
-	\begin{lemma}[Theorem 2 \cite{}]
-        对于任意$ k>0 $，如果 $ r^{GMRES(m)} \neq 0$ 并且$
-        \|r_{j-1}^{GMRES(m)}\|_2> \|r_{j}^{GMRES(m)}\|_2 (j=1,2,\cdots,k)$， 那么
+	其中$ M $是线性算子并且$ \|M\|=c<1 $，此时残差
+	\begin{align*}
+	F(u) = G(u) -u = b - (I-M)u.
+	\end{align*}
+	下面定理表明，在线性情况下Anderson 迭代与广义极小残差法(GMRES)之间的等价关系。
+	\begin{theorem}[Theorem 2 \cite{Homer}]
+		对于任意$ k>0 $， $ r^{GMRES(m)} \neq 0$ 并且$$ \|r_{j-1}^{GMRES}\|_2> \|r_{j}^{GMRES}\|_2, \quad,j=1,2\cdots,k,$$ 那么
 		\begin{align*}
-            \sum_{j=0}^{m_k}\alpha^k_ju_k = u_k^{GMRES(m)},\quad u_{k+1} =
-            g(u_k^{GMRES(m)}).
+		\sum_{j=0}^{m_k}\alpha^k_ju_k = u_k^{GMRES},\quad u_{k+1} = G(u_k^{GMRES}).
 		\end{align*}
-    \end{lemma}
+	\end{theorem}
+
+	\begin{theorem}[Theorem 2.1 \cite{Alex}]
+		如果$ \|M\| = c<1 $，那么 Anderson 迭代收敛到$ u^* = (I-M)^{-1}b $并且
+		\begin{align*}
+		\|u_k - u^*\| \leq \left(\dfrac{1+c}{1-c}\right)c^k \|u_0 - u^*\|,\quad k = 1,2,\cdots
+		\end{align*}
+	\end{theorem}
+
+	\paragraph{非线性形式} 
+	为了分析非线性情况下的收敛速度，我们对$ \alpha_j^k $做如下假设
+	\begin{assumption}.
+		\label{assm:alpha}
+		\begin{itemize}
+			\item $ \|\sum_{j=0}^{m_k}\alpha_j^kF(u_{k-m_k+j})\| \leq \|F(u_k)\|; $
+			\item $ \sum_{j=0}^{m_k}\alpha_j^k = 1; $
+			\item 	存在$M_\alpha  $使得$
+			\sum_{j=0}^{m_k}|\alpha_j^k| \leq M_\alpha,\quad \forall k\geq 0.$
+		\end{itemize}		
+	\end{assumption}
+	根据算法，前两项假设自然成立。
+
+	此外还需要对$ G$的非线性性做如下假设
+	\begin{assumption}.
+		\label{assm:G}
+		\begin{itemize}
+			\item 存在$ u^* $使得$ F(u^*) =G(u^*) - u^* = 0; $
+			\item $ G $在球$ \mathcal{B}(\hat{\rho}) = \{u|\|e\| = \|u-u^*\| \leq \hat{\rho}\} $上 Lipschitz连续可微；
+			\item 存在常数$ c\in(0,1) $使得
+			\begin{align*}
+			\|G(u) - G(v)\|\leq c\|u - v\|,\quad \forall u,v\in\mathcal{B}(\hat{\rho}).
+			\end{align*}
+		\end{itemize}
+	\end{assumption}
+
+	令$G' $表示$G $的Jacobi矩阵，从上面的假设可知，$ \|G'\|\leq c<1 $，从而$ F'(u^*) $非奇异。
+	
+	\begin{theorem}[Theorem 2.3 \cite{Alex}]
+		如果假设\ref{assm:G}立，取$ c<\hat{c}<1 $，那么当$ u $充分接近解$ u^* $时， Anderson迭代满足
+		\begin{align*}
+		\|F(u_k)\|\leq \hat{c}^k\|F(u_0)\|,\quad \|e_k\| \leq \dfrac{1+c}{1-c}\hat{c}^k\|e_0\|.
+		\end{align*}
+	\end{theorem}
+	
+	
+	\paragraph{Anderson(1)} 如果$ m = 1 $并且将子问题的范数取成$ l^2 $范数，那么
+	\begin{align*}
+	u_{k+1} = (1-\alpha^k)G(u_k) + \alpha^k G(u_{k-1}),
+	\end{align*}
+	其中
+	\begin{align*}
+	\alpha^k = \dfrac{F(u_k)^T(F(u_k) - F(u_{k-1})}{\|F(u_k) - F(u_{k-1})\|^2}
+	\end{align*}
+	
+	\begin{theorem}[Theorem 2.4 \cite{Alex}]
+		如果假设\ref{assm:G}成立，$ u_0\in\mathcal{B}(\hat{\rho}) $并且$ c $足够小使得
+		\begin{align*}
+		\hat{c} = \dfrac{3c - c^2}{1-c}<1.
+		\end{align*}
+		那么 Anderson(1) 算法中残差满足
+		\begin{align*}
+		\|F(u_k)\| \leq \hat{c}^k\|F(u_0)\|.
+		\end{align*}
+	\end{theorem}
 \subsection{交替方向迭代算法}
 {\color{red}\begin{center}
     王鑫
