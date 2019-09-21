@@ -3,7 +3,7 @@
 \subsection{简单混合迭代算法}
 
 \subsection{Anderson混合迭代算法}
-Anderson 混合迭代算法主要用于求解不动点方程
+    Anderson 混合迭代算法主要用于求解不动点方程
 	\begin{align*}
 	u = G(u),
 	\end{align*}
@@ -29,14 +29,16 @@ Anderson 混合迭代算法主要用于求解不动点方程
 		算法\ref{alg:anderson}中，混合参数$ \{\beta_k\} $一般启发式地给定。在后续讨论中，我们假设$ \beta_k\equiv 1 $。
 	\end{remark}
 
-	算法第$ k $步需要求解一个带约束的子问题，利用关系
+	算法第$ k $步子问题中的范数可以取任意范数，特别地，如果取$ l^2 $范数，利用关系
 	\begin{equation*}
 	m_k = 1- \sum_{j=0}^{m_k-1} \alpha_j^k,
 	\end{equation*}
-	我们可以转换为以下更容易求解的无约束问题
+	带约束的子问题可以转换为以下更容易求解的无约束问题
 	\begin{align}
-	\min_{\{\alpha_j^k\}_{j=0}^{m_k-1} }\quad \left\| F(u_k) + \sum_{j=0}^{m_k-1} \alpha_j^k (F(u_{k-m_k+j} - F(u_k))) \right\|^2.
+	\min_{\alpha = (\alpha_0^k,\cdots,\alpha_{m_k-1}^k)^T }\quad \left\| F(u_k) + \sum_{j=0}^{m_k-1} \alpha_j^k (F(u_{k-m_k+j} - F(u_k))) \right\|^2.
+	\label{subpro}
 	\end{align}
+	如果取$ l^1 $或者$ l^\infty $范数，子问题等价于线性规划，从而有很多高效的算法求解。
 	
 	
 	\paragraph{线性形式} 如果$ G $是线性的，即
@@ -63,7 +65,7 @@ Anderson 混合迭代算法主要用于求解不动点方程
 	\end{theorem}
 
 	\paragraph{非线性形式} 
-	为了分析非线性情况下的收敛速度，我们对$ \alpha_j^k $做如下假设
+	为了分析非线性情况下的收敛速度，我们对系数$ \alpha_j^k $做如下假设
 	\begin{assumption}.
 		\label{assm:alpha}
 		\begin{itemize}
@@ -73,9 +75,13 @@ Anderson 混合迭代算法主要用于求解不动点方程
 			\sum_{j=0}^{m_k}|\alpha_j^k| \leq M_\alpha,\quad \forall k\geq 0.$
 		\end{itemize}		
 	\end{assumption}
-	根据算法，前两项假设自然成立。
+	根据算法，前两项假设自然成立，第三项假设可以通过以下方法实现
+	\begin{itemize}
+		\item 当系数超过某个阈值，重启(Restart)迭代；
+		\item 求解子问题时，加入关于系数的约束；
+	\end{itemize}
 
-	此外还需要对$ G$的非线性性做如下假设
+	为了证明局部收敛性，我们还需要对$ G$的非线性性做如下假设，这是证明Newton法局部收敛速度的一般假设。
 	\begin{assumption}.
 		\label{assm:G}
 		\begin{itemize}
@@ -104,9 +110,9 @@ Anderson 混合迭代算法主要用于求解不动点方程
 	\end{align*}
 	其中
 	\begin{align*}
-	\alpha^k = \dfrac{F(u_k)^T(F(u_k) - F(u_{k-1})}{\|F(u_k) - F(u_{k-1})\|^2}
+	\alpha^k = \dfrac{F(u_k)^T(F(u_k) - F(u_{k-1}))}{\|F(u_k) - F(u_{k-1})\|^2}.
 	\end{align*}
-	
+	下面定理
 	\begin{theorem}[Theorem 2.4 \cite{Alex}]
 		如果假设\ref{assm:G}成立，$ u_0\in\mathcal{B}(\hat{\rho}) $并且$ c $足够小使得
 		\begin{align*}
@@ -114,9 +120,41 @@ Anderson 混合迭代算法主要用于求解不动点方程
 		\end{align*}
 		那么 Anderson(1) 算法中残差满足
 		\begin{align*}
-		\|F(u_k)\| \leq \hat{c}^k\|F(u_0)\|.
+		\|F(u_k)\| \leq \hat{c}\|F(u_{k-1})\| \leq \hat{c}^k\|F(u_0)\|.
 		\end{align*}
 	\end{theorem}
+
+	上述定理表明系数$ \alpha^k $是有界，因为
+	\begin{align*}
+	|\alpha^k| \leq \dfrac{\|F(u_k)\|}{\|F(u_k) - F(u_{k-1})\|}\leq \dfrac{\hat{c}\|F(u_{k-1})\|}{(1-\hat{c})\|F(u_{k-1}\|)} \leq \dfrac{\hat{c}}{1-\hat{c}}
+	\end{align*}
+	
+	\paragraph{Anderson 迭代与 拟Newton法}
+	取子问题为$l^2  $范数，子问题(\ref{subpro})等价于
+	\begin{align}
+	\min_{\gamma = (\gamma_0,\cdots,\gamma_{m_k - 1})^T} \quad \|F_k - \calF_k\gamma\|_2,
+	\label{subpro2}
+	\end{align}
+	其中$ \calF = (\Delta_F{k-m_k}, \cdots, \Delta F_{k-1}) ,\Delta F_i = F_{i+1} - F_i $。子问题(\ref{subpro})中的$ \alpha $与$ \gamma $满足
+	\begin{align*}
+	\alpha_0 = \gamma_0,\quad \alpha_i = \gamma_i - \gamma_{i-1}(1\leq i\leq m_k-1).
+	\end{align*}
+	令$ \gamma^{k} = (\gamma_0^k,\cdots,\gamma^k_{m_k-1} )^T$是子问题(\ref{subpro2})的解，如果$ \calF_k $是满秩的，那么
+	\begin{align}
+	\gamma^k = (\calF_k^T\calF_k)^{-1}\calF_k^TF_k.
+	\label{gamma}
+	\end{align}
+	于是Anderson迭代为
+	\begin{align*}
+	u_{k+1}& = G(u_k) - \sum_{i=0}^{m_k-1}\gamma_i^k[G(u_{k-m_k+i+1}) - G(x_{k-m_k + i})]\\
+	& = u_k + F_k -(\calX_k + \calF_k)\gamma^k ,
+	\end{align*}
+	其中$\calX_k= (\Delta u_{k-m_k},\cdots,\Delta u_{k-1})  ,\Delta u = u_{i+1} - u_i.$ 将(\ref{gamma})代入，得到 Anderson迭代的拟Newton矩阵形式
+	\begin{align}
+	u_{k+1} =  u_k - H_kF_k
+	\end{align}
+	其中$ H_k = -I +  (\calX_k + \calF_k)(\calF_k^T\calF_k)^{-1}\calF_k^T$是拟Newton矩阵
+
 \subsection{交替方向迭代算法}
 {\color{red}\begin{center}
     王鑫
