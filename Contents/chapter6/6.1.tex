@@ -503,6 +503,141 @@ $ \partial_{\mbn} \phi = \mbn \cdot \nabla \phi $ 和 $ \partial_{\mbn} \omega =
      王刘彭
 \end{center}}
 
+\subsection{曲面有限元方法}
+{\color{red}\begin{center}
+    　刘江刚
+\end{center}}
+\subsubsection{连续的曲面$S$}
+设$S$是一个闭曲面，所以$\partial S=\varnothing$，所以曲面$S$把$\mathbb{R}^3$分成三个不同的集合:曲面内部的点、曲面上的点和曲面外部的点，分别表示为$\Omega_{-}$、$\Omega_0$和$\Omega_{+}$。 对于任意的$x\in\mathbb{R}^3$，记$\mathrm{dist}(x,S)=\min\limits_{y\in S}\left|x-y\right|$为$x$和$S$之间的距离，其中$|\cdot|$为标准的欧氏距离。我们可以定义一个带状区域$U:=\left\{x\in\mathbb{R}^3|\mathrm{dist}(x,S)<\delta\right\}$，其中$\delta>0$且要足够小，使得可以定义一个唯一的符号距离函数$d:U\rightarrow\mathbb{R}$，满足如下性质:
+\begin{equation}\label{eq:MA}
+\left\{
+\begin{array}{l}
+d\in C^3(U),\\
+|d(x)|=\mathrm{dist}(x,S),\quad \forall x\in U,\\
+d(x)< 0,\quad\forall x\in\Omega_{-}\cap U,\\
+d(x)= 0,\quad\forall x\in \Omega_0\cap U,\\
+d(x)> 0,\quad\forall x\in\Omega_{+}\cap U,\\
+\end{array}\right.
+\end{equation}
+对于任意的$x\in U$，可视$S$为符号距离函数的零水平集。
+
+记$\nabla$为$\mathbb{R}^3$中通常意义下的梯度算子，$\nabla d(x)\in\mathbb{R}^3$为$d(x)$的梯度，$\boldsymbol{H}(x):=\nabla^2d(x)\in\mathbb{R}^{3\times 3}$为$d(x)$的Hessian矩阵。对于任意的$x\in U$,记$y$为$S$上离$x$最近的点，也即$|d(x)|=\left|x-y\right|$。因为$d(x)$是符号距离函数，且$S$是它的零水平集，易知$\nabla d(x)$是$S$在$y$处的单位外法向向量，即$\left|\nabla d(x)\right|=1$。对于任意的$x\in U$，记$\boldsymbol{n}(x)=\nabla d(x)$，我们可以定义如下唯一的投影
+$\mathcal{P}_0:U\rightarrow S$:
+\begin{equation}\label{projection}
+\mathcal{P}_0(x):=x-d(x)\boldsymbol{n}(x)
+\end{equation}
+对于$v\in C^1(S)$，因为$S$是$C^3$的，我们可以把$v$扩展到$C^1(U)$，且仍记为$v$。定义$v$在$S$上的切向梯度为
+\begin{equation}
+\nabla_Sv=\nabla v-(\nabla v\cdot\boldsymbol{n})\boldsymbol{n}=(I-\boldsymbol{n}\boldsymbol{n}^t)\nabla v=\boldsymbol{P}\nabla v\in\mathbb{R}^3
+\end{equation}
+其中$\boldsymbol{P}(x)=(I-\boldsymbol{n}\boldsymbol{n}^t)(x)$是到点$x\in S$切平面上的投影算子，因此有$\boldsymbol{P}^2=\boldsymbol{P}$。注意到这里我们用$v$的扩展来定义曲面梯度。然而，可以证明$\nabla_Sv$的定义只依赖$v$的$S$上的值而不是$v$的扩展，也即$\nabla_S$是一个内蕴算子。
+
+类似地，对于一个向量场$\boldsymbol{v}\in(C^1(S))^3$，我们也可以把它扩展到$(C^1(U))^3$上去，并定义$\boldsymbol{v}$在$S$上的切向散度为
+\begin{equation}
+\nabla_S\cdot\boldsymbol{v}=\nabla\cdot\boldsymbol{v}-\boldsymbol{n}^t\nabla\boldsymbol{v}\boldsymbol{n}\in\mathbb{R}
+\end{equation}
+
+曲面S上的Laplace-Beltrami算子定义如下:
+\begin{equation}
+\Delta_Sv=\nabla_S\cdot(\nabla_Sv)=\Delta v-(\nabla v\cdot\boldsymbol{n})(\nabla\cdot\boldsymbol{n})-\boldsymbol{n}^t\nabla^2v\boldsymbol{n}\in\mathbb{R}
+\end{equation}
+其中$v\in C^2(S)$,$\nabla^2v$是$v$的Hessian矩阵(扩展为$C^2(U)$函数)\\
+推导过程如下:
+\begin{equation*}
+\begin{aligned}
+\Delta_Sv&=\nabla_S\cdot(\nabla_Sv)=\nabla_S\cdot(\nabla v-(\nabla v\cdot\boldsymbol{n})\boldsymbol{n})\\
+&=\nabla_S\cdot(\nabla v)-\nabla_S\cdot[(\nabla v\cdot\boldsymbol{n})\boldsymbol{n}]\\
+&=\nabla\cdot(\nabla v)-\boldsymbol{n}^t\nabla(\nabla v)\boldsymbol{n}-\nabla\cdot[(\nabla v\cdot\boldsymbol{n})\boldsymbol{n}]+\boldsymbol{n}^t\nabla[(\nabla v\cdot\boldsymbol{n})\boldsymbol{n}]\boldsymbol{n}\\
+&=\Delta v-\boldsymbol{n}^t\nabla^2v\boldsymbol{n}-(\nabla v\cdot\boldsymbol{n})(\nabla\cdot\boldsymbol{n})-\nabla(\nabla v\cdot\boldsymbol{n})\boldsymbol{n}+\boldsymbol{n}^t[(\nabla v\cdot\boldsymbol{n})\nabla\boldsymbol{n}+\boldsymbol{n}\nabla(\nabla v\boldsymbol{n})^T]\boldsymbol{n}\\
+&=\Delta v-\boldsymbol{n}^t\nabla^2v\boldsymbol{n}-(\nabla v\cdot\boldsymbol{n})(\nabla\cdot\boldsymbol{n})-\nabla(\nabla\cdot\boldsymbol{n})\boldsymbol{n}+\boldsymbol{n}^t(\nabla v\cdot\boldsymbol{n})\nabla\boldsymbol{n}\cdot\boldsymbol{n}+\nabla(\nabla\cdot\boldsymbol{n})\boldsymbol{n}\\
+&=\Delta v-(\nabla v\cdot\boldsymbol{n})(\nabla\cdot\boldsymbol{n})-\boldsymbol{n}^t\nabla^2v\boldsymbol{n}
+\end{aligned}
+\end{equation*}
+
+\subsubsection{离散的曲面$S_h$和网格$\mathcal{T}_h$}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{Contents/chapter6/figures/picture_1.png}
+\end{figure}
+记$S_h\subset U$是由三角形单元$\tau_h$组成的多面体面，即$S_h$逼近曲面$S$,我们假设$S_h$的这些三角形单元是正则的，单元尺寸是拟一致的，且它们的顶点都在曲面$S$上。其中$\mathcal{N}_h=\left\{x_i\right\}$为$S_h$所有顶点的集合，$\mathcal{T}_h=\left\{\tau_h\right\}$ 为所有三角形单元的集合，$\mathcal{E}_h=\left\{E\right\}$为所有边的集合。对于任意的$\tau_h\in\mathcal{T}_h$，记$\boldsymbol{n}_h$为$S_h$在$\tau_h$上的单位外法向向量。对于$v_h\in C(S_h)$和$v_h|_{\tau_h}$，我们有
+\begin{equation}
+\nabla_{S_h}v_h|_{\tau_h}:=\nabla v_h-(\nabla v_h\cdot\boldsymbol{n}_h)\boldsymbol{n}_h=(\boldsymbol{I}-\boldsymbol{n}_h\boldsymbol{n}^t_h)\nabla v_h=\boldsymbol{P}_h\nabla v_h\in\mathbb{R}^3
+\end{equation}
+其中$\boldsymbol{P}_h=\boldsymbol{I}-\boldsymbol{n}_h\boldsymbol{n}^t_h\in\mathbb{R}^{3\times 3}$。显然$\nabla_{S_h}v_h\in(L^2(S_h))^3$。
+
+如果限制投影$\mathcal{P}_0:U\rightarrow S$到$S_h$上，就得到一个从$S_h$到$S$的连续可微的双射，仍记为$\mathcal{P}_0$。对于任意的$\tau_h\in\mathcal{T}_h$，我们可以得到一个曲面三角形$\tau:=\mathcal{P}_0(\tau_h)$，并记所有的曲面三角形集合为$\mathcal{T}_S$。
+
+下面我们建立定义在$S$和$S_h$函数之间的关系。借助双射投影$\mathcal{P}_0$，可以由函数$v:S\rightarrow\mathbb{R}$唯一地引入另一个函数$\bar{v}:S_h\rightarrow\mathbb{R}$。对于所有的$x\in S_h$,有$\bar{v}(x)=v(\mathcal{P}_0(x))$。对于任意的$\tau_h\in\mathcal{T}_h$和函数$v\in C^1(\mathcal{P}_0(\tau_h))$，我们有
+\begin{equation}
+\nabla_{S_h}\bar{v}(x)=(\boldsymbol{P}_h(\boldsymbol{I}-d\boldsymbol{H})\boldsymbol{P})(x)\nabla_{S}v(\mathcal{P}_0(x))\quad\forall x\in \tau_h.
+\end{equation}\\
+推导过程如下：
+\begin{equation*}
+\begin{aligned}
+\nabla v(x)= &\nabla v(\mathcal{P}_0(x))=[x-d(x)\boldsymbol{n}(x)]'\nabla v(\mathcal{P}_0(x))\\
+=&[(\boldsymbol{P}-d\boldsymbol{H})(x)]\nabla v(\mathcal{P}_0(x))
+\end{aligned}
+\end{equation*}
+由$\boldsymbol{n}\cdot\boldsymbol{n}\equiv 1$，两边求导得：$\boldsymbol{n}\boldsymbol{H}=\boldsymbol{H}\boldsymbol{n}=0$和$\boldsymbol{P}\boldsymbol{H}=\boldsymbol{H}\boldsymbol{P}=\boldsymbol{H}$\\
+所以
+\begin{equation*}
+\begin{aligned}
+\nabla v(x)&=[(\boldsymbol{I}-d\boldsymbol{H})(x)][\boldsymbol{P}(x)]\nabla v(\mathcal{P}_0(x))\\
+&=[(\boldsymbol{I}-d\boldsymbol{H})(x)]\nabla_S v(\mathcal{P}_0(x))
+\end{aligned}
+\end{equation*}
+因此
+\begin{equation*}
+\nabla_{S_h}\bar{v}(x)=\nabla_{S_h}v(\mathcal{P}_0(x))=(\boldsymbol{P}_h(\boldsymbol{I}-d\boldsymbol{H})\boldsymbol{P})(x)\nabla_{S}v(\mathcal{P}_0(x))
+\end{equation*}
+反过来,一个函数$v_h:S_h\rightarrow\mathbb{R}$也可以唯一的引入一个函数$\tilde{v}_h:S\rightarrow\mathbb{R}$，对于所有的$x\in S$，有$\tilde{v}_h(x)=v_h(\mathcal{P}^{-1}_0(x))$。对于任意的$\tau_h\in\mathcal{T}_h$和函数$v_h\in C^1(\tau_h)$让$\tau=\mathcal{P}_0(\tau_h)$，可得
+\begin{equation}
+\nabla_{S}\tilde{v}_h(x)=(\boldsymbol{I}-d\boldsymbol{H})^{-1}\left(\boldsymbol{I}-\frac{\boldsymbol{n}_h\boldsymbol{n}^t}{\boldsymbol{n}^t\boldsymbol{n}_h}\right)\nabla_{S_h}v_h(\mathcal{P}^{-1}_0(x))\quad\forall x\in\tau.
+\end{equation}
+推导过程如下：\\
+由$\nabla_{S_h}v_h=(\boldsymbol{I}-\boldsymbol{n}_h\boldsymbol{n}_h^t)\nabla v_h=\boldsymbol{P}_h\nabla v_h$，给等式两边同乘以$\boldsymbol{n}$得:
+\begin{equation*}
+\nabla_{S_h}v_h\cdot\boldsymbol{n}=\nabla v_h\cdot\boldsymbol{n}-\boldsymbol{n}_h\cdot\boldsymbol{n}\nabla v_h\cdot\boldsymbol{n}_h
+\end{equation*}
+由于$\nabla v_h\cdot\boldsymbol{n}=0$得:
+\begin{equation*}
+\nabla v_h\cdot\boldsymbol{n}_h=-\frac{\nabla_{S_h}v_h\cdot\boldsymbol{n}}{\boldsymbol{n}_h\cdot\boldsymbol{n}}
+\end{equation*}
+所以
+\begin{equation*}
+\nabla v_h=\left[\boldsymbol{I}-\frac{\boldsymbol{n}_h\cdot\boldsymbol{n}}{\boldsymbol{n}_h\cdot\boldsymbol{n}}\right]\nabla_{S_h}v_h
+\end{equation*}
+又因为
+\begin{equation*}
+\nabla_Sv_h=[\boldsymbol{I}-d\boldsymbol{H}]^{-1}\nabla v_h 
+\end{equation*}
+所以
+\begin{equation*}
+\nabla_{S}\tilde{v}_h(x)=(\boldsymbol{I}-d\boldsymbol{H})^{-1}\left(\boldsymbol{I}-\frac{\boldsymbol{n}_h\boldsymbol{n}^t}{\boldsymbol{n}^t\boldsymbol{n}_h}\right)\nabla_{S_h}v_h(\mathcal{P}^{-1}_0(x))
+\end{equation*}
+
+\subsubsection{曲面线性有限元}
+对于三角形$\tau_h\in\mathcal{T}_h$，记$\{\lambda_i\}$为$\tau_h$的重心坐标。   
+记$\mathcal V_h$为$S_h$上的连续分片线性有限元空间，也即对于任意的$v_h\in \mathcal V_h$和$\tau_h \in \mathcal T_h$，
+$v_h$在$S_h$上连续，且有$v_h|_{\tau_h}\in {\rm span}\{\lambda_1,\lambda_2,\lambda_3\}$。  
+我们可定义$S$上的提升空间
+\begin{eqnarray*}
+ \tilde{V}_{h} & = &
+\{\tilde{v}_{h} \, | \, \tilde{v}_{h}:=v_{h}\circ\mathcal{P}_{0}^{-1},\,
+\text{其中 }v_{h}\in \mathcal V_h\},
+\end{eqnarray*}
+其中$\mathcal P_0: S_h \to S$为定义在(\ref{projection})中的双射。
+对于$f\in L^{2}(S)$，记
+\begin{equation}\label{eq:fh}
+f_{h}(x)=\bar{f}(x)-\frac{1}{|S_{h}|}\int_{S_{h}} \bar f \, \mathrm{d}\sigma_{h},
+\end{equation}
+其中$|S_{h}|$ 为 $ S_{h}$的总面积。那么有
+$\int_{S_{h}}f_{h}(x)\,\mathrm{d}\sigma_{h}=0$，且下列方程存在唯一的有限元解
+$u_{h}\in \mathcal V_h$, 满足$\int_{S_{h}}u_{h}\,\mathrm{d}\sigma_{h}=0$
+\begin{equation}
+\int_{S_h}\nabla_{S_h}u_h\cdot\nabla_{S_h}v_h\mathrm{d}\sigma_h=\int_{S_h}f_hv_h\mathrm{d}\sigma_h\quad\forall v_h\in\mathcal{V}_h
+\end{equation}
+
 
 \subsection{虚单元方法}
 {\color{red}\begin{center}
