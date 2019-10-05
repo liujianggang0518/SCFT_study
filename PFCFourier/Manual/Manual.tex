@@ -1,0 +1,254 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%                                                  %%%%%%%%%%
+%%%%%%%%%%        Start Date: Sep.8 2019                    %%%%%%%%%%
+%%%%%%%%%%        Author: Wei Si                            %%%%%%%%%%
+%%%%%%%%%%        Email: 201610111098@smail.xtu.edu.cn      %%%%%%%%%%
+%%%%%%%%%%                                                  %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\documentclass[12pt]{article}
+\pagestyle{plain}
+
+
+%%% 加载库;
+\usepackage{CJKutf8} % 中文字体;
+\usepackage{latexsym,amsmath,amssymb} % 数学公式;
+\usepackage{tabu} % 表格;
+\usepackage{graphicx} % 画图; 
+\usepackage{bm} % 粗体; 
+\usepackage{color} % 颜色; 
+\usepackage{enumerate} % 数字排序;
+\usepackage{listings} % 代码;
+\usepackage{indentfirst}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstset{
+    breaklines=true,    
+    captionpos=b,
+    numbersep=5pt,
+    showspaces=false,
+    showtabs=false,
+    tabsize=4,
+    columns=fixed,       
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+    numbers=left,                                   % 在左侧显示行号
+    keepspaces=false,                               % true 多空出一行;
+    frame=none,                                     % 不显示背景边框
+    backgroundcolor=\color{backcolour},             % 设定背景颜色
+    commentstyle=\color{codegreen},                 % 设置代码注释的格式
+    keywordstyle=\color{magenta},                   % 设定关键字颜色
+    numberstyle=\tiny\color{codegray},              % 设定行号格式
+    stringstyle=\color{codepurple},                 % 设置字符串格式
+    showstringspaces=false,                         % 不显示字符串中的空格
+%    language=Matlab                                 % 设置语言
+}
+
+
+
+%%% 设置布局;
+\headsep=4mm\headheight=6mm\topmargin=-10pt
+\oddsidemargin=0pt\evensidemargin=0pt
+\textheight=225truemm\textwidth=160truemm
+
+
+%%% 定义;
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\ep}{\hfill\rule{0.15cm}{0.35cm}\vskip 0.3cm}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}{定义}[section]
+\newtheorem{corollary}{\hspace{0.6cm}推论}[section]
+\newtheorem{lemma}{引理}[section]
+\newtheorem{example}{例}[section]
+\newtheorem{proposition}{命题}[section]
+\newtheorem{property}{性质}[section]
+\newtheorem{remark}{注}[section]
+\newtheorem{algorithm}{算法}[section]
+\newtheorem{exercise}{习题}[section]
+\newtheorem{question}{问题}[section]
+
+%%% 中文摘要名;
+\renewcommand{\abstractname}{摘要}
+
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\bk}{\mathbf{k}}
+\newcommand{\bh}{\mathbf{h}}
+\newcommand{\mcP}{\mathcal{P}}
+
+
+%%% 定义环境;
+\newenvironment{blackbox}[1][~~~~]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\ep\end{trivlist}}
+\newenvironment{proof}[1][证明]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\ep\end{trivlist}}
+
+%%% 编号关联章节;
+\numberwithin{equation}{section}
+
+%%% Roman number;
+%\newcounter{RomanNumber}
+%\newcommand{\MyRoman}[1]{\setcounter{RomanNumber}{#1}\Roman{RomanNumber}}
+
+
+\begin{document}
+\begin{CJK}{UTF8}{gkai}
+\abovedisplayskip=5.8pt plus 1pt minus 3pt
+\belowdisplayskip=5.8pt plus 1pt minus 3pt
+\renewcommand{\sectionmark}[1]{\markright{~\thesection~~ #1~}{}}
+
+\noindent
+
+\baselineskip 18pt
+
+\title{ 使用手册 }
+
+\author{\footnote{}  司伟 }
+
+%\date{\today}
+\date{2019.9.8}
+
+\maketitle
+\footnotetext{湘潭大学数学与计算科学学院}
+
+\tableofcontents
+\newpage
+
+\begin{abstract}
+	该手册以LP模型和半隐格式为例, 讲解相关的代码.
+	代码主要关于投影法和晶体近似方法的实现.
+\end{abstract}
+
+\section{模型介绍}
+\label{sec:Model.Intr}
+
+以 LB 模型为例介绍如何的使用:
+\begin{equation}
+	E_{LB}[\phi(\br)] = \int_{\Omega} \left\{ \frac{c}{2} \left[ (\nabla^{2}+1) (\nabla^{2}+q^{2}) \phi \right]^{2} - \frac{\varepsilon}{2} \phi^{2} - \frac{\kappa}{3} \phi^{3} + \frac{\gamma}{4} \phi^{4} \right\} d\br.
+	\label{eq:LP.Model}
+\end{equation}
+
+我们采用 Cahn-Hilliard 动力学方程来求解模型 \eqref{eq:LP.Model}:
+\begin{equation}
+	\frac{\partial\phi}{\partial t} = \nabla^{2} \frac{\delta E}{\delta\phi} = \nabla^{2} \left\{ c (\nabla^{2}+1)^{2} (\nabla^{2}+q^{2})^{2} \phi - \varepsilon \phi - \kappa \phi^{2} + \gamma \phi^{3} \right\}.
+	\label{eq:CH}
+\end{equation}
+
+时间方向上, 我们采用了简单的半隐离散格式:
+\begin{equation}
+	\frac{\phi^{n+1} - \phi^{n}}{\Delta t} = \nabla^{2} \left\{ c (\nabla^{2}+1)^{2} (\nabla^{2}+q^{2})^{2} \phi^{n+1} - \varepsilon \phi^{n} - \kappa (\phi^{n})^{2} + \gamma (\phi^{n})^{3} \right\}.
+	\label{eq:CH.SIS}
+\end{equation}
+对 \eqref{eq:CH.SIS} 进行简单的移项处理就可以得到:
+\begin{equation}
+	\phi^{n+1} = \frac{ \phi^{n} + \Delta t \, \nabla^{2} \left( -\varepsilon \phi^{n} - \kappa (\phi^{n})^{2} + \gamma (\phi^{n})^{3} \right) }{ 1 - \Delta t \, c \nabla^{2} (\nabla^{2}+1)^{2} (\nabla^{2}+q^{2})^{2} }.
+	\label{eq:CH.SIS.phi}
+\end{equation}
+
+
+\section{函数介绍}
+\label{sec:Fun.Intr}
+
+\subsection{主程序: Phase\_Main.m}
+\begin{enumerate}[(1).]
+	\item "on": MATLAB 显示图像; "off": 取消 MATLAB 显示图像;
+	\item 设置全局变量, 方便后续函数调用;
+	\item 设定模型参数: MPARA = $ [ c, \varepsilon, \kappa, \gamma, q ] $;
+	\item 物理空间维度: DimPhy;	计算空间维度: DimCpt;
+	\item 控制迭代的参数: TPARA = [ $ \Delta t $, 收敛精度, 最大迭代步 ];
+	\item 设置投影矩阵: pmat;
+	\item 给定计算空间的离散: ncpt;
+\end{enumerate}
+
+
+\subsection{设定初值: Ini\_Config.m}
+\begin{enumerate}[(1).]
+	\item 通过线性表出或者近似得到的 Fourier 空间坐标, 最后一列表示该位置的系数大小, 将其记为 IniKindex;
+	\item 由于采用 MALTAB 语言书写, 需要将 IniKindex 进行坐标转换, 将结果记为 Kindex;
+	\item 根据得到的 Kindex, 在对应位置给出相应系数, 得到 Fourier 空间的初值, 记为 IniCplx;
+\end{enumerate}
+
+
+\subsection{得到 Fourier 空间的 $ |\bk|^{2} $ 和 $ \bk $: Set\_KOptor1.m }
+\begin{enumerate}[(1).]
+	\item 调用全局变量;
+	\item 初始化, $ |\bk|^{2} $ 记为 KSquare; $ \bk $ 记为 KSingle;
+	\item 根据计算空间的维度不同分为不同的情况, 形式基本一致;\\
+	主要是将 [1, $\cdots$, N] 转换为 [1, $\cdots$, N/2, -N/2+1, $\cdots$, -1];\\
+	然后作用投影矩阵 pmat 和Fourier 空间计算区域 rcpBox, 记为 pk, 相当于 $ ( \bk_{1}, \bk_{2}, \cdots ) $, 于是 $ |\bk|^{2} = |( \bk_{1}, \bk_{2}, \cdots )|^{2} = \bk_{1}^{2} + \bk_{2}^{2} + \cdots $;
+\end{enumerate}
+
+
+\subsection{Set\_KOptor2.m 与 Set\_KOptor1.m 功能相同, 虽然考虑矩阵化操作, 但是两次循环之后更慢了, 放弃该函数}
+
+
+\subsection{画图函数: Plot\_Phase.m}
+Plot\_Phase.m 函数是画图主函数, 主要分为以下四个子函数:
+
+\subsubsection{计算 Fourier 空间数据: Comput\_Spec.m}
+\begin{enumerate}[(1).]
+	\item 该函数只用于二维物理空间画图数据计算, 而且要求每个方向空间离散点一致;
+	\item 将计算空间数据首先投影回到物理空间;
+	\item 对 Fourier 系数按照绝对值从大到小排列, 保留前面 SortNum 个, 并且用 uCplxPhySort 来保存这些对应的坐标和系数;
+\end{enumerate}
+
+\subsubsection{计算实空间数据: Comput\_Real.m}
+\begin{enumerate}[(1).]
+	\item 当计算空间和物理空间维度一致时, 不需要采用改函数;
+	\item 该函数只用于二维物理空间画图数据计算, 而且要求每个方向空间离散点一致;
+	\item 设置二维物理空间为 $ (x,y) $ 构成, 每个方向空间离散点数目为 N, 区域大小为 [-reg, reg];
+	\item 根据 Comput\_Spe.m 计算得到的 Fourier 空间的数据, 我们直接采用 $ \phi(\br) = \sum_{\bh} \hat{\phi}(\bh) e^{ i (\mcP\cdot\bk)^{T} \br } $, 而根据对称性, 我们通常可以采用 $ \phi(\br) = \sum_{\bh} \hat{\phi}(\bh) \cos( (\mcP\cdot\bk)^{T} \br ) $, 由此得到的数据记为 uRealPhySort.
+\end{enumerate}
+
+\subsubsection{画 Fourier 空间谱点分布图像: Plot\_Spec.m}
+\begin{enumerate}[(1).]
+	\item 根据 uCplxPhySort 来画图, 由于是二维物理空间, 第一列表示 $x$, 第二列表示 $y$, 第三列是 $(x,y)$ 位置上的系数, 记为 value;
+	\item 根据 value 值的大小进行粗略筛选, 分不同等级描点, 由于这个分级是不一定恰当的, 如果为了表现每个数据的最恰当分步, 建议根据数据大小手动调节;
+	\item 之后做一些渲染和美化, 并保存图片到相应位置;
+\end{enumerate}
+
+\subsubsection{画实空间构象: Plot\_Real.m}
+\begin{enumerate}[(1).]
+	\item 画实空间的图像, 主要考虑二维和三维空间;
+	\item 二维空间直接采用 imagesc 函数画图就可以;
+	\item 三维空间采用 patch 和 isosurface 函数结合, 并添加颜色渲染, 调整角度, 得到立体效果较好的图像, 并保存到相应位置;
+\end{enumerate}
+
+
+\subsection{迭代函数: Semi\_Implicit.m}
+
+\begin{enumerate}[(1).]
+	\item 准备算子 $ (\nabla^{2}+1) (\nabla^{2}+q^{2}) $ 和 $ c \nabla^{2} (\nabla^{2}+1)^{2} (\nabla^{2}+q^{2})^{2} $ 的 Fourier 空间表达, 方便后续调用:
+	\item 计算自由能, 分为三个部分:\\
+	势能 PotenHam = $ \int_{\Omega} \frac{c}{2} \left[ (\nabla^{2}+1) (\nabla^{2}+q^{2}) \phi^{n} \right]^{2} d\br $;\\
+	熵能 Entropy = $ \int_{\Omega} \left\{ -\frac{\varepsilon}{2} (\phi^{n})^{2} - \frac{\kappa}{3} (\phi^{n})^{3} + \frac{\gamma}{4} (\phi^{n})^{4} \right\} d\br $;\\
+	自由能 Hamilton = PotenHam + Entropy;
+	\item 计算误差: GradErr = $ \nabla^{2} \left\{ c (\nabla^{2}+1)^{2} (\nabla^{2}+q^{2})^{2} \phi^{n} - \varepsilon \phi^{n} - \kappa (\phi^{n})^{2} + \gamma (\phi^{n})^{3} \right\} $, 程序中采用 GradErr 的无穷范数作为误差 Err.
+	\item 计算 $ \phi^{n+1} = \frac{ \phi^{n} + \Delta t \, \nabla^{2} \left( -\varepsilon \phi^{n} - \kappa (\phi^{n})^{2} + \gamma (\phi^{n})^{3} \right) }{ 1 - \Delta t \, c \nabla^{2} (\nabla^{2}+1)^{2} (\nabla^{2}+q^{2})^{2} } $, 并考虑 $ \int_{\Omega} \phi^{n+1} d\br = 0 $ 的约束条件.
+	\item 循环迭代, 直到 Err $<=$ TOL 或者达到最大迭代步数;
+	\item 该函数结束会输出最终的 $ \phi $ 和自由能 Hamilton, 可以调用 Plot\_Phase.m 画出最终结果;
+\end{enumerate}
+
+
+%\section*{致谢} 
+
+%%% 附录;
+%\begin{appendix}
+%\end{appendix}
+
+
+\bibliography{ref}
+\bibliographystyle{unsrt}
+
+
+\end{CJK}
+\end{document}
+
